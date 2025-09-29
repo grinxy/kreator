@@ -1,0 +1,21 @@
+{
+  "name": "Kreator - Plataforma de Referrals Industriales",
+  "short_name": "Kreator",
+  "description": "Conecta profesionales industriales para generar referrals y hacer crecer tu negocio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#04368F",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
