@@ -1,8 +1,6 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -10,142 +8,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-interface FormData {
-  firstName: string
-  lastName: string
-  email: string
-  profession: string
-  zone: string
-  whatsapp: string
-  role: "professional" | "team-leader"
-  interestedInLeadership: boolean
-  acceptTerms: boolean
-}
-
-interface FormErrors {
-  firstName?: string
-  lastName?: string
-  email?: string
-  profession?: string
-  zone?: string
-  acceptTerms?: string
-}
-
-const zones = [
-  "Madrid",
-  "Barcelona",
-  "Valencia",
-  "Sevilla",
-  "Bilbao",
-  "Málaga",
-  "Zaragoza",
-  "Murcia",
-  "Palma",
-  "Las Palmas",
-  "Valladolid",
-  "Córdoba",
-]
-
-const professions = [
-  "Ingeniero Industrial",
-  "Técnico Industrial",
-  "Director de Operaciones",
-  "Gerente de Producción",
-  "Consultor Industrial",
-  "Especialista en Automatización",
-  "Responsable de Calidad",
-  "Jefe de Mantenimiento",
-  "Otro",
-]
+// Import extracted types and data
+import { zones, professions } from '@/data/registration'
+import { useRegistrationForm } from '@/hooks/use-registration'
 
 export function RegistrationForm() {
-  const [formData, setFormData] = useState<FormData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    profession: "",
-    zone: "",
-    whatsapp: "",
-    role: "professional",
-    interestedInLeadership: false,
-    acceptTerms: false,
-  })
-
-  const [errors, setErrors] = useState<FormErrors>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {}
-
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "El nombre es obligatorio"
-    }
-
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Los apellidos son obligatorios"
-    }
-
-    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "El formato del email no es válido"
-    }
-
-    if (!formData.profession) {
-      newErrors.profession = "La profesión es obligatoria"
-    }
-
-    if (!formData.zone) {
-      newErrors.zone = "La zona es obligatoria"
-    }
-
-    if (!formData.acceptTerms) {
-      newErrors.acceptTerms = "Debes aceptar los términos y condiciones"
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!validateForm()) {
-      return
-    }
-
-    setIsSubmitting(true)
-
-    // Simulate form submission - placeholder for future Firebase integration
-    try {
-      console.log("Form data to submit:", formData)
-
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      alert("¡Registro exitoso! Te contactaremos pronto.")
-
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        profession: "",
-        zone: "",
-        whatsapp: "",
-        role: "professional",
-        interestedInLeadership: false,
-        acceptTerms: false,
-      })
-    } catch (error) {
-      alert("Error al enviar el formulario. Inténtalo de nuevo.")
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  const updateFormData = (field: keyof FormData, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-    if (errors[field as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }))
-    }
-  }
+  const {
+    formData,
+    errors,
+    isSubmitting,
+    updateFormData,
+    handleSubmit,
+  } = useRegistrationForm()
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
