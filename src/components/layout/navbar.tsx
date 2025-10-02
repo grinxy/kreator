@@ -28,7 +28,7 @@ export function Navbar() {
             <NavLink href="#como-funciona">Cómo Funciona</NavLink>
             <NavLink href="#perfiles">Perfiles</NavLink>
             <NavLink href="#beneficios">Beneficios</NavLink>
-            <NavLink href="#testimonios">Testimonios</NavLink>
+            <NavLink href="#contacto">Contacto</NavLink>
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">

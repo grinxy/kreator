@@ -98,8 +98,8 @@ export function MobileMenu({ className }: MobileMenuProps) {
             <NavLink href="#beneficios" onClick={closeMenu}>
               Beneficios
             </NavLink>
-            <NavLink href="#testimonios" onClick={closeMenu}>
-              testimonios
+            <NavLink href="#contacto" onClick={closeMenu}>
+              Contacto
             </NavLink>
             <div className="pt-4 border-t border-border space-y-2">
               <Button variant="ghost" size="sm" className="w-full justify-start">

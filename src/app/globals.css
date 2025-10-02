@@ -40,7 +40,7 @@
 
   /* custom Kreator color variables for direct use */
   --kreator-blue: #003c71;
-  --kreator-blue-dark: #093257;
+  --kreator-blue-dark: #112637;
   --kreator-yellow: #ffa00e;
   --kreator-gray-light: #eae7e1;
   --kreator-gray-dark: #3a3a3a;
@@ -48,6 +48,7 @@
 
   /* Kreator gradient */
   --kreator-gradient-blue: linear-gradient(to bottom right, var(--kreator-blue), var(--kreator-blue-dark));
+  --kreator-gradient-yellow: linear-gradient(to bottom right, var(--kreator-orange), var(--kreator-yellow));
 }
 
 .dark {
@@ -162,6 +163,9 @@
   /* Gradient backgrounds */
   .bg-kreator-gradient-blue {
     background-image: var(--kreator-gradient-blue);
+  }
+    .bg-kreator-gradient-yellow {
+    background-image: var(--kreator-gradient-yellow);
   }
 
   /* Hover background variants */

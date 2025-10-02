@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 
 export function FinalCTASection() {
   return (
-    <section className="py-16 md:py-24 bg-kreator-gradient-blue text-white">
+    <section id="contacto" className="py-16 md:py-40 bg-kreator-gradient-blue text-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-balance">

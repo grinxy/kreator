@@ -11,7 +11,7 @@ export function ProfilesSection() {
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
           {/* Profesional Card */}
           <Card className="border-2 border-kreator-blue hover:shadow-2xl transition-shadow duration-300">
-            <CardHeader className="bg-kreator-blue py-3 text-white">
+            <CardHeader className="bg-kreator-gradient-blue py-3 text-white">
               <CardTitle className="text-2xl">Profesional</CardTitle>
               <CardDescription className="text-gray-200">
                 Perfecto para autónomos y pymes que quieren aumentar ventas.
@@ -63,7 +63,7 @@ export function ProfilesSection() {
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-kreator-orange text-white px-4 py-1 rounded-full text-sm font-semibold">
               Liderazgo
             </div>
-            <CardHeader className="py-3 bg-gradient-to-br from-kreator-yellow to-kreator-orange text-white">
+            <CardHeader className="py-3 bg-kreator-gradient-yellow to-kreator-orange text-white">
               <CardTitle className="text-2xl">Jefe de Equipo</CardTitle>
               <CardDescription className="text-gray-100">
                 Para profesionales con red de contactos y liderazgo.
