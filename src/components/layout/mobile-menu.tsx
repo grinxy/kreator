@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Menu, X } from "lucide-react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { NavLink } from "@/components/layout/nav-link"
+import { NavLink } from "./nav-link"
 import { cn } from "@/lib/utils"
 
 interface MobileMenuProps {
@@ -18,6 +19,7 @@ export function MobileMenu({ className }: MobileMenuProps) {
   const toggleMenu = () => setIsOpen(!isOpen)
   const closeMenu = () => setIsOpen(false)
 
+  // Handle escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -30,6 +32,7 @@ export function MobileMenu({ className }: MobileMenuProps) {
     return () => document.removeEventListener("keydown", handleEscape)
   }, [isOpen])
 
+  // Focus trap
   useEffect(() => {
     if (isOpen && menuRef.current) {
       const focusableElements = menuRef.current.querySelectorAll('a[href], button, [tabindex]:not([tabindex="-1"])')
@@ -83,22 +86,30 @@ export function MobileMenu({ className }: MobileMenuProps) {
             <NavLink href="#inicio" onClick={closeMenu}>
               Inicio
             </NavLink>
-            <NavLink href="#caracteristicas" onClick={closeMenu}>
-              Características
+            <NavLink href="#sobre-kreator" onClick={closeMenu}>
+              Qué es Kreator
+            </NavLink>
+            <NavLink href="#como-funciona" onClick={closeMenu}>
+              Cómo Funciona
+            </NavLink>
+            <NavLink href="#perfiles" onClick={closeMenu}>
+              Perfiles
+            </NavLink>
+            <NavLink href="#beneficios" onClick={closeMenu}>
+              Beneficios
             </NavLink>
             <NavLink href="#testimonios" onClick={closeMenu}>
-              Testimonios
-            </NavLink>
-            <NavLink href="#contacto" onClick={closeMenu}>
-              Contacto
+              testimonios
             </NavLink>
             <div className="pt-4 border-t border-border space-y-2">
               <Button variant="ghost" size="sm" className="w-full justify-start">
                 Iniciar sesión
               </Button>
-              <NavLink href="/registro" onClick={closeMenu}>
-                Registrarse
-              </NavLink>
+              <Button size="sm" className="w-full" asChild>
+                <Link href="/registro" onClick={closeMenu}>
+                  Registrarse
+                </Link>
+              </Button>
             </div>
           </nav>
         </div>

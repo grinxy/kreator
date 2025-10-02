@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react"
-import { FeatureCard } from "@/components/ui/feature-card"
+import { FeatureCard } from "@/components/molecules/feature-card"
 import { Network } from "lucide-react"
 
 describe("FeatureCard", () => {

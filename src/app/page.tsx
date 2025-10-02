@@ -1,18 +1,26 @@
-import Header from "@/components/layout/header"
-import HeroSection from "@/components/home-sections/hero/hero-section"
-import FeaturesSection from "@/components/home-sections/features/features-section"
-import { CTASection } from "@/components/home-sections/cta/cta-section"
-import TestimonialsSection from "@/components/home-sections/testimonial/testimonials-section"
+import { Header } from "@/components/layout/header"
+import { HeroSection } from "@/components/home-sections/hero/hero-section"
+import { AboutSection } from "@/components/home-sections/about/about-section"
+import { HowItWorksSection } from "@/components/home-sections/how-it-works/how-it-works-section"
+import { ProfilesSection } from "@/components/home-sections/profiles/profiles-section"
+import { BenefitsSection } from "@/components/home-sections/benefits/benefits-section"
+import { FinalCTASection } from "@/components/home-sections/final-cta/final-cta-section"
+import { TestimonialsSection } from "@/components/home-sections/testimonial/testimonials-section"
 import { Footer } from "@/components/layout/footer"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       <Header />
-      <HeroSection />
-      <FeaturesSection />
-      <CTASection />
-      <TestimonialsSection />
+      <main>
+        <HeroSection />
+        <AboutSection />
+        <HowItWorksSection />
+        <ProfilesSection />
+        <BenefitsSection />
+        <FinalCTASection />
+        <TestimonialsSection />
+      </main>
       <Footer />
     </div>
   )

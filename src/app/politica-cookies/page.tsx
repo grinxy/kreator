@@ -1,12 +1,12 @@
-import {LegalNotice} from "@/components/legal/legal-notice"
+import {CookiesPolicy}  from "@/components/legal/cookies-policy"
 import {Header} from "@/components/layout/header"
 import {Footer} from "@/components/layout/footer"
 
-export default function LegalNoticePage() {
+export default function CookiesPolicyPage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <LegalNotice />
+      <CookiesPolicy />
       <Footer />
     </main>
   )
