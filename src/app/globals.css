@@ -40,10 +40,15 @@
 
   /* custom Kreator color variables for direct use */
   --kreator-blue: #003c71;
+  --kreator-blue-dark: #112637;
   --kreator-yellow: #ffa00e;
   --kreator-gray-light: #eae7e1;
   --kreator-gray-dark: #3a3a3a;
   --kreator-orange: #e35205;
+
+  /* Kreator gradient */
+  --kreator-gradient-blue: linear-gradient(to bottom right, var(--kreator-blue), var(--kreator-blue-dark));
+  --kreator-gradient-yellow: linear-gradient(to bottom right, var(--kreator-orange), var(--kreator-yellow));
 }
 
 .dark {
@@ -127,28 +132,146 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
 }
 
-/* utility classes for Kreator brand colors */
+@layer components {
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
 @layer utilities {
+  /* Solid backgrounds */
   .bg-kreator-blue {
     background-color: var(--kreator-blue);
   }
   .bg-kreator-yellow {
     background-color: var(--kreator-yellow);
   }
+  .bg-kreator-orange {
+    background-color: var(--kreator-orange);
+  }
+  .bg-kreator-gray-light {
+    background-color: var(--kreator-gray-light);
+  }
+  .bg-kreator-gray-dark {
+    background-color: var(--kreator-gray-dark);
+  }
+
+  /* Gradient backgrounds */
+  .bg-kreator-gradient-blue {
+    background-image: var(--kreator-gradient-blue);
+  }
+    .bg-kreator-gradient-yellow {
+    background-image: var(--kreator-gradient-yellow);
+  }
+
+  /* Hover background variants */
+  .hover\:bg-kreator-blue:hover {
+    background-color: var(--kreator-blue);
+  }
+  .hover\:bg-kreator-yellow:hover {
+    background-color: var(--kreator-yellow);
+  }
+  .hover\:bg-kreator-orange:hover {
+    background-color: var(--kreator-orange);
+  }
+  .hover\:bg-kreator-gray-light:hover {
+    background-color: var(--kreator-gray-light);
+  }
+  .hover\:bg-kreator-gray-dark:hover {
+    background-color: var(--kreator-gray-dark);
+  }
+  .hover\:bg-kreator-gradient-blue:hover {
+    background-image: var(--kreator-gradient-blue);
+  }
+
+  /* --------------------------------------------------
+  Text color utilities
+  -------------------------------------------------- */
   .text-kreator-blue {
     color: var(--kreator-blue);
   }
   .text-kreator-yellow {
     color: var(--kreator-yellow);
   }
+  .text-kreator-orange {
+    color: var(--kreator-orange);
+  }
+
+  .text-kreator-gray-light {
+    color: var(--kreator-gray-light);
+  }
+  .text-kreator-gray-dark {
+    color: var(--kreator-gray-dark);
+  }
+
+  /* Gradient text */
+  .text-kreator-gradient-blue {
+    background-image: var(--kreator-gradient-blue);
+    background-clip: text; /* propiedad estándar */
+    -webkit-background-clip: text; /* compatibilidad con Safari/Chrome */
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Hover text colors */
+  .hover\:text-kreator-blue:hover {
+    color: var(--kreator-blue);
+  }
+  .hover\:text-kreator-yellow:hover {
+    color: var(--kreator-yellow);
+  }
+  .hover\:text-kreator-orange:hover {
+    color: var(--kreator-orange);
+  }
+  .hover\:text-kreator-gray-light:hover {
+    color: var(--kreator-gray-light);
+  }
+  .hover\:text-kreator-gray-dark:hover {
+    color: var(--kreator-gray-dark);
+  }
+  .hover\:text-kreator-gradient-blue:hover {
+    background-image: var(--kreator-gradient-blue);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* --------------------------------------------------
+  Border utilities
+  -------------------------------------------------- */
+  .border-kreator-blue {
+    border-color: var(--kreator-blue);
+  }
   .border-kreator-yellow {
     border-color: var(--kreator-yellow);
   }
-  .hover\:bg-kreator-yellow:hover {
-    background-color: var(--kreator-yellow);
+  .border-kreator-orange {
+    border-color: var(--kreator-orange);
+  }
+  .border-kreator-gray-light {
+    border-color: var(--kreator-gray-light);
+  }
+  .border-kreator-gray-dark {
+    border-color: var(--kreator-gray-dark);
+  }
+
+  /* ⚠️ Note: gradients don't apply directly to borders */
+  .border-kreator-gradient-blue {
+    border-image: var(--kreator-gradient-blue) 1;
+  }
+
+  /* --------------------------------------------------
+  Font family utilities
+  -------------------------------------------------- */
+  .font-heading {
+    font-family: "Poppins", system-ui, sans-serif;
+  }
+  .font-body {
+    font-family: "Open Sans", sans-serif;
   }
 }

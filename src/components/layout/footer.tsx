@@ -1,102 +1,86 @@
-import Image from "next/image"
-import { Heading } from "@/components/ui/heading"
-import { NavLink } from "@/components/layout/nav-link"
-import { Facebook, Linkedin, Instagram } from "lucide-react"
-import { IconWrapper } from "@/components/ui/icon-wrapper"
+import Link from "next/link"
 
+export { Footer as default }
 export function Footer() {
   return (
-    <footer id="contacto" className="bg-primary text-primary-foreground py-12 md:py-16">
+    <footer className="bg-kreator-blue text-white py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-5 gap-8 md:gap-12">
-          <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center">
-              <Image
-                src="/logo-kreator.png"
-                alt="Kreator"
-                width={120}
-                height={40}
-                className="h-8 w-auto brightness-0 invert"
-              />
-            </div>
-            <p className="text-primary-foreground/80 text-sm leading-relaxed max-w-md">
-              La plataforma líder que conecta profesionales industriales para generar referrals de calidad y expandir
-              redes de contactos profesionales.
+        <div className="grid md:grid-cols-4 gap-8">
+          <div>
+            <img
+              src="/logo-kreator.png"
+              alt="Kreator"
+              className="h-8 w-auto mb-4 brightness-0 invert"
+              width="96"
+              height="32"
+            />
+            <p className="text-gray-300 leading-relaxed">
+              La primera red empresarial exclusiva por zonas para profesionales y pymes.
             </p>
           </div>
-
-          <div className="space-y-4">
-            <Heading level={3} className="text-lg text-primary-foreground">
-              Producto
-            </Heading>
-            <nav className="flex flex-col space-y-2" aria-label="Enlaces de producto">
-              <NavLink href="#caracteristicas" className="text-primary-foreground/80 hover:text-primary-foreground">
-                Características
-              </NavLink>
-              <NavLink href="#" className="text-primary-foreground/80 hover:text-primary-foreground">
-                Precios
-              </NavLink>
-            </nav>
+          <div>
+            <h3 className="font-semibold mb-4 text-kreator-yellow">Producto</h3>
+            <ul className="space-y-2 text-gray-300">
+              <li>
+                <Link href="#sobre-kreator" className="hover:text-kreator-yellow transition-colors duration-200">
+                  Qué es Kreator
+                </Link>
+              </li>
+              <li>
+                <Link href="#como-funciona" className="hover:text-kreator-yellow transition-colors duration-200">
+                  Cómo Funciona
+                </Link>
+              </li>
+              <li>
+                <Link href="#perfiles" className="hover:text-kreator-yellow transition-colors duration-200">
+                  Perfiles y Precios
+                </Link>
+              </li>
+            </ul>
           </div>
-
-          <div className="space-y-4">
-            <Heading level={3} className="text-lg text-primary-foreground">
-              Soporte
-            </Heading>
-            <nav className="flex flex-col space-y-2" aria-label="Enlaces de soporte">
-              <NavLink href="#" className="text-primary-foreground/80 hover:text-primary-foreground">
-                Centro de Ayuda
-              </NavLink>
-              <NavLink href="#" className="text-primary-foreground/80 hover:text-primary-foreground">
-                Contacto
-              </NavLink>
-            </nav>
+          <div>
+            <h3 className="font-semibold mb-4 text-kreator-yellow">Empresa</h3>
+            <ul className="space-y-2 text-gray-300">
+              <li>
+                <Link href="#" className="hover:text-kreator-yellow transition-colors duration-200">
+                  Sobre Nosotros
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-kreator-yellow transition-colors duration-200">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="hover:text-kreator-yellow transition-colors duration-200">
+                  Contacto
+                </Link>
+              </li>
+            </ul>
           </div>
-
-          <div className="space-y-4">
-            <Heading level={3} className="text-lg text-primary-foreground">
-              Legal
-            </Heading>
-            <nav className="flex flex-col space-y-2" aria-label="Enlaces legales">
-              <NavLink href="/aviso-legal" className="text-primary-foreground/80 hover:text-primary-foreground">
-                Aviso Legal
-              </NavLink>
-              <NavLink href="/politica-privacidad" className="text-primary-foreground/80 hover:text-primary-foreground">
-                Política de Privacidad
-              </NavLink>
-            </nav>
+          <div>
+            <h3 className="font-semibold mb-4 text-kreator-yellow">Legal</h3>
+            <ul className="space-y-2 text-gray-300">
+              <li>
+                <Link href="/aviso-legal" className="hover:text-kreator-yellow transition-colors duration-200">
+                  Aviso Legal
+                </Link>
+              </li>
+              <li>
+                <Link href="/politica-privacidad" className="hover:text-kreator-yellow transition-colors duration-200">
+                  Política de Privacidad
+                </Link>
+              </li>
+              <li>
+                <Link href="/politica-cookies" className="hover:text-kreator-yellow transition-colors duration-200">
+                  Política de Cookies
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
-
-        <div className="mt-12 pt-8 border-t border-primary-foreground/20">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-primary-foreground/60 text-sm">© 2025 Kreator. Todos los derechos reservados.</p>
-
-            <div className="flex items-center space-x-4">
-              <span className="text-primary-foreground/60 text-sm mr-2">Síguenos:</span>
-              <a
-                href="#"
-                className="text-primary-foreground/60 hover:text-primary-foreground transition-colors"
-                aria-label="Síguenos en Facebook"
-              >
-                <IconWrapper icon={Facebook} size="sm" aria-hidden={false} />
-              </a>
-              <a
-                href="#"
-                className="text-primary-foreground/60 hover:text-primary-foreground transition-colors"
-                aria-label="Síguenos en LinkedIn"
-              >
-                <IconWrapper icon={Linkedin} size="sm" aria-hidden={false} />
-              </a>
-              <a
-                href="#"
-                className="text-primary-foreground/60 hover:text-primary-foreground transition-colors"
-                aria-label="Síguenos en Instagram"
-              >
-                <IconWrapper icon={Instagram} size="sm" aria-hidden={false} />
-              </a>
-            </div>
-          </div>
+        <div className="border-t border-[#004A8F] mt-8 pt-8 text-center text-gray-300">
+          <p>&copy; 2025 Kreator. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>
