@@ -7,7 +7,7 @@ import { MobileMenu } from "@/components/layout/mobile-menu"
 export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-6 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link href="/" aria-label="Ir al inicio de Kreator" className="flex items-center">
@@ -22,7 +22,7 @@ export function Navbar() {
             </Link>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-6" role="navigation" aria-label="Navegación principal">
+          <nav className="hidden lg:flex items-center space-x-6" role="navigation" aria-label="Navegación principal">
             <NavLink href="#inicio">Inicio</NavLink>
             <NavLink href="#sobre-kreator">Qué es Kreator</NavLink>
             <NavLink href="#como-funciona">Cómo Funciona</NavLink>
@@ -31,11 +31,11 @@ export function Navbar() {
             <NavLink href="#contacto">Contacto</NavLink>
           </nav>
 
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-4">
             <Button variant="ghost" size="sm" aria-label="Iniciar sesión en Kreator">
               Iniciar sesión
             </Button>
-            <Button size="sm" asChild className="bg-kreator-yellow hover:bg-kreator-orange text-kreator-blue">
+            <Button asChild variant="navbar" size="sm">
               <Link href="/registro">Registrarse</Link>
             </Button>
           </div>

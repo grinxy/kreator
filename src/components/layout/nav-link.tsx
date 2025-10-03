@@ -15,20 +15,13 @@ export function NavLink({ href, children, className, onClick }: NavLinkProps) {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault()
     onClick?.()
-
     const targetId = href.replace("#", "")
     const targetElement = document.getElementById(targetId)
 
     if (targetId === "inicio") {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      })
+      window.scrollTo({ top: 0, behavior: "smooth" })
     } else if (targetElement) {
-      targetElement.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      })
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" })
     }
   }
 
@@ -37,10 +30,16 @@ export function NavLink({ href, children, className, onClick }: NavLinkProps) {
       href={href}
       onClick={handleClick}
       className={cn(
-        "text-foreground hover:text-primary transition-colors duration-200",
+        "relative inline-block px-2 py-1",
+        "text-foreground transition-colors duration-200 hover:text-primary",
+        // underline
+        "after:content-[''] after:absolute after:left-0 after:bottom-0",
+        "after:h-0.5 after:w-0 after:bg-primary after:transition-[width] after:duration-200",
+        "hover:after:w-full focus-visible:after:w-full",
+        // focus ring a11y
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "rounded-sm px-2 py-1",
-        className,
+        "rounded-sm",
+        className
       )}
     >
       {children}
