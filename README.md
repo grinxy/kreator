@@ -91,7 +91,7 @@ La landing page cumple con las mejores prácticas de accesibilidad:
 
 Los colores de marca están definidos en `src/app/globals.css`:
 
-- **Azul Principal**: #04368F  
+- **Azul Principal**: #003c71  
 - **Naranja Acento**: #FFA00E  
 - **Grises**: Para textos y fondos  
 

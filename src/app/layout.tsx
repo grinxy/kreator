@@ -4,12 +4,12 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Kreator - Conecta, Refiere y Haz Crecer Tu Negocio Industrial",
+  title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales y Pymes",
   description:
-    "Plataforma profesional que conecta especialistas industriales para generar referrals y hacer crecer tu negocio. Únete a más de 10,000 profesionales.",
+    "Únete a la primera red empresarial exclusiva por zonas. Un solo profesional por sector en tu área. Multiplica tus oportunidades, genera comisiones y amplía tu red de contactos. Sin permanencia.",
   generator: "v0.app",
   keywords:
-    "referrals industriales, networking profesional, crecimiento empresarial, conexiones industriales, B2B, plataforma industrial",
+    "red exclusiva profesionales, networking por zonas, autónomos, pymes, comisiones referidos, exclusividad sector, networking empresarial, oportunidades negocio, red contactos profesionales",
   authors: [{ name: "Kreator Team" }],
   creator: "Kreator",
   publisher: "Kreator",
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Kreator - Conecta, Refiere y Haz Crecer Tu Negocio Industrial",
+    title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales",
     description:
-      "Plataforma profesional que conecta especialistas industriales para generar referrals y hacer crecer tu negocio.",
+      "Un solo profesional por sector en tu área. Multiplica tus oportunidades gracias a los contactos de todo tu equipo. Reserva tu plaza ahora.",
     url: "https://kreator.com",
     siteName: "Kreator",
     images: [
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Kreator - Plataforma de Referrals Industriales",
+        alt: "Kreator - Red Exclusiva por Zonas para Profesionales",
       },
     ],
     locale: "es_ES",
@@ -41,9 +41,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kreator - Conecta, Refiere y Haz Crecer Tu Negocio Industrial",
-    description:
-      "Plataforma profesional que conecta especialistas industriales para generar referrals y hacer crecer tu negocio.",
+    title: "Kreator - La 1ª Red Exclusiva por Zonas",
+    description: "Un solo profesional por sector en tu área. Multiplica tus oportunidades y genera comisiones.",
     images: ["/og-image.jpg"],
     creator: "@kreator",
   },
@@ -75,7 +74,42 @@ export default function RootLayout({
         <link rel="icon" href="/icon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/icon.png" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#04368F" />
+        <meta name="theme-color" content="#003C71" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Kreator",
+              description: "La primera red empresarial exclusiva por zonas para profesionales y pymes",
+              url: "https://kreator.com",
+              logo: "https://kreator.com/Logo 1 Kreator.png",
+              sameAs: ["https://www.linkedin.com/company/kreator", "https://twitter.com/kreator"],
+              contactPoint: {
+                "@type": "ContactPoint",
+                contactType: "Customer Service",
+                availableLanguage: "Spanish",
+              },
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Kreator",
+              url: "https://kreator.com",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: "https://kreator.com/buscar?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
       </head>
       <body className="font-sans antialiased">
         <Suspense fallback={null}>{children}</Suspense>

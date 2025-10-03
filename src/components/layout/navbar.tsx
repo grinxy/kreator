@@ -10,7 +10,7 @@ export function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
-            <Link href="/#inicio" aria-label="Ir al inicio" className="flex items-center">
+            <Link href="/" aria-label="Ir al inicio de Kreator" className="flex items-center">
               <Image
                 src="/logo-kreator.png"
                 alt="Kreator - Sinergias Empresariales"
@@ -22,18 +22,20 @@ export function Navbar() {
             </Link>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-8" role="navigation" aria-label="Navegación principal">
+          <nav className="hidden md:flex items-center space-x-6" role="navigation" aria-label="Navegación principal">
             <NavLink href="#inicio">Inicio</NavLink>
-            <NavLink href="#caracteristicas">Características</NavLink>
-            <NavLink href="#testimonios">Testimonios</NavLink>
+            <NavLink href="#sobre-kreator">Qué es Kreator</NavLink>
+            <NavLink href="#como-funciona">Cómo Funciona</NavLink>
+            <NavLink href="#perfiles">Perfiles</NavLink>
+            <NavLink href="#beneficios">Beneficios</NavLink>
             <NavLink href="#contacto">Contacto</NavLink>
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant={"link"} className="cursor-pointer text-lg">
-              Iniciar Sesión
+            <Button variant="ghost" size="sm" aria-label="Iniciar sesión en Kreator">
+              Iniciar sesión
             </Button>
-            <Button size="sm" asChild>
+            <Button size="sm" asChild className="bg-kreator-yellow hover:bg-kreator-orange text-kreator-blue">
               <Link href="/registro">Registrarse</Link>
             </Button>
           </div>

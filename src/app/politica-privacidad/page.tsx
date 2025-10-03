@@ -1,8 +1,8 @@
-import PrivacyPolicy  from "@/components/legal/PrivacyPolicy"
-import Header from "@/components/layout/header"
+import {PrivacyPolicy}  from "@/components/legal/privacy-policy"
+import {Header} from "@/components/layout/header"
 import {Footer} from "@/components/layout/footer"
 
-export default function PrivacyPoliticyPage() {
+export default function PrivacyPolicyPage() {
   return (
     <main className="min-h-screen">
       <Header />

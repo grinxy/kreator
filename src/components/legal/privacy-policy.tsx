@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
+import { Shield, Eye, Download, Trash2, Edit, Ban } from "lucide-react"
 import Link from "next/link"
-import { ArrowLeft, Shield, Eye, Download, Trash2, Edit, Ban } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
   title: "Política de Privacidad | Kreator",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   robots: "index, follow",
 }
 
-export default function PrivacyPoliticy() {
+export function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-background">
       <header className="bg-primary text-primary-foreground py-6">
@@ -352,6 +353,11 @@ export default function PrivacyPoliticy() {
                 </p>
               </div>
             </div>
+          </div>
+          <div className="mt-8 text-center">
+            <Button asChild size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
+              <Link href="/">Volver al Inicio</Link>
+            </Button>
           </div>
         </div>
       </main>

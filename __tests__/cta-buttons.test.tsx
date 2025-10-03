@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { CTASection } from "@/components/home-sections/cta/cta-section"
+import { CTASection } from "@/components/organisms/cta-section"
 
 describe("CTA Buttons", () => {
   it("renders CTA buttons with proper accessibility labels", () => {
