@@ -63,7 +63,7 @@ export function MobileMenu({ className }: MobileMenuProps) {
   }, [isOpen])
 
   return (
-    <div className={cn("md:hidden", className)}>
+    <div className={cn("lg:hidden", className)}>
       <Button
         ref={buttonRef}
         variant="ghost"
