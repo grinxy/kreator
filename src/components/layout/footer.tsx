@@ -3,12 +3,12 @@ import Link from "next/link"
 export { Footer as default }
 export function Footer() {
   return (
-    <footer className="bg-kreator-blue text-white py-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <footer id="footer" className="bg-kreator-blue text-white py-12">
+      <div className="max-w-7xl container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <img
-              src="/logo-kreator.png"
+              src="/logo-kreator-blue.png"
               alt="Kreator"
               className="h-8 w-auto mb-4 brightness-0 invert"
               width="96"
@@ -52,7 +52,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-kreator-yellow transition-colors duration-200">
+                <Link href="#contacto" className="hover:text-kreator-yellow transition-colors duration-200">
                   Contacto
                 </Link>
               </li>
