@@ -1,6 +1,5 @@
 "use client"
 
-import type React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -8,18 +7,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-// Import extracted types and data
 import { zones, professions } from '@/data/registration'
 import { useRegistrationForm } from '@/hooks/use-registration'
+import { RegistrationSuccess } from '@/components/registration/registration-success'
 
 export function RegistrationForm() {
   const {
     formData,
     errors,
     isSubmitting,
+    registrationSuccess,
+    userEmail,
     updateFormData,
     handleSubmit,
+    resetForm,
   } = useRegistrationForm()
+
+  if (registrationSuccess) {
+    return <RegistrationSuccess email={userEmail} onClose={resetForm} />
+  }
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">

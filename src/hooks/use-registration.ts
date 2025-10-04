@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormData, FormErrors } from '@/types/registration-form'
 import { validateForm, isFormValid } from '@/lib/validation'
+import { registerUser, sendPasswordResetEmail } from '@/lib/auth'
 
 const initialFormData: FormData = {
   firstName: "",
@@ -18,6 +19,8 @@ export function useRegistrationForm() {
   const [formData, setFormData] = useState<FormData>(initialFormData)
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [registrationSuccess, setRegistrationSuccess] = useState(false)
+  const [userEmail, setUserEmail] = useState<string>('')
 
   const updateFormData = (field: keyof FormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -39,15 +42,30 @@ export function useRegistrationForm() {
     setIsSubmitting(true)
 
     try {
-      // TODO: Replace with Firebase Auth registration
-      console.log("Form data to submit:", formData)
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      alert("¡Registro exitoso! Te contactaremos pronto.")
+      // Register user with Firebase Auth only
+      const userProfile = await registerUser(formData)
+      
+      // Send password reset email so user can set their own password
+      await sendPasswordResetEmail(formData.email)
+      
+      setUserEmail(formData.email)
+      setRegistrationSuccess(true)
       setFormData(initialFormData)
       setErrors({})
-    } catch (error) {
+      
+      console.log('Registration successful:', userProfile)
+      
+    } catch (error: any) {
       console.error("Registration error:", error)
-      alert("Error al enviar el formulario. Inténtalo de nuevo.")
+      
+      // Handle specific Firebase errors
+      if (error.message.includes('email ya está registrado')) {
+        setErrors({ email: error.message })
+      } else if (error.message.includes('email inválido')) {
+        setErrors({ email: error.message })
+      } else {
+        setErrors({ acceptTerms: error.message })
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -57,12 +75,16 @@ export function useRegistrationForm() {
     setFormData(initialFormData)
     setErrors({})
     setIsSubmitting(false)
+    setRegistrationSuccess(false)
+    setUserEmail('')
   }
 
   return {
     formData,
     errors,
     isSubmitting,
+    registrationSuccess,
+    userEmail,
     updateFormData,
     handleSubmit,
     resetForm,
