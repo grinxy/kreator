@@ -7,12 +7,12 @@ import { MobileMenu } from "@/components/layout/mobile-menu"
 export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
-      <div className="max-w-7xl mx-auto px-6 container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link href="/" aria-label="Ir al inicio de Kreator" className="flex items-center">
               <Image
-                src="/logo-kreator.png"
+                src="/brand/horizontal/logo-kreator-default-horizontal.svg"
                 alt="Kreator - Sinergias Empresariales"
                 width={160}
                 height={48}
