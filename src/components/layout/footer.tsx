@@ -8,9 +8,9 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <img
-              src="/logo-kreator-blue.png"
+              src="/brand/horizontal/logo-horizontal-4.svg"
               alt="Kreator"
-              className="h-8 w-auto mb-4 brightness-0 invert"
+              className="h-10 w-auto mb-4"
               width="96"
               height="32"
             />
