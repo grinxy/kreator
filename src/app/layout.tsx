@@ -7,9 +7,6 @@ export const metadata: Metadata = {
   title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales y Pymes",
   description:
     "Únete a la primera red empresarial exclusiva por zonas. Un solo profesional por sector en tu área. Multiplica tus oportunidades, genera comisiones y amplía tu red de contactos. Sin permanencia.",
-  generator: "v0.app",
-  keywords:
-    "red exclusiva profesionales, networking por zonas, autónomos, pymes, comisiones referidos, exclusividad sector, networking empresarial, oportunidades negocio, red contactos profesionales",
   authors: [{ name: "Kreator Team" }],
   creator: "Kreator",
   publisher: "Kreator",
@@ -18,7 +15,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://kreator.com"),
+  metadataBase: new URL("https://kreator-teaser-page.vercel.app/"),
   alternates: {
     canonical: "/",
   },
@@ -26,7 +23,7 @@ export const metadata: Metadata = {
     title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales",
     description:
       "Un solo profesional por sector en tu área. Multiplica tus oportunidades gracias a los contactos de todo tu equipo. Reserva tu plaza ahora.",
-    url: "https://kreator.com",
+    url: "https://kreator-teaser-page.vercel.app/",
     siteName: "Kreator",
     images: [
       {
@@ -38,13 +35,6 @@ export const metadata: Metadata = {
     ],
     locale: "es_ES",
     type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Kreator - La 1ª Red Exclusiva por Zonas",
-    description: "Un solo profesional por sector en tu área. Multiplica tus oportunidades y genera comisiones.",
-    images: ["/og-image.jpg"],
-    creator: "@kreator",
   },
   robots: {
     index: true,
@@ -70,9 +60,9 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        <link rel="icon" href="/icon.png" sizes="any" />
-        <link rel="icon" href="/icon.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/icon.png" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon-192.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/icon-512.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#003C71" />
         <script
@@ -83,9 +73,14 @@ export default function RootLayout({
               "@type": "Organization",
               name: "Kreator",
               description: "La primera red empresarial exclusiva por zonas para profesionales y pymes",
-              url: "https://kreator.com",
-              logo: "https://kreator.com/Logo 1 Kreator.png",
-              sameAs: ["https://www.linkedin.com/company/kreator", "https://twitter.com/kreator"],
+              url: "https://kreator-teaser-page.vercel.app/",
+              "logo": "https://kreator-teaser-page.vercel.app/brand/horizontal/logo-kreator-default-horizontal.png",
+              sameAs: [
+                "https://www.linkedin.com/company/kreator",
+                "https://www.facebook.com/kreator",
+                "https://www.instagram.com/kreator"
+              ],
+
               contactPoint: {
                 "@type": "ContactPoint",
                 contactType: "Customer Service",
@@ -101,10 +96,10 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: "Kreator",
-              url: "https://kreator.com",
+              url: "https://kreator-teaser-page.vercel.app/",
               potentialAction: {
                 "@type": "SearchAction",
-                target: "https://kreator.com/buscar?q={search_term_string}",
+                target: "https://kreator-teaser-page.vercel.app/buscar?q={search_term_string}",
                 "query-input": "required name=search_term_string",
               },
             }),
