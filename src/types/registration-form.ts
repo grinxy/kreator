@@ -2,9 +2,11 @@ export interface FormData {
   firstName: string
   lastName: string
   email: string
+  phone: string           
+  // password: string       // Commented for future use
+  // confirmPassword: string // Commented for future use
   profession: string
   zone: string
-  whatsapp: string
   role: "professional" | "team-leader"
   interestedInLeadership: boolean
   acceptTerms: boolean
@@ -13,10 +15,12 @@ export interface FormData {
 export interface FormErrors {
   firstName?: string
   lastName?: string
-  email?: string
+  email?: string         
+  phone?: string           
+  // password?: string     // Commented for future use
+  // confirmPassword?: string // Commented for future use
   profession?: string
   zone?: string
+  role?: string
   acceptTerms?: string
 }
-
-export type UserRole = "professional" | "team-leader"

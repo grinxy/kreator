@@ -23,10 +23,10 @@ const buttonVariants = cva(
         navbar:
           "bg-kreator-yellow text-kreator-blue font-medium rounded-md transition-all duration-200 hover:bg-kreator-orange",
         profileYellow:
-          "w-full bg-kreator-yellow text-kreator-blue font-semibold py-6 text-lg rounded-lg transition-all duration-200 hover:bg-kreator-orange hover:scale-105",
+          "w-full bg-kreator-yellow text-kreator-blue font-semibold py-6 text-xs md:text-lg rounded-lg transition-all duration-200 hover:bg-kreator-orange hover:scale-105",
 
         profileBlue:
-          "w-full bg-kreator-blue text-white font-semibold py-6 text-lg rounded-lg transition-all duration-200 hover:bg-kreator-blue hover:scale-105",
+          "w-full bg-kreator-blue text-white font-semibold py-6 text-xs md:text-lg rounded-lg transition-all duration-200 hover:bg-kreator-blue hover:scale-105",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

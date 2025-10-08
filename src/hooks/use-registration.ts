@@ -1,15 +1,18 @@
 import { useState } from 'react'
 import type { FormData, FormErrors } from '@/types/registration-form'
-import { validateForm, isFormValid } from '@/lib/validation'
-import { registerUser, sendPasswordResetEmail } from '@/lib/auth'
+import { validateForm, validateField, isFormValid, sanitizeInput } from '@/lib/validation'
+import { registerUser } from '@/lib/auth'
+
 
 const initialFormData: FormData = {
   firstName: "",
   lastName: "",
   email: "",
+  phone: "",
+  // password: "",          // Commented for future use
+  // confirmPassword: "",   // Commented for future use
   profession: "",
   zone: "",
-  whatsapp: "",
   role: "professional",
   interestedInLeadership: false,
   acceptTerms: false,
@@ -23,9 +26,37 @@ export function useRegistrationForm() {
   const [userEmail, setUserEmail] = useState<string>('')
 
   const updateFormData = (field: keyof FormData, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-    if (errors[field as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }))
+ 
+    const sanitizedValue = typeof value === 'string' ? sanitizeInput(value) : value
+    
+    setFormData((prev) => ({ ...prev, [field]: sanitizedValue }))
+    
+    const fieldError = validateField(field, sanitizedValue)
+    setErrors((prev) => ({ 
+      ...prev, 
+      [field]: fieldError 
+    }))
+  }
+
+  const handleFieldBlur = (field: keyof FormData) => {
+    const value = formData[field]
+    
+    // Check required fields on blur
+    if (['firstName', 'lastName', 'email', 'phone', 'profession', 'zone'].includes(field)) {
+      if (!value || (typeof value === 'string' && !value.trim())) {
+        const fieldNames = {
+          firstName: 'El nombre',
+          lastName: 'Los apellidos', 
+          email: 'El email',
+          phone: 'El teléfono',
+          profession: 'La profesión',
+          zone: 'La zona'
+        }
+        setErrors(prev => ({
+          ...prev,
+          [field]: `${fieldNames[field as keyof typeof fieldNames]} es obligatorio`
+        }))
+      }
     }
   }
 
@@ -42,11 +73,8 @@ export function useRegistrationForm() {
     setIsSubmitting(true)
 
     try {
-      // Register user with Firebase Auth only
+      // Register user with Firebase Auth using their chosen password
       const userProfile = await registerUser(formData)
-      
-      // Send password reset email so user can set their own password
-      await sendPasswordResetEmail(formData.email)
       
       setUserEmail(formData.email)
       setRegistrationSuccess(true)
@@ -85,6 +113,7 @@ export function useRegistrationForm() {
     isSubmitting,
     registrationSuccess,
     userEmail,
+    handleFieldBlur,
     updateFormData,
     handleSubmit,
     resetForm,

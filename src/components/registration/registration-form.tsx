@@ -7,21 +7,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-import { zones, professions } from '@/data/registration'
-import { useRegistrationForm } from '@/hooks/use-registration'
-import { RegistrationSuccess } from '@/components/registration/registration-success'
+import { zones, professions } from "@/data/registration"
+import { useRegistrationForm } from "@/hooks/use-registration"
+import { RegistrationSuccess } from "@/components/registration/registration-success"
 
 export function RegistrationForm() {
-  const {
-    formData,
-    errors,
-    isSubmitting,
-    registrationSuccess,
-    userEmail,
-    updateFormData,
-    handleSubmit,
-    resetForm,
-  } = useRegistrationForm()
+  const { formData, errors, isSubmitting, registrationSuccess, userEmail, updateFormData, handleSubmit, resetForm } =
+    useRegistrationForm()
 
   if (registrationSuccess) {
     return <RegistrationSuccess email={userEmail} onClose={resetForm} />
@@ -35,12 +27,11 @@ export function RegistrationForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Role Selection */}
         <div className="space-y-3">
           <Label className="text-base font-semibold text-primary">Tipo de Registro *</Label>
           <RadioGroup
             value={formData.role}
-            onValueChange={(value) => updateFormData("role", value)}
+            onValueChange={value => updateFormData("role", value)}
             className="flex gap-6"
           >
             <div className="flex items-center space-x-2">
@@ -68,7 +59,7 @@ export function RegistrationForm() {
               id="firstName"
               type="text"
               value={formData.firstName}
-              onChange={(e) => updateFormData("firstName", e.target.value)}
+              onChange={e => updateFormData("firstName", e.target.value)}
               className={errors.firstName ? "border-red-500" : ""}
               placeholder="Tu nombre"
             />
@@ -83,7 +74,7 @@ export function RegistrationForm() {
               id="lastName"
               type="text"
               value={formData.lastName}
-              onChange={(e) => updateFormData("lastName", e.target.value)}
+              onChange={e => updateFormData("lastName", e.target.value)}
               className={errors.lastName ? "border-red-500" : ""}
               placeholder="Tus apellidos"
             />
@@ -93,28 +84,76 @@ export function RegistrationForm() {
 
         <div className="space-y-2">
           <Label htmlFor="email" className="text-sm font-medium">
-            Email
+            Email *
           </Label>
           <Input
             id="email"
             type="email"
             value={formData.email}
-            onChange={(e) => updateFormData("email", e.target.value)}
+            onChange={e => updateFormData("email", e.target.value)}
             className={errors.email ? "border-red-500" : ""}
             placeholder="tu@email.com"
           />
           {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
         </div>
 
+        <div className="space-y-2">
+          <Label htmlFor="phone" className="text-sm font-medium">
+            Teléfono *
+          </Label>
+          <Input
+            id="phone"
+            type="tel"
+            value={formData.phone}
+            onChange={e => updateFormData("phone", e.target.value)}
+            className={errors.phone ? "border-red-500" : ""}
+            placeholder="+34 600 000 000"
+          />
+          {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
+        </div>
+
+        {/* Password Fields - Commented for future use */}
+        {/* 
+        <div className="space-y-2">
+          <Label htmlFor="password" className="text-sm font-medium">
+            Contraseña *
+          </Label>
+          <Input
+            id="password"
+            type="password"
+            value={formData.password}
+            onChange={e => updateFormData("password", e.target.value)}
+            className={errors.password ? "border-red-500" : ""}
+            placeholder="Mínimo 6 caracteres"
+          />
+          {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="confirmPassword" className="text-sm font-medium">
+            Confirmar Contraseña *
+          </Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            value={formData.confirmPassword}
+            onChange={e => updateFormData("confirmPassword", e.target.value)}
+            className={errors.confirmPassword ? "border-red-500" : ""}
+            placeholder="Repite tu contraseña"
+          />
+          {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
+        </div>
+        */}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label className="text-sm font-medium">Profesión *</Label>
-            <Select value={formData.profession} onValueChange={(value) => updateFormData("profession", value)}>
+            <Select value={formData.profession} onValueChange={value => updateFormData("profession", value)}>
               <SelectTrigger className={errors.profession ? "border-red-500" : ""}>
                 <SelectValue placeholder="Selecciona tu profesión" />
               </SelectTrigger>
               <SelectContent>
-                {professions.map((profession) => (
+                {professions.map(profession => (
                   <SelectItem key={profession} value={profession}>
                     {profession}
                   </SelectItem>
@@ -126,12 +165,12 @@ export function RegistrationForm() {
 
           <div className="space-y-2">
             <Label className="text-sm font-medium">Zona/Región *</Label>
-            <Select value={formData.zone} onValueChange={(value) => updateFormData("zone", value)}>
+            <Select value={formData.zone} onValueChange={value => updateFormData("zone", value)}>
               <SelectTrigger className={errors.zone ? "border-red-500" : ""}>
                 <SelectValue placeholder="Selecciona tu zona" />
               </SelectTrigger>
               <SelectContent>
-                {zones.map((zone) => (
+                {zones.map(zone => (
                   <SelectItem key={zone} value={zone}>
                     {zone}
                   </SelectItem>
@@ -142,25 +181,12 @@ export function RegistrationForm() {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="whatsapp" className="text-sm font-medium">
-            WhatsApp
-          </Label>
-          <Input
-            id="whatsapp"
-            type="tel"
-            value={formData.whatsapp}
-            onChange={(e) => updateFormData("whatsapp", e.target.value)}
-            placeholder="+34 600 000 000"
-          />
-        </div>
-
         <div className="space-y-4">
           <div className="flex items-start space-x-3">
             <Checkbox
               id="leadership"
               checked={formData.interestedInLeadership}
-              onCheckedChange={(checked) => updateFormData("interestedInLeadership", checked)}
+              onCheckedChange={checked => updateFormData("interestedInLeadership", checked)}
             />
             <Label htmlFor="leadership" className="text-sm cursor-pointer leading-relaxed">
               Estoy abierto/a a asumir el rol de Jefe de Equipo más adelante.
@@ -171,7 +197,7 @@ export function RegistrationForm() {
             <Checkbox
               id="terms"
               checked={formData.acceptTerms}
-              onCheckedChange={(checked) => updateFormData("acceptTerms", checked)}
+              onCheckedChange={checked => updateFormData("acceptTerms", checked)}
             />
             <Label htmlFor="terms" className="text-sm cursor-pointer leading-relaxed">
               Acepto los{" "}
