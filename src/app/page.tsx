@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/header"
 import { HeroSection } from "@/components/home-sections/hero/hero-section"
-import { AboutSection } from "@/components/home-sections/about/about-section"
 import { HowItWorksSection } from "@/components/home-sections/how-it-works/how-it-works-section"
+import { AboutSection } from "@/components/home-sections/about/about-section"
 import { ProfilesSection } from "@/components/home-sections/profiles/profiles-section"
 import { BenefitsSection } from "@/components/home-sections/benefits/benefits-section"
 import { FinalCTASection } from "@/components/home-sections/final-cta/final-cta-section"
@@ -14,8 +14,8 @@ export default function HomePage() {
       <Header />
       <main>
         <HeroSection />
-        <AboutSection />
         <HowItWorksSection />
+        <AboutSection />
         <ProfilesSection />
         <BenefitsSection />
         <FinalCTASection />
