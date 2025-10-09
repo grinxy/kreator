@@ -290,7 +290,8 @@ export function RegistrationForm() {
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-secondary hover:bg-secondary/90 text-primary font-semibold py-3 text-lg transition-colors"
+            variant="cta"
+            className="w-full bg-secondary hover:bg-secondary/90 text-primary font-semibold py-3 text-lg"
             aria-describedby="submit-description"
           >
             {isSubmitting ? "Enviando..." : "Únete a la Comunidad"}

@@ -1,7 +1,10 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback } from 'react'
 import type { FormData, FormErrors } from '@/types/registration-form'
 import { validateForm, validateField, isFormValid, sanitizeInput, debounce } from '@/lib/validation'
-import { registerUser } from '@/lib/auth'
+import type { ApiResponse } from "@/types/api"
+import type { UserResponse } from "@/types/database"
+import { UserService } from '@/services/user-service'
+import { AuthService } from '@/services/auth'
 
 const initialFormData: FormData = {
   firstName: "",
@@ -21,8 +24,8 @@ export function useRegistrationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [registrationSuccess, setRegistrationSuccess] = useState(false)
   const [userEmail, setUserEmail] = useState<string>('')
+  const [submitError, setSubmitError] = useState<string>("")
 
-  
   const debouncedValidateField = useCallback(
     debounce((field: keyof FormData, value: any) => {
       const fieldError = validateField(field, value)
@@ -30,7 +33,7 @@ export function useRegistrationForm() {
         ...prev, 
         [field]: fieldError 
       }))
-    }, 800), // 800ms delay - we change this value if needed
+    }, 800),
     []
   )
 
@@ -75,42 +78,62 @@ export function useRegistrationForm() {
     }
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    const formErrors = validateForm(formData)
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+  e.preventDefault()
+  
+  // Validate form
+  const formErrors = validateForm(formData)
+  if (Object.keys(formErrors).length > 0) {
     setErrors(formErrors)
+    return
+  }
 
-    if (!isFormValid(formErrors)) {
+  setIsSubmitting(true)
+  setSubmitError("")
+
+  try {
+    // Step 1: Create Firebase Auth user
+    console.log('Step 1: Creating Firebase Auth user...')
+    const authResult = await AuthService.createUser(formData.email)
+    
+    if (!authResult.success || !authResult.data) {
+      console.error('Auth creation failed:', authResult.error)
+      setSubmitError(authResult.error?.message || "Error al crear la cuenta de usuario")
+      setIsSubmitting(false)
       return
     }
 
-    setIsSubmitting(true)
+    console.log('Step 1 SUCCESS: Auth user created with UID:', authResult.data.uid)
 
-    try {
-      const userProfile = await registerUser(formData)
+    // Small delay to ensure Firebase Auth is fully processed
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    // Step 2: Create Firestore document with auth UID
+    console.log('Step 2: Creating Firestore user document...')
+    const firestoreResult = await UserService.createUser(formData, authResult.data.uid)
+    
+    if (firestoreResult.success && firestoreResult.data) {
+      // SUCCESS! Both auth and firestore created
+      console.log('Step 2 SUCCESS: Registration complete!', {
+        authUid: authResult.data.uid,
+        firestoreId: firestoreResult.data.id
+      })
       
       setUserEmail(formData.email)
       setRegistrationSuccess(true)
-      setFormData(initialFormData)
-      setErrors({})
       
-      console.log('Registration successful:', userProfile)
-      
-    } catch (error: any) {
-      console.error("Registration error:", error)
-      
-      if (error.message.includes('email ya está registrado')) {
-        setErrors({ email: error.message })
-      } else if (error.message.includes('email inválido')) {
-        setErrors({ email: error.message })
-      } else {
-        setErrors({ acceptTerms: error.message })
-      }
-    } finally {
-      setIsSubmitting(false)
+    } else {
+      console.error('Firestore creation failed:', firestoreResult.error)
+      setSubmitError(firestoreResult.error?.message || "Error al guardar los datos del usuario")
     }
+
+  } catch (error) {
+    console.error('Unexpected registration error:', error)
+    setSubmitError("Error inesperado. Por favor, inténtalo de nuevo.")
+  } finally {
+    setIsSubmitting(false)
   }
+}, [formData])
 
   const resetForm = () => {
     setFormData(initialFormData)
@@ -118,6 +141,7 @@ export function useRegistrationForm() {
     setIsSubmitting(false)
     setRegistrationSuccess(false)
     setUserEmail('')
+    setSubmitError('')
   }
 
   return {
@@ -126,6 +150,7 @@ export function useRegistrationForm() {
     isSubmitting,
     registrationSuccess,
     userEmail,
+    submitError,
     updateFormData,
     handleFieldBlur,
     handleSubmit,

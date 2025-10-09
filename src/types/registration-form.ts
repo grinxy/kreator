@@ -10,6 +10,9 @@ export interface FormData {
   role: "professional" | "team-leader"
   interestedInLeadership: boolean
   acceptTerms: boolean
+  createdAt?: Date
+  status?: "pending" | "approved" | "rejected",
+  id?: string
 }
 
 export interface FormErrors {
@@ -23,4 +26,11 @@ export interface FormErrors {
   zone?: string
   role?: string
   acceptTerms?: string
+}
+
+// Registration-specific validation errors
+export interface RegistrationValidationError {
+  field: keyof FormData
+  message: string
+  code?: string
 }

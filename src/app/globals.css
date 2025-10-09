@@ -147,6 +147,9 @@
   .bg-kreator-blue {
     background-color: var(--kreator-blue);
   }
+  .bg-kreator-blue-dark {
+    background-color: var(--kreator-blue-dark);
+  }
   .bg-kreator-yellow {
     background-color: var(--kreator-yellow);
   }
