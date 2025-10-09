@@ -6,14 +6,24 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { FieldWrapper, ValidationError } from "@/components/ui/validation"
 
 import { zones, professions } from "@/data/registration"
 import { useRegistrationForm } from "@/hooks/use-registration"
 import { RegistrationSuccess } from "@/components/registration/registration-success"
 
 export function RegistrationForm() {
-  const { formData, errors, isSubmitting, registrationSuccess, userEmail, updateFormData, handleSubmit, resetForm } =
-    useRegistrationForm()
+  const { 
+    formData, 
+    errors, 
+    isSubmitting, 
+    registrationSuccess, 
+    userEmail, 
+    updateFormData, 
+    handleFieldBlur,
+    handleSubmit, 
+    resetForm 
+  } = useRegistrationForm()
 
   if (registrationSuccess) {
     return <RegistrationSuccess email={userEmail} onClose={resetForm} />
@@ -27,8 +37,15 @@ export function RegistrationForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="space-y-3">
-          <Label className="text-base font-semibold text-primary">Tipo de Registro *</Label>
+        {/* General Error Alert */}
+        {errors.acceptTerms && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <ValidationError message={errors.acceptTerms} variant="error" size="md" />
+          </div>
+        )}
+
+        {/* Role Selection */}
+        <FieldWrapper label="Tipo de Registro" required>
           <RadioGroup
             value={formData.role}
             onValueChange={value => updateFormData("role", value)}
@@ -47,109 +64,90 @@ export function RegistrationForm() {
               </Label>
             </div>
           </RadioGroup>
-        </div>
+        </FieldWrapper>
 
         {/* Name Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="firstName" className="text-sm font-medium">
-              Nombre *
-            </Label>
+          <FieldWrapper 
+            label="Nombre" 
+            required 
+            error={errors.firstName}
+          >
             <Input
               id="firstName"
               type="text"
               value={formData.firstName}
               onChange={e => updateFormData("firstName", e.target.value)}
-              className={errors.firstName ? "border-red-500" : ""}
+              onBlur={() => handleFieldBlur("firstName")}
+              className={errors.firstName ? "border-red-300 focus:border-red-500" : ""}
               placeholder="Tu nombre"
             />
-            {errors.firstName && <p className="text-sm text-red-500">{errors.firstName}</p>}
-          </div>
+          </FieldWrapper>
 
-          <div className="space-y-2">
-            <Label htmlFor="lastName" className="text-sm font-medium">
-              Apellidos *
-            </Label>
+          <FieldWrapper 
+            label="Apellidos" 
+            required 
+            error={errors.lastName}
+          >
             <Input
               id="lastName"
               type="text"
               value={formData.lastName}
               onChange={e => updateFormData("lastName", e.target.value)}
-              className={errors.lastName ? "border-red-500" : ""}
+              onBlur={() => handleFieldBlur("lastName")}
+              className={errors.lastName ? "border-red-300 focus:border-red-500" : ""}
               placeholder="Tus apellidos"
             />
-            {errors.lastName && <p className="text-sm text-red-500">{errors.lastName}</p>}
-          </div>
+          </FieldWrapper>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm font-medium">
-            Email *
-          </Label>
-          <Input
-            id="email"
-            type="email"
-            value={formData.email}
-            onChange={e => updateFormData("email", e.target.value)}
-            className={errors.email ? "border-red-500" : ""}
-            placeholder="tu@email.com"
-          />
-          {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="phone" className="text-sm font-medium">
-            Teléfono *
-          </Label>
-          <Input
-            id="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={e => updateFormData("phone", e.target.value)}
-            className={errors.phone ? "border-red-500" : ""}
-            placeholder="+34 600 000 000"
-          />
-          {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
-        </div>
-
-        {/* Password Fields - Commented for future use */}
-        {/* 
-        <div className="space-y-2">
-          <Label htmlFor="password" className="text-sm font-medium">
-            Contraseña *
-          </Label>
-          <Input
-            id="password"
-            type="password"
-            value={formData.password}
-            onChange={e => updateFormData("password", e.target.value)}
-            className={errors.password ? "border-red-500" : ""}
-            placeholder="Mínimo 6 caracteres"
-          />
-          {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="confirmPassword" className="text-sm font-medium">
-            Confirmar Contraseña *
-          </Label>
-          <Input
-            id="confirmPassword"
-            type="password"
-            value={formData.confirmPassword}
-            onChange={e => updateFormData("confirmPassword", e.target.value)}
-            className={errors.confirmPassword ? "border-red-500" : ""}
-            placeholder="Repite tu contraseña"
-          />
-          {errors.confirmPassword && <p className="text-sm text-red-500">{errors.confirmPassword}</p>}
-        </div>
-        */}
-
+        {/* Contact Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Profesión *</Label>
-            <Select value={formData.profession} onValueChange={value => updateFormData("profession", value)}>
-              <SelectTrigger className={errors.profession ? "border-red-500" : ""}>
+          <FieldWrapper 
+            label="Email" 
+            required 
+            error={errors.email}
+          >
+            <Input
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={e => updateFormData("email", e.target.value)}
+              onBlur={() => handleFieldBlur("email")}
+              className={errors.email ? "border-red-300 focus:border-red-500" : ""}
+              placeholder="tu@email.com"
+            />
+          </FieldWrapper>
+
+          <FieldWrapper 
+            label="Teléfono" 
+            required 
+            error={errors.phone}
+          >
+            <Input
+              id="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={e => updateFormData("phone", e.target.value)}
+              onBlur={() => handleFieldBlur("phone")}
+              className={errors.phone ? "border-red-300 focus:border-red-500" : ""}
+              placeholder="+34 600 000 000"
+            />
+          </FieldWrapper>
+        </div>
+
+        {/* Professional Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <FieldWrapper 
+            label="Profesión" 
+            required 
+            error={errors.profession}
+          >
+            <Select 
+              value={formData.profession} 
+              onValueChange={value => updateFormData("profession", value)}
+            >
+              <SelectTrigger className={errors.profession ? "border-red-300 focus:border-red-500" : ""}>
                 <SelectValue placeholder="Selecciona tu profesión" />
               </SelectTrigger>
               <SelectContent>
@@ -160,13 +158,18 @@ export function RegistrationForm() {
                 ))}
               </SelectContent>
             </Select>
-            {errors.profession && <p className="text-sm text-red-500">{errors.profession}</p>}
-          </div>
+          </FieldWrapper>
 
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Zona/Región *</Label>
-            <Select value={formData.zone} onValueChange={value => updateFormData("zone", value)}>
-              <SelectTrigger className={errors.zone ? "border-red-500" : ""}>
+          <FieldWrapper 
+            label="Zona/Región" 
+            required 
+            error={errors.zone}
+          >
+            <Select 
+              value={formData.zone} 
+              onValueChange={value => updateFormData("zone", value)}
+            >
+              <SelectTrigger className={errors.zone ? "border-red-300 focus:border-red-500" : ""}>
                 <SelectValue placeholder="Selecciona tu zona" />
               </SelectTrigger>
               <SelectContent>
@@ -177,10 +180,10 @@ export function RegistrationForm() {
                 ))}
               </SelectContent>
             </Select>
-            {errors.zone && <p className="text-sm text-red-500">{errors.zone}</p>}
-          </div>
+          </FieldWrapper>
         </div>
 
+        {/* Checkboxes */}
         <div className="space-y-4">
           <div className="flex items-start space-x-3">
             <Checkbox
@@ -207,9 +210,9 @@ export function RegistrationForm() {
               *
             </Label>
           </div>
-          {errors.acceptTerms && <p className="text-sm text-red-500 ml-6">{errors.acceptTerms}</p>}
         </div>
 
+        {/* Submit Button */}
         <div className="pt-4">
           <Button
             type="submit"
