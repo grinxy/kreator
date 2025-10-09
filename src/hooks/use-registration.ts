@@ -1,16 +1,13 @@
-import { useState } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import type { FormData, FormErrors } from '@/types/registration-form'
-import { validateForm, validateField, isFormValid, sanitizeInput } from '@/lib/validation'
+import { validateForm, validateField, isFormValid, sanitizeInput, debounce } from '@/lib/validation'
 import { registerUser } from '@/lib/auth'
-
 
 const initialFormData: FormData = {
   firstName: "",
   lastName: "",
   email: "",
   phone: "",
-  // password: "",          // Commented for future use
-  // confirmPassword: "",   // Commented for future use
   profession: "",
   zone: "",
   role: "professional",
@@ -25,23 +22,35 @@ export function useRegistrationForm() {
   const [registrationSuccess, setRegistrationSuccess] = useState(false)
   const [userEmail, setUserEmail] = useState<string>('')
 
+  
+  const debouncedValidateField = useCallback(
+    debounce((field: keyof FormData, value: any) => {
+      const fieldError = validateField(field, value)
+      setErrors(prev => ({ 
+        ...prev, 
+        [field]: fieldError 
+      }))
+    }, 800), // 800ms delay - we change this value if needed
+    []
+  )
+
   const updateFormData = (field: keyof FormData, value: any) => {
- 
     const sanitizedValue = typeof value === 'string' ? sanitizeInput(value) : value
     
     setFormData((prev) => ({ ...prev, [field]: sanitizedValue }))
     
-    const fieldError = validateField(field, sanitizedValue)
-    setErrors((prev) => ({ 
-      ...prev, 
-      [field]: fieldError 
-    }))
+    if (errors[field as keyof FormErrors]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }))
+    }
+    
+    if (['firstName', 'lastName', 'email', 'phone'].includes(field)) {
+      debouncedValidateField(field, sanitizedValue)
+    }
   }
 
   const handleFieldBlur = (field: keyof FormData) => {
     const value = formData[field]
     
-    // Check required fields on blur
     if (['firstName', 'lastName', 'email', 'phone', 'profession', 'zone'].includes(field)) {
       if (!value || (typeof value === 'string' && !value.trim())) {
         const fieldNames = {
@@ -54,7 +63,13 @@ export function useRegistrationForm() {
         }
         setErrors(prev => ({
           ...prev,
-          [field]: `${fieldNames[field as keyof typeof fieldNames]} es obligatorio`
+          [field]: `${fieldNames[field as keyof typeof fieldNames]} es obligatorio.`
+        }))
+      } else {
+        const fieldError = validateField(field, value)
+        setErrors(prev => ({ 
+          ...prev, 
+          [field]: fieldError 
         }))
       }
     }
@@ -73,7 +88,6 @@ export function useRegistrationForm() {
     setIsSubmitting(true)
 
     try {
-      // Register user with Firebase Auth using their chosen password
       const userProfile = await registerUser(formData)
       
       setUserEmail(formData.email)
@@ -86,7 +100,6 @@ export function useRegistrationForm() {
     } catch (error: any) {
       console.error("Registration error:", error)
       
-      // Handle specific Firebase errors
       if (error.message.includes('email ya está registrado')) {
         setErrors({ email: error.message })
       } else if (error.message.includes('email inválido')) {
@@ -113,8 +126,8 @@ export function useRegistrationForm() {
     isSubmitting,
     registrationSuccess,
     userEmail,
-    handleFieldBlur,
     updateFormData,
+    handleFieldBlur,
     handleSubmit,
     resetForm,
   }

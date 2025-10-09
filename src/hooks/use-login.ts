@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { LoginFormData, LoginErrors } from '@/types/login'
-import { loginUser } from '@/lib/auth'
+import { loginUser } from '@/lib/auth.old'
 
 const initialFormData: LoginFormData = {
   email: '',
@@ -8,6 +8,8 @@ const initialFormData: LoginFormData = {
 }
 
 export function useLoginForm() {
+
+  // remember to change the import from loginUser to the new auth file when ready
   const [formData, setFormData] = useState<LoginFormData>(initialFormData)
   const [errors, setErrors] = useState<LoginErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
