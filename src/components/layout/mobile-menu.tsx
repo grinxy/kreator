@@ -86,11 +86,11 @@ export function MobileMenu({ className }: MobileMenuProps) {
             <NavLink href="#inicio" onClick={closeMenu}>
               Inicio
             </NavLink>
-            <NavLink href="#sobre-kreator" onClick={closeMenu}>
-              Qué es Kreator
-            </NavLink>
             <NavLink href="#como-funciona" onClick={closeMenu}>
               Cómo Funciona
+            </NavLink>
+            <NavLink href="#sobre-kreator" onClick={closeMenu}>
+              Qué es Kreator
             </NavLink>
             <NavLink href="#perfiles" onClick={closeMenu}>
               Perfiles

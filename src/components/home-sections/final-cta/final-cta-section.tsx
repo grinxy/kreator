@@ -13,8 +13,10 @@ export function FinalCTASection() {
           No dejes que otro profesional ocupe tu lugar en la red exclusiva de tu área.
         </p>
 
-        <Button asChild variant="cta" size="lg" className="mb-8" data-analytics="final-cta-register">
-          <Link href="/registro">Reserva tu sector ahora</Link>
+        <Button asChild variant="cta" size="lg" className="mb-8">
+          <Link href="/registro" id="cta-final-reserva" data-gtm="cta_final_reserva">
+            Reserva tu sector ahora
+          </Link>
         </Button>
 
         <div className="flex flex-wrap justify-center gap-6 text-sm md:text-base">

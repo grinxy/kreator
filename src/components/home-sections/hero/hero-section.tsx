@@ -17,8 +17,10 @@ export function HeroSection() {
           equipo.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button asChild variant="cta" size="lg" data-analytics="hero-cta-register">
-            <Link href="/registro">Reserva tu plaza ahora</Link>
+          <Button asChild variant="cta" size="lg">
+            <Link href="/registro" id="cta-hero-reserva" data-gtm="cta_hero_reserva">
+              Reserva tu plaza ahora
+            </Link>
           </Button>
         </div>
         <p className="mt-6 mb-4 md:mb-0 text-sm text-gray-300">Reserva ahora tu sector profesional y zona.</p>
