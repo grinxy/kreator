@@ -58,8 +58,6 @@ export function useLoginForm() {
       setFormData(initialFormData)
       setErrors({})
       
-      // TODO: Redirect to dashboard or handle success
-      
     } catch (error: any) {
       console.error('Login error:', error)
       setErrors({ general: error.message })

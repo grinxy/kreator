@@ -15,7 +15,7 @@ export function RegistrationSuccess({}: RegistrationSuccessProps) {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCountdown((prev) => {
+      setCountdown(prev => {
         if (prev <= 1) {
           clearInterval(timer)
           router.push("/")
@@ -25,7 +25,6 @@ export function RegistrationSuccess({}: RegistrationSuccessProps) {
       })
     }, 1000)
 
-    // Cleanup on unmount
     return () => clearInterval(timer)
   }, [router])
 
@@ -36,24 +35,12 @@ export function RegistrationSuccess({}: RegistrationSuccessProps) {
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-12 min-h-[600px] flex flex-col justify-center">
       <div className="text-center space-y-8">
-        {/* Success Icon - Made larger */}
         <div className="mx-auto w-24 h-24 bg-green-100 rounded-full flex items-center justify-center">
-          <svg 
-            className="w-12 h-12 text-green-600" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path 
-              strokeLinecap="round" 
-              strokeLinejoin="round" 
-              strokeWidth={2} 
-              d="M5 13l4 4L19 7" 
-            />
+          <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
 
-        {/* Success Message - Made larger */}
         <div className="space-y-4">
           <h1 className="text-4xl font-bold text-primary">¡Registro Exitoso!</h1>
           <div className="space-y-3 max-w-lg mx-auto">
@@ -67,7 +54,6 @@ export function RegistrationSuccess({}: RegistrationSuccessProps) {
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="space-y-6 max-w-sm mx-auto">
           <Button
             onClick={handleGoHome}
@@ -79,17 +65,15 @@ export function RegistrationSuccess({}: RegistrationSuccessProps) {
           <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
             <p className="text-sm text-blue-700">
               Serás redirigido automáticamente al inicio en{" "}
-              <span className="font-bold text-blue-800 text-lg">{countdown}</span>{" "}
-              segundo{countdown !== 1 ? "s" : ""}
+              <span className="font-bold text-blue-800 text-lg">{countdown}</span> segundo{countdown !== 1 ? "s" : ""}
             </p>
           </div>
         </div>
 
-        {/* Additional Info */}
         <div className="pt-6 border-t border-gray-200 max-w-lg mx-auto">
           <p className="text-xs text-gray-500 leading-relaxed">
-            Si tienes alguna pregunta sobre tu registro, no dudes en contactarnos. 
-            Estaremos encantados de ayudarte en el proceso.
+            Si tienes alguna pregunta sobre tu registro, no dudes en contactarnos. Estaremos encantados de ayudarte en
+            el proceso.
           </p>
         </div>
       </div>

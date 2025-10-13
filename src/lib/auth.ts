@@ -1,9 +1,6 @@
-import { 
-  createUserWithEmailAndPassword, 
-  updateProfile,
-} from 'firebase/auth'
-import { auth } from './firebase'
-import type { FormData } from '@/types/registration-form'
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { auth } from "./firebase"
+import type { FormData } from "@/types/registration-form"
 
 export interface UserProfile {
   uid: string
@@ -19,37 +16,28 @@ export interface UserProfile {
   displayName: string
 }
 
-
-
 export const registerUser = async (formData: FormData): Promise<UserProfile> => {
   if (!formData.email) {
-    throw new Error('Email is required for registration')
+    throw new Error("Email is required for registration")
   }
 
   if (!formData.phone) {
-    throw new Error('Phone is required for registration')
+    throw new Error("Phone is required for registration")
   }
 
   try {
     // Generate a secure temporary password (user won't know this)
     const tempPassword = generateSecurePassword()
-    
-    
-    const userCredential = await createUserWithEmailAndPassword(
-      auth, 
-      formData.email, 
-      tempPassword
-    )
-    
+
+    const userCredential = await createUserWithEmailAndPassword(auth, formData.email, tempPassword)
+
     const user = userCredential.user
 
     const displayName = `${formData.firstName} ${formData.lastName}`
     await updateProfile(user, {
-      displayName
+      displayName,
     })
 
-
-    // Create user profile
     const userProfile: UserProfile = {
       uid: user.uid,
       firstName: formData.firstName,
@@ -63,44 +51,41 @@ export const registerUser = async (formData: FormData): Promise<UserProfile> => 
       emailVerified: false,
       displayName,
     }
-
-    // TODO: Save to Firestore when configured
-    console.log('User registered successfully:', userProfile)
+    console.log("User registered successfully:", userProfile)
 
     return userProfile
   } catch (error: any) {
-    console.error('Registration error details:', error)
-    
- 
-    if (error.code === 'auth/email-already-in-use') {
-      throw new Error('Este email ya está registrado')
-    } else if (error.code === 'auth/invalid-email') {
-      throw new Error('Formato de email inválido')
-    } else if (error.code === 'auth/weak-password') {
-      throw new Error('Error interno de validación')
+    console.error("Registration error details:", error)
+
+    if (error.code === "auth/email-already-in-use") {
+      throw new Error("Este email ya está registrado")
+    } else if (error.code === "auth/invalid-email") {
+      throw new Error("Formato de email inválido")
+    } else if (error.code === "auth/weak-password") {
+      throw new Error("Error interno de validación")
     } else {
       throw new Error(`Error en el registro: ${error.message}`)
     }
   }
 }
 
-// Generate a secure random password for internal use
 const generateSecurePassword = (): string => {
   const length = 16
-  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*'
-  let password = ''
-  
+  const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*"
+  let password = ""
+
   // Ensure password meets Firebase requirements
-  password += 'A' // At least one uppercase
-  password += 'a' // At least one lowercase  
-  password += '1' // At least one number
-  password += '!' // At least one special char
-  
-  // Fill the rest randomly
+  password += "A"
+  password += "a"
+  password += "1"
+  password += "!"
+
   for (let i = 4; i < length; i++) {
     password += charset.charAt(Math.floor(Math.random() * charset.length))
   }
-  
-  // Shuffle the password
-  return password.split('').sort(() => Math.random() - 0.5).join('')
+
+  return password
+    .split("")
+    .sort(() => Math.random() - 0.5)
+    .join("")
 }

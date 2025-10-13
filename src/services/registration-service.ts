@@ -1,5 +1,5 @@
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
-import { db } from '@/lib/firebase'  // Using your existing firebase config
+import { db } from '@/lib/firebase' 
 import type { FormData } from '@/types/registration-form'
 import type { ApiResponse, RegistrationResponse, ApiError } from '@/types/api'
 
@@ -29,6 +29,7 @@ export class RegistrationService {
         success: true,
         data: {
           id: docRef.id,
+          name: formData.firstName + ' ' + formData.lastName,
           email: formData.email,
           status: 'pending',
           createdAt: new Date()

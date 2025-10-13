@@ -42,7 +42,6 @@ export function RegistrationForm() {
         noValidate
         aria-label="Formulario de registro a la comunidad Kreator"
       >
-        {/* General Error Alert */}
         {errors.acceptTerms && (
           <div 
             className="bg-red-50 border border-red-200 rounded-lg p-4"
@@ -53,7 +52,6 @@ export function RegistrationForm() {
           </div>
         )}
 
-        {/* Role Selection */}
         <fieldset className="space-y-2">
           <legend className="text-sm font-medium text-gray-700">
             Tipo de Registro <span className="text-red-500 ml-1" aria-label="obligatorio">*</span>
@@ -79,7 +77,6 @@ export function RegistrationForm() {
           </RadioGroup>
         </fieldset>
 
-        {/* Name Fields */}
         <fieldset>
           <legend className="sr-only">Información personal</legend>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -125,7 +122,6 @@ export function RegistrationForm() {
           </div>
         </fieldset>
 
-        {/* Contact Fields */}
         <fieldset>
           <legend className="sr-only">Información de contacto</legend>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -177,7 +173,6 @@ export function RegistrationForm() {
           </div>
         </fieldset>
 
-        {/* Professional Info */}
         <fieldset>
           <legend className="sr-only">Información profesional</legend>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -239,7 +234,6 @@ export function RegistrationForm() {
           </div>
         </fieldset>
 
-        {/* Checkboxes */}
         <fieldset>
           <legend className="sr-only">Preferencias adicionales</legend>
           <div className="space-y-4">
@@ -285,7 +279,6 @@ export function RegistrationForm() {
           </div>
         </fieldset>
 
-        {/* Submit Button */}
         <div className="pt-4">
           <Button
             type="submit"

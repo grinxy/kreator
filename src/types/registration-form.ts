@@ -28,7 +28,6 @@ export interface FormErrors {
   acceptTerms?: string
 }
 
-// Registration-specific validation errors
 export interface RegistrationValidationError {
   field: keyof FormData
   message: string

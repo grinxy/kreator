@@ -1,8 +1,6 @@
 import { useState, useCallback } from 'react'
 import type { FormData, FormErrors } from '@/types/registration-form'
 import { validateForm, validateField, isFormValid, sanitizeInput, debounce } from '@/lib/validation'
-import type { ApiResponse } from "@/types/api"
-import type { UserResponse } from "@/types/database"
 import { UserService } from '@/services/user-service'
 import { AuthService } from '@/services/auth'
 
@@ -92,7 +90,6 @@ export function useRegistrationForm() {
   setSubmitError("")
 
   try {
-    // Step 1: Create Firebase Auth user
     console.log('Step 1: Creating Firebase Auth user...')
     const authResult = await AuthService.createUser(formData.email)
     
@@ -105,15 +102,12 @@ export function useRegistrationForm() {
 
     console.log('Step 1 SUCCESS: Auth user created with UID:', authResult.data.uid)
 
-    // Small delay to ensure Firebase Auth is fully processed
     await new Promise(resolve => setTimeout(resolve, 1000))
 
-    // Step 2: Create Firestore document with auth UID
     console.log('Step 2: Creating Firestore user document...')
     const firestoreResult = await UserService.createUser(formData, authResult.data.uid)
     
     if (firestoreResult.success && firestoreResult.data) {
-      // SUCCESS! Both auth and firestore created
       console.log('Step 2 SUCCESS: Registration complete!', {
         authUid: authResult.data.uid,
         firestoreId: firestoreResult.data.id

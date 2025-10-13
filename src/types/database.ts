@@ -21,7 +21,7 @@ export interface UserDocument {
   interested_in_leadership: boolean
   accept_terms: boolean
   status: 'pending' | 'approved' | 'rejected'
-  auth_uid?: string  // Added: Link to Firebase Auth
+  auth_uid?: string // Our "link" to Firebase Auth
   created_at: Timestamp
   updated_at: Timestamp
 }
