@@ -102,9 +102,6 @@ export function MobileMenu({ className }: MobileMenuProps) {
               Contacto
             </NavLink>
             <div className="pt-4 border-t border-border space-y-2">
-              <Button variant="ghost" size="sm" className="w-full justify-start">
-                Iniciar sesión
-              </Button>
               <Button size="sm" className="w-full" asChild>
                 <Link href="/registro" onClick={closeMenu}>
                   Registrarse
