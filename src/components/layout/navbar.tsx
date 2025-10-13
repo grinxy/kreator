@@ -32,9 +32,6 @@ export function Navbar() {
           </nav>
 
           <div className="hidden lg:flex items-center space-x-4">
-            <Button variant="ghost" size="sm" aria-label="Iniciar sesión en Kreator">
-              <Link href="login">Iniciar sesión</Link>
-            </Button>
             <Button asChild variant="navbar" size="sm">
               <Link href="/registro">Registrarse</Link>
             </Button>
