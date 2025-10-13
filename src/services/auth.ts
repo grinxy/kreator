@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth"
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 import { auth } from "@/lib/firebase"
 import type { ApiResponse, ApiError } from "@/types/api"
 
@@ -6,19 +6,30 @@ export interface AuthUserResponse {
   uid: string
   email: string
   emailVerified: boolean
+  displayName?: string
 }
 
 export class AuthService {
-  static async createUser(email: string): Promise<ApiResponse<AuthUserResponse>> {
+  static async createUser(
+    email: string,
+    firstName?: string,
+    lastName?: string
+  ): Promise<ApiResponse<AuthUserResponse>> {
     try {
       const tempPassword = this.generateTempPassword()
 
       const userCredential = await createUserWithEmailAndPassword(auth, email, tempPassword)
 
+      if (firstName && lastName) {
+        const displayName = `${firstName} ${lastName}`
+        await updateProfile(userCredential.user, { displayName })
+      }
+
       const response: AuthUserResponse = {
         uid: userCredential.user.uid,
         email: userCredential.user.email || email,
         emailVerified: userCredential.user.emailVerified,
+        displayName: userCredential.user.displayName || undefined,
       }
 
       return {

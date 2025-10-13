@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { FieldWrapper, ValidationError } from "@/components/ui/validation"
-
 import { zones, professions } from "@/data/registration"
 import { useRegistrationForm } from "@/hooks/use-registration"
 import { RegistrationSuccess } from "@/components/registration/registration-success"
