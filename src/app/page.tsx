@@ -7,6 +7,7 @@ import { BenefitsSection } from "@/components/home-sections/benefits/benefits-se
 import { FinalCTASection } from "@/components/home-sections/final-cta/final-cta-section"
 import { TestimonialsSection } from "@/components/home-sections/testimonial/testimonials-section"
 import { Footer } from "@/components/layout/footer"
+import { FAQSection } from "@/components/home-sections/faq/faq-section"
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
         <AboutSection />
         <ProfilesSection />
         <BenefitsSection />
+        <FAQSection />
         <FinalCTASection />
         <TestimonialsSection />
       </main>

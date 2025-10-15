@@ -98,6 +98,9 @@ export function MobileMenu({ className }: MobileMenuProps) {
             <NavLink href="#beneficios" onClick={closeMenu}>
               Beneficios
             </NavLink>
+            <NavLink href="#faq" onClick={closeMenu}>
+              FAQ
+            </NavLink>
             <NavLink href="#contacto" onClick={closeMenu}>
               Contacto
             </NavLink>

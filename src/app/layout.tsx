@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Suspense } from "react"
 import Script from "next/script"
-import "./globals.css"
+import "@/styles/globals.css"
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
