@@ -4,7 +4,7 @@ import { SectionWrapper } from "@/components/layout/section-wrapper"
 
 export function FinalCTASection() {
   return (
-    <SectionWrapper id="contacto" className="py-16 md:py-48 bg-kreator-gradient-blue text-white">
+    <SectionWrapper id="contacto" className="py-16 md:py-48 bg-kreator-gradient-blue text-white scroll-mt-10">
       <div className="mx-auto text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6 text-balance">
           Tu sector en tu zona puede estar disponible todavía

@@ -2,7 +2,7 @@ import { SectionWrapper } from "@/components/layout/section-wrapper"
 
 export function BenefitsSection() {
   return (
-    <SectionWrapper id="beneficios" className="py-16 md:py-24 bg-kreator-gray-light">
+    <SectionWrapper id="beneficios" className="py-16 md:py-24 bg-kreator-gray-light scroll-mt-10">
       <h2 className="text-3xl md:text-4xl font-bold text-kreator-blue mb-12 text-center">Beneficios</h2>
 
       <div className="max-w-4xl mx-auto">

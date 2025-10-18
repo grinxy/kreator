@@ -2,7 +2,7 @@ import { SectionWrapper } from "@/components/layout/section-wrapper"
 
 export function HowItWorksSection() {
   return (
-    <SectionWrapper id="como-funciona" className="py-16 md:py-32 bg-kreator-gray-light">
+    <SectionWrapper id="como-funciona" className="py-16 md:py-32 bg-kreator-gray-light scroll-mt-10">
       <h2 className="text-3xl md:text-4xl font-bold text-kreator-blue mb-12 text-center">¿Cómo funciona?</h2>
 
       <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
