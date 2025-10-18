@@ -1,7 +1,7 @@
 import React, { CSSProperties } from "react"
 import { cn } from "@/lib/utils"
 
-type SectionWrapperProps = {
+interface SectionWrapperProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode
   className?: string
   id?: string
@@ -9,9 +9,21 @@ type SectionWrapperProps = {
   innerClassName?: string
 }
 
-export const SectionWrapper = ({ children, className, id, style, innerClassName }: SectionWrapperProps) => {
+export const SectionWrapper = ({
+  children,
+  className,
+  id,
+  style,
+  innerClassName,
+  ...props
+}: SectionWrapperProps) => {
   return (
-    <section id={id} style={style} className={cn("w-full py-10", className)}>
+    <section
+      id={id}
+      style={style}
+      className={cn("w-full py-10", className)}
+      {...props}
+    >
       <div className={cn("max-w-7xl mx-auto px-4", innerClassName)}>{children}</div>
     </section>
   )

@@ -1,21 +1,42 @@
 "use client"
 
-import { useState } from "react"
-import { ChevronDown } from "lucide-react"
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 import { faqData } from "@/data/faq"
+import ReactMarkdown, { type Components } from "react-markdown"
+import remarkGfm from "remark-gfm"
+import rehypeRaw from "rehype-raw"
+
+interface MarkdownProps {
+  children: string
+  components?: Components
+  className?: string
+}
+
+export function Markdown({ children, components, className }: MarkdownProps) {
+  return (
+    <div className={className}>
+      <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} components={components}>
+        {children}
+      </ReactMarkdown>
+    </div>
+  )
+}
 
 export function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
-
-  const toggleAccordion = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index)
+  const markdownComponents: Components = {
+    p: ({ children }) => (
+      <p className="text-sm sm:text-base md:text-lg leading-relaxed text-[var(--kreator-dark-gray)]">{children}</p>
+    ),
+    strong: ({ children }) => <strong className="font-semibold text-black">{children}</strong>,
+    li: ({ children }) => <li className="list-disc ml-5 text-[var(--kreator-dark-gray)]">{children}</li>,
   }
 
   return (
     <section
       id="faq"
-      className="py-12 sm:py-16 md:py-24 bg-[var(--kreator-light-gray)]"
+      tabIndex={-1}
       aria-labelledby="faq-heading"
+      className="py-12 sm:py-16 md:py-24 bg-[var(--kreator-light-gray)] scroll-mt-24 focus:outline-none"
     >
       <div className="mx-auto px-4 sm:px-6 max-w-4xl">
         {/* Header */}
@@ -32,56 +53,57 @@ export function FAQSection() {
         </div>
 
         {/* FAQ Accordion */}
-        <div className="space-y-3 sm:space-y-4 mb-10 sm:mb-12">
+        <Accordion type="single" collapsible className="space-y-3 sm:space-y-4">
           {faqData.map((item, index) => (
-            <div
+            <AccordionItem
               key={index}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md"
+              value={`item-${index}`}
+              role="region"
+              aria-labelledby={`faq-question-${index}`}
+              className="bg-white rounded-lg shadow-sm border border-gray-200 transition-all duration-200 hover:shadow-md"
             >
-              <button
-                onClick={() => toggleAccordion(index)}
-                className="w-full px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between text-left transition-colors hover:bg-gray-50"
-                aria-expanded={openIndex === index}
-                aria-controls={`faq-answer-${index}`}
+              <AccordionTrigger
+                id={`faq-question-${index}`}
+                className="text-base sm:text-lg md:text-xl font-semibold text-[var(--kreator-blue)] font-[family-name:var(--font-poppins)] px-4 sm:px-6 py-4 sm:py-5 hover:bg-gray-50 cursor-pointer flex items-center justify-between w-full text-left"
               >
-                <span className="text-base sm:text-lg md:text-xl font-semibold text-[var(--kreator-blue)] pr-3 sm:pr-4 font-[family-name:var(--font-poppins)] cursor-pointer">
-                  {item.question}
-                </span>
-                <ChevronDown
-                  className={`w-5 sm:w-6 h-5 sm:h-6 text-[var(--kreator-yellow)] flex-shrink-0 transition-transform duration-200 cursor-pointer ${
-                    openIndex === index ? "rotate-180" : ""
-                  }`}
-                  aria-hidden="true"
-                />
-              </button>
+                {item.question}
+              </AccordionTrigger>
 
-              <div
-                id={`faq-answer-${index}`}
-                className={`overflow-hidden transition-all duration-300 ${
-                  openIndex === index ? "max-h-96" : "max-h-0"
-                }`}
-                role="region"
-                aria-labelledby={`faq-question-${index}`}
-              >
-                <div className="px-4 sm:px-6 pb-4 sm:pb-5 pt-1 sm:pt-2">
-                  <p className="text-sm sm:text-base md:text-lg text-[var(--kreator-dark-gray)] leading-relaxed font-[family-name:var(--font-open-sans)]">
-                    {item.answer}
-                  </p>
-                </div>
-              </div>
-            </div>
+              <AccordionContent className="px-4 sm:px-6 pb-4 sm:pb-5 pt-1 sm:pt-2 font-[family-name:var(--font-open-sans)]">
+                <Markdown
+                  components={markdownComponents}
+                  className="markdown-content prose-sm sm:prose-base md:prose-lg max-w-none text-[var(--kreator-dark-gray)]"
+                >
+                  {item.answer}
+                </Markdown>
+              </AccordionContent>
+            </AccordionItem>
           ))}
+        </Accordion>
+
+        {/* Summary */}
+        <div role="note" className="mt-5 text-[var(--kreator-dark-gray)] font-[family-name:var(--font-open-sans)]">
+          <p aria-label="Resumen del funcionamiento de Kreator">
+            <span aria-hidden="true">🔷</span> En resumen: <strong>Kreator</strong> no es solo una red de contactos,
+            sino una <strong>comunidad empresarial colaborativa</strong>. Cada miembro aporta oportunidades,
+            conocimiento y confianza. El resultado: más negocio para todos, menos esfuerzo individual y una red
+            profesional sólida y activa.
+          </p>
         </div>
 
-        {/* CTA Button */}
-        <div className="text-center">
+        {/* CTA */}
+        <p className="text-center text-gray-700 dark:text-gray-300 mt-6">
+          ¿Aún tienes dudas? Ponte en contacto con nuestro equipo.
+        </p>
+
+        <div className="text-center mt-3 sm:mt-5">
           <a
             href="mailto:info@kreator.es"
             className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-kreator-blue bg-[var(--kreator-yellow)] rounded-lg hover:bg-[var(--kreator-orange)] transition-colors duration-200 shadow-md hover:shadow-lg font-[family-name:var(--font-poppins)]"
             data-analytics="faq-contact-support"
-            aria-label="Enviar correo al equipo de soporte de Kreator"
+            aria-label="Enviar correo al equipo de soporte de Kreator para resolver dudas"
           >
-            Contactar con soporte
+            Contactar
           </a>
         </div>
       </div>

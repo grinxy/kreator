@@ -131,8 +131,31 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans;
+  }
+
+  /* ================================================
+    Global Focus & Accessibility
+     ================================================ */
+
+  *:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  *:focus-visible {
+    outline: 3px solid var(--kreator-orange);
+    outline-offset: 4px;
+    border-radius: 0.375rem;
+    box-shadow: 0 0 0 4px color-mix(in oklch, var(--kreator-orange) 30%, transparent);
+    transition: outline-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  a:hover,
+  button:hover,
+  [role="button"]:hover {
+    outline-color: transparent;
   }
 }
 
@@ -214,8 +237,8 @@
   /* Gradient text */
   .text-kreator-gradient-blue {
     background-image: var(--kreator-gradient-blue);
-    background-clip: text; /* propiedad estándar */
-    -webkit-background-clip: text; /* compatibilidad con Safari/Chrome */
+    background-clip: text;
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
   }
@@ -263,7 +286,6 @@
     border-color: var(--kreator-gray-dark);
   }
 
-  /* ⚠️ Note: gradients don't apply directly to borders */
   .border-kreator-gradient-blue {
     border-image: var(--kreator-gradient-blue) 1;
   }
@@ -296,11 +318,11 @@
     content: "";
     position: absolute;
     left: 0;
-    bottom: -0.05em; /* rem/em, sin px */
-    height: 0.35em; /* resalta sin tapar el texto */
+    bottom: -0.05em;
+    height: 0.35em;
     width: 0;
-    background: currentColor; /* usa el color del texto (amarillo) */
-    opacity: 0.35; /* sutil */
+    background: currentColor;
+    opacity: 0.35;
     border-radius: 0.25rem;
     animation: underlineGrow 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) 0.12s forwards;
   }
@@ -329,4 +351,8 @@
       animation: none !important;
     }
   }
+}
+
+.markdown-content {
+  white-space: pre-line;
 }
