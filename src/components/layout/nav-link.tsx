@@ -36,9 +36,6 @@ export function NavLink({ href, children, className, onClick }: NavLinkProps) {
         "after:content-[''] after:absolute after:left-0 after:bottom-0",
         "after:h-0.5 after:w-0 after:bg-primary after:transition-[width] after:duration-200",
         "hover:after:w-full focus-visible:after:w-full",
-        // focus ring a11y
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        "rounded-sm",
         className
       )}
     >

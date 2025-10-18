@@ -5,7 +5,7 @@ import { ChevronDown } from "lucide-react"
 
 export function HeroSection() {
   return (
-    <SectionWrapper id="inicio" className="relative bg-kreator-blue text-white py-20 md:py-33">
+    <SectionWrapper id="inicio" className="relative bg-kreator-blue text-white py-12 md:py-33">
       <div className="text-center">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 text-balance">
           Haz crecer tu negocio con la 1ª red <span className="text-kreator-yellow">exclusiva</span> por zonas
