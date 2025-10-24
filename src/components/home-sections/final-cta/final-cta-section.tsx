@@ -4,14 +4,14 @@ import { SectionWrapper } from "@/components/layout/section-wrapper"
 
 export function FinalCTASection() {
   return (
-    <SectionWrapper id="contacto" className="py-16 md:py-48 bg-kreator-gradient-blue text-white scroll-mt-10">
+    <SectionWrapper id="contacto" className="py-16 md:py-48 bg-kreator-gradient-blue text-white scroll-mt-10 md:scroll-mt-4">
       <div className="mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-balance">
+        <h2 className="text-2xl md:text-4xl font-bold mb-6 text-balance">
           Tu sector en tu zona puede estar disponible todavía
         </h2>
-        <p className="text-xl mb-8 text-gray-200 max-w-3xl mx-auto leading-relaxed">
+        <h3 className="text-xl mb-8 text-gray-200 max-w-3xl mx-auto leading-relaxed">
           No dejes que otro profesional ocupe tu lugar en la red exclusiva de tu área.
-        </p>
+        </h3>
 
         <Button asChild variant="cta" size="lg" className="mb-8">
           <Link href="/registro" id="cta-final-reserva" data-gtm="cta_final_reserva">
@@ -34,7 +34,7 @@ export function FinalCTASection() {
           </div>
         </div>
 
-        <p className="mt-12 text-2xl font-semibold text-kreator-yellow">
+        <p className="mt-12 text-xl md:text-2xl font-semibold text-kreator-yellow">
           La 1ª red exclusiva por zonas para profesionales
         </p>
       </div>

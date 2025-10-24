@@ -36,14 +36,14 @@ export function FAQSection() {
       id="faq"
       tabIndex={-1}
       aria-labelledby="faq-heading"
-      className="py-12 sm:py-16 md:py-24 bg-[var(--kreator-light-gray)] scroll-mt-24 focus:outline-none"
+      className="py-12 sm:py-16 md:py-24 bg-[var(--kreator-light-gray)] scroll-mt-24 md:scroll-mt-4 focus:outline-none"
     >
       <div className="mx-auto px-4 sm:px-6 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <h2
             id="faq-heading"
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--kreator-blue)] mb-3 sm:mb-4 font-[family-name:var(--font-poppins)]"
+            className="text-2xl md:text-4xl font-bold text-[var(--kreator-blue)] mb-3 sm:mb-4 font-[family-name:var(--font-poppins)]"
           >
             ¿Tienes dudas?
           </h2>
