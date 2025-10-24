@@ -1,9 +1,9 @@
 import type { FormData, FormErrors } from "@/types/registration-form"
 
-// Only validate fields that need validation
-type ValidatableFields = 'firstName' | 'lastName' | 'email' | 'phone' | 'profession' | 'zone' | 'acceptTerms'
+// Updated validatable fields to include nifCif and postalCode instead of zone
+type ValidatableFields = 'firstName' | 'lastName' | 'email' | 'phone' | 'profession' |'acceptTerms' | 'postalCode' | 'nifCif'
 
-// Centralized field validation rules - only for fields that need validation
+// Centralized field validation rules
 const fieldValidators: Record<ValidatableFields, (value: any) => string | undefined> = {
   firstName: (value: string) => {
     if (!value?.trim()) return "El nombre es obligatorio."
@@ -43,9 +43,31 @@ const fieldValidators: Record<ValidatableFields, (value: any) => string | undefi
     return undefined
   },
 
-  zone: (value: string) => {
-    if (!value) return "La zona es obligatoria."
+  postalCode: (value: string) => {
+    if (!value?.trim()) return "El código postal es obligatorio."
+    // Spanish postal code validation (5 digits)
+    if (!/^\d{5}$/.test(value.trim())) return "El código postal debe tener 5 dígitos."
     return undefined
+  },
+
+  nifCif: (value: string) => {
+    if (!value?.trim()) return "El NIF/CIF es obligatorio."
+    
+    const cleanValue = value.trim().toUpperCase()
+    
+    // Check if it's a NIF (DNI) - 8 digits + 1 letter
+    const nifRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/
+    if (nifRegex.test(cleanValue)) {
+      return validateNIF(cleanValue)
+    }
+    
+    // Check if it's a CIF - 1 letter + 7 digits + 1 letter/digit
+    const cifRegex = /^[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]$/
+    if (cifRegex.test(cleanValue)) {
+      return validateCIF(cleanValue)
+    }
+    
+    return "Formato NIF/CIF inválido. Ejemplos: 12345678Z (NIF) o A12345674 (CIF)."
   },
 
   acceptTerms: (value: boolean) => {
@@ -54,8 +76,59 @@ const fieldValidators: Record<ValidatableFields, (value: any) => string | undefi
   }
 }
 
+// NIF validation with check digit
+const validateNIF = (nif: string): string | undefined => {
+  const letters = 'TRWAGMYFPDXBNJZSQVHLCKE'
+  const numbers = nif.slice(0, 8)
+  const letter = nif.slice(8, 9)
+  
+  const expectedLetter = letters[parseInt(numbers) % 23]
+  
+  if (letter !== expectedLetter) {
+    return "NIF inválido. La letra de control no es correcta."
+  }
+  
+  return undefined
+}
+
+// CIF validation with check digit
+const validateCIF = (cif: string): string | undefined => {
+  const organizationTypes = 'ABCDEFGHJNPQRSUVW'
+  const firstLetter = cif[0]
+  const numbers = cif.slice(1, 8)
+  const controlChar = cif[8]
+  
+  if (!organizationTypes.includes(firstLetter)) {
+    return "CIF inválido. Letra de organización no válida."
+  }
+  
+  // Calculate control digit
+  let sum = 0
+  for (let i = 0; i < numbers.length; i++) {
+    let digit = parseInt(numbers[i])
+    if (i % 2 === 1) { // Even positions (1, 3, 5...)
+      sum += digit
+    } else { // Odd positions (0, 2, 4, 6)
+      digit *= 2
+      sum += digit > 9 ? digit - 9 : digit
+    }
+  }
+  
+  const controlDigit = (10 - (sum % 10)) % 10
+  const controlLetter = 'JABCDEFGHI'[controlDigit]
+  
+  // Some CIFs end with letter, others with digit
+  const expectedControls = [controlDigit.toString(), controlLetter]
+  
+  if (!expectedControls.includes(controlChar)) {
+    return "CIF inválido. El dígito/letra de control no es correcto."
+  }
+  
+  return undefined
+}
+
 const validatableFields: ValidatableFields[] = [
-  'firstName', 'lastName', 'email', 'phone', 'profession', 'zone', 'acceptTerms'
+  'firstName', 'lastName', 'email', 'phone', 'profession', 'postalCode', 'nifCif', 'acceptTerms'
 ]
 
 export const validateForm = (formData: FormData): FormErrors => {
@@ -74,7 +147,6 @@ export const validateForm = (formData: FormData): FormErrors => {
 }
 
 export const validateField = (field: keyof FormData, value: any): string | undefined => {
- 
   if (field in fieldValidators) {
     const validator = fieldValidators[field as ValidatableFields]
     return validator(value)
@@ -111,6 +183,23 @@ export const formatPhoneNumber = (phone: string): string => {
   }
 
   return phone
+}
+
+// New formatter for NIF/CIF
+export const formatNifCif = (value: string): string => {
+  const cleaned = value.replace(/[^0-9A-Za-z]/g, "").toUpperCase()
+  
+  // Format NIF: 12345678Z
+  if (/^[0-9]{8}[A-Z]$/.test(cleaned)) {
+    return cleaned
+  }
+  
+  // Format CIF: A12345674
+  if (/^[A-Z][0-9]{7}[0-9A-Z]$/.test(cleaned)) {
+    return cleaned
+  }
+  
+  return cleaned
 }
 
 export const sanitizeInput = (input: string): string => {

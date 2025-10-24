@@ -13,7 +13,6 @@ const initialFormData: FormData = {
   zone: "",
   role: "professional",
   interestedInLeadership: false,
-  acceptTerms: false,
 }
 
 export function useRegistrationForm() {

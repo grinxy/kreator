@@ -19,7 +19,6 @@ export interface UserDocument {
   referrer_id?: string
   contacts_estimate?: number
   interested_in_leadership: boolean
-  accept_terms: boolean
   status: 'pending' | 'approved' | 'rejected'
   auth_uid?: string // Our "link" to Firebase Auth
   created_at: Timestamp

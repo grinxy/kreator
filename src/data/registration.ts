@@ -14,14 +14,14 @@ export const zones = [
 ] as const
 
 export const professions = [
-  "Ingeniero Industrial",
-  "Técnico Industrial",
-  "Director de Operaciones",
+  "Ingeniero/a Industrial",
+  "Técnico/a Industrial",
+  "Director/a de Operaciones",
   "Gerente de Producción",
-  "Consultor Industrial",
+  "Consultor/a Industrial",
   "Especialista en Automatización",
   "Responsable de Calidad",
-  "Jefe de Mantenimiento",
+  "Jefe/a de Mantenimiento",
   "Otro",
 ] as const
 

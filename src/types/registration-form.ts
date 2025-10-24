@@ -9,10 +9,12 @@ export interface FormData {
   zone: string
   role: "professional" | "team-leader"
   interestedInLeadership: boolean
-  acceptTerms: boolean
   createdAt?: Date
   status?: "pending" | "approved" | "rejected",
   id?: string
+  postalCode?: string
+  nifCif?: string
+  acceptTerms?: boolean
 }
 
 export interface FormErrors {
@@ -26,6 +28,8 @@ export interface FormErrors {
   zone?: string
   role?: string
   acceptTerms?: string
+  postalCode?: string
+  nifCif?: string
 }
 
 export interface RegistrationValidationError {

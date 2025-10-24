@@ -10,18 +10,19 @@ import { FieldWrapper, ValidationError } from "@/components/ui/validation"
 import { zones, professions } from "@/data/registration"
 import { useRegistrationForm } from "@/hooks/use-registration"
 import { RegistrationSuccess } from "@/components/registration/registration-success"
+import { GoogleMaps } from "@/components/registration/registration-map"
 
 export function RegistrationForm() {
-  const { 
-    formData, 
-    errors, 
-    isSubmitting, 
-    registrationSuccess, 
-    userEmail, 
-    updateFormData, 
+  const {
+    formData,
+    errors,
+    isSubmitting,
+    registrationSuccess,
+    userEmail,
+    updateFormData,
     handleFieldBlur,
-    handleSubmit, 
-    resetForm 
+    handleSubmit,
+    resetForm,
   } = useRegistrationForm()
 
   if (registrationSuccess) {
@@ -35,25 +36,23 @@ export function RegistrationForm() {
         <p className="text-gray-600">Conecta con profesionales industriales y expande tu red de contactos</p>
       </div>
 
-      <form 
-        onSubmit={handleSubmit} 
+      <form
+        onSubmit={handleSubmit}
         className="space-y-6"
         noValidate
         aria-label="Formulario de registro a la comunidad Kreator"
       >
         {errors.acceptTerms && (
-          <div 
-            className="bg-red-50 border border-red-200 rounded-lg p-4"
-            role="alert"
-            aria-live="polite"
-          >
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4" role="alert" aria-live="polite">
             <ValidationError message={errors.acceptTerms} variant="error" size="md" />
           </div>
         )}
-
         <fieldset className="space-y-2">
           <legend className="text-sm font-medium text-gray-700">
-            Tipo de Registro <span className="text-red-500 ml-1" aria-label="obligatorio">*</span>
+            Tipo de Registro{" "}
+            <span className="text-red-500 ml-1" aria-label="obligatorio">
+              *
+            </span>
           </legend>
           <RadioGroup
             value={formData.role}
@@ -75,15 +74,10 @@ export function RegistrationForm() {
             </div>
           </RadioGroup>
         </fieldset>
-
         <fieldset>
           <legend className="sr-only">Información personal</legend>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FieldWrapper 
-              label="Nombre" 
-              required 
-              error={errors.firstName}
-            >
+            <FieldWrapper label="Nombre" required error={errors.firstName}>
               <Input
                 id="firstName"
                 type="text"
@@ -99,11 +93,7 @@ export function RegistrationForm() {
               />
             </FieldWrapper>
 
-            <FieldWrapper 
-              label="Apellidos" 
-              required 
-              error={errors.lastName}
-            >
+            <FieldWrapper label="Apellidos" required error={errors.lastName}>
               <Input
                 id="lastName"
                 type="text"
@@ -120,15 +110,10 @@ export function RegistrationForm() {
             </FieldWrapper>
           </div>
         </fieldset>
-
         <fieldset>
           <legend className="sr-only">Información de contacto</legend>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FieldWrapper 
-              label="Email" 
-              required 
-              error={errors.email}
-            >
+            <FieldWrapper label="Email" required error={errors.email}>
               <Input
                 id="email"
                 type="email"
@@ -147,11 +132,7 @@ export function RegistrationForm() {
               </div>
             </FieldWrapper>
 
-            <FieldWrapper 
-              label="Teléfono" 
-              required 
-              error={errors.phone}
-            >
+            <FieldWrapper label="Teléfono" required error={errors.phone}>
               <Input
                 id="phone"
                 type="tel"
@@ -171,21 +152,12 @@ export function RegistrationForm() {
             </FieldWrapper>
           </div>
         </fieldset>
-
         <fieldset>
           <legend className="sr-only">Información profesional</legend>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FieldWrapper 
-              label="Profesión" 
-              required 
-              error={errors.profession}
-            >
-              <Select 
-                value={formData.profession} 
-                onValueChange={value => updateFormData("profession", value)}
-                required
-              >
-                <SelectTrigger 
+            <FieldWrapper label="Profesión" required error={errors.profession}>
+              <Select value={formData.profession} onValueChange={value => updateFormData("profession", value)} required>
+                <SelectTrigger
                   className={errors.profession ? "border-red-300 focus:border-red-500" : ""}
                   aria-required="true"
                   aria-invalid={!!errors.profession}
@@ -203,17 +175,9 @@ export function RegistrationForm() {
               </Select>
             </FieldWrapper>
 
-            <FieldWrapper 
-              label="Zona/Región" 
-              required 
-              error={errors.zone}
-            >
-              <Select 
-                value={formData.zone} 
-                onValueChange={value => updateFormData("zone", value)}
-                required
-              >
-                <SelectTrigger 
+            <FieldWrapper label="Zona/Región" required error={errors.zone}>
+              <Select value={formData.zone} onValueChange={value => updateFormData("zone", value)} required>
+                <SelectTrigger
                   className={errors.zone ? "border-red-300 focus:border-red-500" : ""}
                   aria-required="true"
                   aria-invalid={!!errors.zone}
@@ -232,7 +196,35 @@ export function RegistrationForm() {
             </FieldWrapper>
           </div>
         </fieldset>
-
+        <fieldset>
+          <legend className="sr-only">Ubicación</legend>
+          <div className="space-y-4">
+            <FieldWrapper label="Código Postal" required error={errors.postalCode}>
+              <Input
+                id="postalCode"
+                type="text"
+                value={formData.postalCode}
+                onChange={e => updateFormData("postalCode", e.target.value)}
+                onBlur={() => handleFieldBlur("postalCode")}
+                className={errors.postalCode ? "border-red-300 focus:border-red-500" : ""}
+                placeholder="Ejemplo: 28001"
+                maxLength={5}
+                pattern="[0-9]{5}"
+                aria-required="true"
+              />
+            </FieldWrapper>
+            {/* Google Maps - Visual reference only */}
+            <div>
+              <GoogleMaps
+                onLocationSelect={location => {
+                  if (location.postalCode) {
+                    updateFormData("postalCode", location.postalCode)
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </fieldset>
         <fieldset>
           <legend className="sr-only">Preferencias adicionales</legend>
           <div className="space-y-4">
@@ -244,9 +236,7 @@ export function RegistrationForm() {
                 aria-describedby="leadership-description"
               />
               <Label htmlFor="leadership" className="text-sm cursor-pointer leading-relaxed">
-                <span id="leadership-description">
-                  Estoy abierto/a a asumir el rol de Jefe de Equipo más adelante.
-                </span>
+                <span id="leadership-description">Estoy abierto/a a asumir el rol de Jefe de Equipo más adelante.</span>
               </Label>
             </div>
 
@@ -254,7 +244,7 @@ export function RegistrationForm() {
               <Checkbox
                 id="terms"
                 checked={formData.acceptTerms}
-                onCheckedChange={checked => updateFormData("acceptTerms", checked)}
+                onCheckedChange={checked => updateFormData("acceptTerms", !!checked)}
                 aria-required="true"
                 aria-invalid={!!errors.acceptTerms}
                 aria-describedby="terms-description"
@@ -262,8 +252,8 @@ export function RegistrationForm() {
               <Label htmlFor="terms" className="text-sm cursor-pointer leading-relaxed">
                 <span id="terms-description">
                   Acepto los{" "}
-                  <a 
-                    href="#" 
+                  <a
+                    href="#"
                     className="text-secondary hover:underline font-medium"
                     aria-label="Leer términos y condiciones (se abre en nueva ventana)"
                     target="_blank"
@@ -271,7 +261,9 @@ export function RegistrationForm() {
                   >
                     Términos y Condiciones
                   </a>{" "}
-                  <span className="text-red-500" aria-label="obligatorio">*</span>
+                  <span className="text-red-500" aria-label="obligatorio">
+                    *
+                  </span>
                 </span>
               </Label>
             </div>
@@ -289,13 +281,11 @@ export function RegistrationForm() {
             {isSubmitting ? "Enviando..." : "Únete a la Comunidad"}
           </Button>
           <div id="submit-description" className="sr-only">
-            {isSubmitting 
-              ? "Enviando formulario de registro, por favor espera" 
-              : "Enviar formulario de registro a la comunidad Kreator"
-            }
+            {isSubmitting
+              ? "Enviando formulario de registro, por favor espera"
+              : "Enviar formulario de registro a la comunidad Kreator"}
           </div>
         </div>
-
         <p className="text-sm text-gray-500 text-center" aria-live="polite">
           Los campos marcados con * son obligatorios
         </p>

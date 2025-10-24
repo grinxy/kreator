@@ -21,7 +21,6 @@ export class UserService {
         role: formData.role === "team-leader" ? "team_leader" : "professional",
         zone: zone,
         interested_in_leadership: formData.interestedInLeadership,
-        accept_terms: formData.acceptTerms,
         status: "pending",
         auth_uid: authUid,
         created_at: Timestamp.now(),
