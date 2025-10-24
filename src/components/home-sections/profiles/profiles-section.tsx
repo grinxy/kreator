@@ -6,7 +6,7 @@ import { SectionWrapper } from "@/components/layout/section-wrapper"
 export function ProfilesSection() {
   return (
     <SectionWrapper id="perfiles" className="bg-white" innerClassName="py-10 md:py-16">
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-kreator-blue text-center mb-8 sm:mb-12">
+      <h2 className="text-2xl md:text-4xl font-bold text-kreator-blue text-center mb-8 sm:mb-12">
         Elige tu perfil
       </h2>
 
@@ -14,7 +14,7 @@ export function ProfilesSection() {
         {/* Profesional */}
         <Card className="border-2 border-kreator-blue hover:shadow-2xl transition-shadow">
           <CardHeader className="bg-kreator-gradient-blue py-3 text-white">
-            <CardTitle className="text-xl sm:text-2xl">Profesional</CardTitle>
+            <CardTitle className="text-xl md:text-2xl">Profesional</CardTitle>
             <CardDescription className="text-gray-200">
               Perfecto para autónomos y pymes que quieren aumentar ventas.
             </CardDescription>
@@ -53,12 +53,12 @@ export function ProfilesSection() {
 
           <CardFooter>
             <Button asChild variant="profileYellow" className="w-full" data-analytics="profile-professional-register">
-              <Link href="/registro?perfil=profesional">Registrarme como Profesional</Link>
+              <Link href="/registro?perfil=profesional">Soy profesional</Link>
             </Button>
           </CardFooter>
         </Card>
 
-        {/* Jefe de equipo */}
+        {/* Team Leader */}
         <Card className="relative border-2 border-kreator-yellow hover:shadow-2xl transition-shadow">
           <div className="absolute left-1/2 -top-3 sm:-top-4 -translate-x-1/2 bg-kreator-yellow text-kreator-blue px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
             Liderazgo
@@ -114,7 +114,7 @@ export function ProfilesSection() {
 
           <CardFooter>
             <Button asChild variant="profileBlue" className="w-full" data-analytics="profile-team-leader-apply">
-              <Link href="/registro?perfil=jefe-equipo">Postularme como Jefe de Equipo</Link>
+              <Link href="/registro?perfil=jefe-equipo">Ser jefe de equipo</Link>
             </Button>
           </CardFooter>
         </Card>

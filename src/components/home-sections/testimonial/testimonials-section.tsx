@@ -31,7 +31,7 @@ export function TestimonialsSection() {
   return (
     <SectionWrapper id="testimonios" className="py-16 md:py-24 bg-muted" aria-labelledby="testimonials-heading">
       <div className="text-center mb-12">
-        <h2 id="testimonials-heading" className="text-3xl md:text-4xl font-bold text-kreator-blue mb-4">
+        <h2 id="testimonials-heading" className="text-xl md:text-4xl font-bold text-kreator-blue mb-4">
           Lo que dicen nuestros clientes
         </h2>
       </div>
@@ -41,7 +41,7 @@ export function TestimonialsSection() {
             <CardContent className="p-6">
               <div className="flex mb-4" role="img" aria-label="5 estrellas">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-kreator-yellow fill-current" aria-hidden="true" />
+                  <Star key={i} className="w-4 h-4 md:w-5 md:h-5 text-kreator-yellow fill-current" aria-hidden="true" />
                 ))}
               </div>
               <p className="text-muted-foreground mb-4 leading-relaxed">"{testimonial.content}"</p>
