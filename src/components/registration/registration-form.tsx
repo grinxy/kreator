@@ -1,167 +1,65 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-
-interface FormData {
-  firstName: string
-  lastName: string
-  email: string
-  profession: string
-  zone: string
-  whatsapp: string
-  role: "professional" | "team-leader"
-  interestedInLeadership: boolean
-  acceptTerms: boolean
-}
-
-interface FormErrors {
-  firstName?: string
-  lastName?: string
-  email?: string
-  profession?: string
-  zone?: string
-  acceptTerms?: string
-}
-
-const zones = [
-  "Madrid",
-  "Barcelona",
-  "Valencia",
-  "Sevilla",
-  "Bilbao",
-  "Málaga",
-  "Zaragoza",
-  "Murcia",
-  "Palma",
-  "Las Palmas",
-  "Valladolid",
-  "Córdoba",
-]
-
-const professions = [
-  "Ingeniero Industrial",
-  "Técnico Industrial",
-  "Director de Operaciones",
-  "Gerente de Producción",
-  "Consultor Industrial",
-  "Especialista en Automatización",
-  "Responsable de Calidad",
-  "Jefe de Mantenimiento",
-  "Otro",
-]
+import { FieldWrapper, ValidationError } from "@/components/ui/validation"
+import { zones, professions } from "@/data/registration"
+import { useRegistrationForm } from "@/hooks/use-registration"
+import { RegistrationSuccess } from "@/components/registration/registration-success"
 
 export function RegistrationForm() {
-  const [formData, setFormData] = useState<FormData>({
-    firstName: "",
-    lastName: "",
-    email: "",
-    profession: "",
-    zone: "",
-    whatsapp: "",
-    role: "professional",
-    interestedInLeadership: false,
-    acceptTerms: false,
-  })
+  const { 
+    formData, 
+    errors, 
+    isSubmitting, 
+    registrationSuccess, 
+    userEmail, 
+    updateFormData, 
+    handleFieldBlur,
+    handleSubmit, 
+    resetForm 
+  } = useRegistrationForm()
 
-  const [errors, setErrors] = useState<FormErrors>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {}
-
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = "El nombre es obligatorio"
-    }
-
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Los apellidos son obligatorios"
-    }
-
-    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "El formato del email no es válido"
-    }
-
-    if (!formData.profession) {
-      newErrors.profession = "La profesión es obligatoria"
-    }
-
-    if (!formData.zone) {
-      newErrors.zone = "La zona es obligatoria"
-    }
-
-    if (!formData.acceptTerms) {
-      newErrors.acceptTerms = "Debes aceptar los términos y condiciones"
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!validateForm()) {
-      return
-    }
-
-    setIsSubmitting(true)
-
-    // Simulate form submission - placeholder for future Firebase integration
-    try {
-      console.log("Form data to submit:", formData)
-
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      alert("¡Registro exitoso! Te contactaremos pronto.")
-
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        profession: "",
-        zone: "",
-        whatsapp: "",
-        role: "professional",
-        interestedInLeadership: false,
-        acceptTerms: false,
-      })
-    } catch (error) {
-      alert("Error al enviar el formulario. Inténtalo de nuevo.")
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  const updateFormData = (field: keyof FormData, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-    if (errors[field as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }))
-    }
+  if (registrationSuccess) {
+    return <RegistrationSuccess email={userEmail} onClose={resetForm} />
   }
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-primary mb-2">Únete a la Comunidad Kreator</h2>
+        <h1 className="text-3xl font-bold text-primary mb-2">Únete a la Comunidad Kreator</h1>
         <p className="text-gray-600">Conecta con profesionales industriales y expande tu red de contactos</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Role Selection */}
-        <div className="space-y-3">
-          <Label className="text-base font-semibold text-primary">Tipo de Registro *</Label>
+      <form 
+        onSubmit={handleSubmit} 
+        className="space-y-6"
+        noValidate
+        aria-label="Formulario de registro a la comunidad Kreator"
+      >
+        {errors.acceptTerms && (
+          <div 
+            className="bg-red-50 border border-red-200 rounded-lg p-4"
+            role="alert"
+            aria-live="polite"
+          >
+            <ValidationError message={errors.acceptTerms} variant="error" size="md" />
+          </div>
+        )}
+
+        <fieldset className="space-y-2">
+          <legend className="text-sm font-medium text-gray-700">
+            Tipo de Registro <span className="text-red-500 ml-1" aria-label="obligatorio">*</span>
+          </legend>
           <RadioGroup
             value={formData.role}
-            onValueChange={(value) => updateFormData("role", value)}
+            onValueChange={value => updateFormData("role", value)}
             className="flex gap-6"
+            aria-required="true"
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="professional" id="professional" />
@@ -176,145 +74,231 @@ export function RegistrationForm() {
               </Label>
             </div>
           </RadioGroup>
-        </div>
+        </fieldset>
 
-        {/* Name Fields */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="firstName" className="text-sm font-medium">
-              Nombre *
-            </Label>
-            <Input
-              id="firstName"
-              type="text"
-              value={formData.firstName}
-              onChange={(e) => updateFormData("firstName", e.target.value)}
-              className={errors.firstName ? "border-red-500" : ""}
-              placeholder="Tu nombre"
-            />
-            {errors.firstName && <p className="text-sm text-red-500">{errors.firstName}</p>}
+        <fieldset>
+          <legend className="sr-only">Información personal</legend>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FieldWrapper 
+              label="Nombre" 
+              required 
+              error={errors.firstName}
+            >
+              <Input
+                id="firstName"
+                type="text"
+                value={formData.firstName}
+                onChange={e => updateFormData("firstName", e.target.value)}
+                onBlur={() => handleFieldBlur("firstName")}
+                className={errors.firstName ? "border-red-300 focus:border-red-500" : ""}
+                placeholder="Tu nombre"
+                aria-required="true"
+                aria-invalid={!!errors.firstName}
+                aria-describedby={errors.firstName ? "firstName-error" : undefined}
+                autoComplete="given-name"
+              />
+            </FieldWrapper>
+
+            <FieldWrapper 
+              label="Apellidos" 
+              required 
+              error={errors.lastName}
+            >
+              <Input
+                id="lastName"
+                type="text"
+                value={formData.lastName}
+                onChange={e => updateFormData("lastName", e.target.value)}
+                onBlur={() => handleFieldBlur("lastName")}
+                className={errors.lastName ? "border-red-300 focus:border-red-500" : ""}
+                placeholder="Tus apellidos"
+                aria-required="true"
+                aria-invalid={!!errors.lastName}
+                aria-describedby={errors.lastName ? "lastName-error" : undefined}
+                autoComplete="family-name"
+              />
+            </FieldWrapper>
           </div>
+        </fieldset>
 
-          <div className="space-y-2">
-            <Label htmlFor="lastName" className="text-sm font-medium">
-              Apellidos *
-            </Label>
-            <Input
-              id="lastName"
-              type="text"
-              value={formData.lastName}
-              onChange={(e) => updateFormData("lastName", e.target.value)}
-              className={errors.lastName ? "border-red-500" : ""}
-              placeholder="Tus apellidos"
-            />
-            {errors.lastName && <p className="text-sm text-red-500">{errors.lastName}</p>}
+        <fieldset>
+          <legend className="sr-only">Información de contacto</legend>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FieldWrapper 
+              label="Email" 
+              required 
+              error={errors.email}
+            >
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={e => updateFormData("email", e.target.value)}
+                onBlur={() => handleFieldBlur("email")}
+                className={errors.email ? "border-red-300 focus:border-red-500" : ""}
+                placeholder="tu@email.com"
+                aria-required="true"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : "email-description"}
+                autoComplete="email"
+              />
+              <div id="email-description" className="sr-only">
+                Introduce un email válido con formato usuario@dominio.extensión
+              </div>
+            </FieldWrapper>
+
+            <FieldWrapper 
+              label="Teléfono" 
+              required 
+              error={errors.phone}
+            >
+              <Input
+                id="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={e => updateFormData("phone", e.target.value)}
+                onBlur={() => handleFieldBlur("phone")}
+                className={errors.phone ? "border-red-300 focus:border-red-500" : ""}
+                placeholder="+34 600 000 000"
+                aria-required="true"
+                aria-invalid={!!errors.phone}
+                aria-describedby={errors.phone ? "phone-error" : "phone-description"}
+                autoComplete="tel"
+              />
+              <div id="phone-description" className="sr-only">
+                Introduce un teléfono con al menos 9 dígitos
+              </div>
+            </FieldWrapper>
           </div>
-        </div>
+        </fieldset>
 
-        <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm font-medium">
-            Email
-          </Label>
-          <Input
-            id="email"
-            type="email"
-            value={formData.email}
-            onChange={(e) => updateFormData("email", e.target.value)}
-            className={errors.email ? "border-red-500" : ""}
-            placeholder="tu@email.com"
-          />
-          {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-        </div>
+        <fieldset>
+          <legend className="sr-only">Información profesional</legend>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FieldWrapper 
+              label="Profesión" 
+              required 
+              error={errors.profession}
+            >
+              <Select 
+                value={formData.profession} 
+                onValueChange={value => updateFormData("profession", value)}
+                required
+              >
+                <SelectTrigger 
+                  className={errors.profession ? "border-red-300 focus:border-red-500" : ""}
+                  aria-required="true"
+                  aria-invalid={!!errors.profession}
+                  aria-describedby={errors.profession ? "profession-error" : undefined}
+                >
+                  <SelectValue placeholder="Selecciona tu profesión" />
+                </SelectTrigger>
+                <SelectContent>
+                  {professions.map(profession => (
+                    <SelectItem key={profession} value={profession}>
+                      {profession}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FieldWrapper>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Profesión *</Label>
-            <Select value={formData.profession} onValueChange={(value) => updateFormData("profession", value)}>
-              <SelectTrigger className={errors.profession ? "border-red-500" : ""}>
-                <SelectValue placeholder="Selecciona tu profesión" />
-              </SelectTrigger>
-              <SelectContent>
-                {professions.map((profession) => (
-                  <SelectItem key={profession} value={profession}>
-                    {profession}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.profession && <p className="text-sm text-red-500">{errors.profession}</p>}
+            <FieldWrapper 
+              label="Zona/Región" 
+              required 
+              error={errors.zone}
+            >
+              <Select 
+                value={formData.zone} 
+                onValueChange={value => updateFormData("zone", value)}
+                required
+              >
+                <SelectTrigger 
+                  className={errors.zone ? "border-red-300 focus:border-red-500" : ""}
+                  aria-required="true"
+                  aria-invalid={!!errors.zone}
+                  aria-describedby={errors.zone ? "zone-error" : undefined}
+                >
+                  <SelectValue placeholder="Selecciona tu zona" />
+                </SelectTrigger>
+                <SelectContent>
+                  {zones.map(zone => (
+                    <SelectItem key={zone} value={zone}>
+                      {zone}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FieldWrapper>
           </div>
+        </fieldset>
 
-          <div className="space-y-2">
-            <Label className="text-sm font-medium">Zona/Región *</Label>
-            <Select value={formData.zone} onValueChange={(value) => updateFormData("zone", value)}>
-              <SelectTrigger className={errors.zone ? "border-red-500" : ""}>
-                <SelectValue placeholder="Selecciona tu zona" />
-              </SelectTrigger>
-              <SelectContent>
-                {zones.map((zone) => (
-                  <SelectItem key={zone} value={zone}>
-                    {zone}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.zone && <p className="text-sm text-red-500">{errors.zone}</p>}
+        <fieldset>
+          <legend className="sr-only">Preferencias adicionales</legend>
+          <div className="space-y-4">
+            <div className="flex items-start space-x-3">
+              <Checkbox
+                id="leadership"
+                checked={formData.interestedInLeadership}
+                onCheckedChange={checked => updateFormData("interestedInLeadership", checked)}
+                aria-describedby="leadership-description"
+              />
+              <Label htmlFor="leadership" className="text-sm cursor-pointer leading-relaxed">
+                <span id="leadership-description">
+                  Estoy abierto/a a asumir el rol de Jefe de Equipo más adelante.
+                </span>
+              </Label>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <Checkbox
+                id="terms"
+                checked={formData.acceptTerms}
+                onCheckedChange={checked => updateFormData("acceptTerms", checked)}
+                aria-required="true"
+                aria-invalid={!!errors.acceptTerms}
+                aria-describedby="terms-description"
+              />
+              <Label htmlFor="terms" className="text-sm cursor-pointer leading-relaxed">
+                <span id="terms-description">
+                  Acepto los{" "}
+                  <a 
+                    href="#" 
+                    className="text-secondary hover:underline font-medium"
+                    aria-label="Leer términos y condiciones (se abre en nueva ventana)"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Términos y Condiciones
+                  </a>{" "}
+                  <span className="text-red-500" aria-label="obligatorio">*</span>
+                </span>
+              </Label>
+            </div>
           </div>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="whatsapp" className="text-sm font-medium">
-            WhatsApp
-          </Label>
-          <Input
-            id="whatsapp"
-            type="tel"
-            value={formData.whatsapp}
-            onChange={(e) => updateFormData("whatsapp", e.target.value)}
-            placeholder="+34 600 000 000"
-          />
-        </div>
-
-        <div className="space-y-4">
-          <div className="flex items-start space-x-3">
-            <Checkbox
-              id="leadership"
-              checked={formData.interestedInLeadership}
-              onCheckedChange={(checked) => updateFormData("interestedInLeadership", checked)}
-            />
-            <Label htmlFor="leadership" className="text-sm cursor-pointer leading-relaxed">
-              Estoy abierto/a a asumir el rol de Jefe de Equipo más adelante.
-            </Label>
-          </div>
-
-          <div className="flex items-start space-x-3">
-            <Checkbox
-              id="terms"
-              checked={formData.acceptTerms}
-              onCheckedChange={(checked) => updateFormData("acceptTerms", checked)}
-            />
-            <Label htmlFor="terms" className="text-sm cursor-pointer leading-relaxed">
-              Acepto los{" "}
-              <a href="#" className="text-secondary hover:underline font-medium">
-                Términos y Condiciones
-              </a>{" "}
-              *
-            </Label>
-          </div>
-          {errors.acceptTerms && <p className="text-sm text-red-500 ml-6">{errors.acceptTerms}</p>}
-        </div>
+        </fieldset>
 
         <div className="pt-4">
           <Button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-secondary hover:bg-secondary/90 text-primary font-semibold py-3 text-lg transition-colors"
+            variant="cta"
+            className="w-full bg-secondary hover:bg-secondary/90 text-primary font-semibold py-3 text-lg"
+            aria-describedby="submit-description"
           >
             {isSubmitting ? "Enviando..." : "Únete a la Comunidad"}
           </Button>
+          <div id="submit-description" className="sr-only">
+            {isSubmitting 
+              ? "Enviando formulario de registro, por favor espera" 
+              : "Enviar formulario de registro a la comunidad Kreator"
+            }
+          </div>
         </div>
 
-        <p className="text-sm text-gray-500 text-center">Los campos marcados con * son obligatorios</p>
+        <p className="text-sm text-gray-500 text-center" aria-live="polite">
+          Los campos marcados con * son obligatorios
+        </p>
       </form>
     </div>
   )

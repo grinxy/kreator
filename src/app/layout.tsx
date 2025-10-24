@@ -1,7 +1,10 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Suspense } from "react"
-import "./globals.css"
+import Script from "next/script"
+import "@/styles/globals.css"
+
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
 export const metadata: Metadata = {
   title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales y Pymes",
@@ -15,7 +18,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://kreator-teaser-page.vercel.app/"),
+  metadataBase: new URL("https://kreator.team/"),
   alternates: {
     canonical: "/",
   },
@@ -23,7 +26,7 @@ export const metadata: Metadata = {
     title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales",
     description:
       "Un solo profesional por sector en tu área. Multiplica tus oportunidades gracias a los contactos de todo tu equipo. Reserva tu plaza ahora.",
-    url: "https://kreator-teaser-page.vercel.app/",
+    url: "https://kreator.team/",
     siteName: "Kreator",
     images: [
       {
@@ -73,12 +76,12 @@ export default function RootLayout({
               "@type": "Organization",
               name: "Kreator",
               description: "La primera red empresarial exclusiva por zonas para profesionales y pymes",
-              url: "https://kreator-teaser-page.vercel.app/",
-              "logo": "https://kreator-teaser-page.vercel.app/brand/horizontal/logo-kreator-default-horizontal.png",
+              url: "https://kreator.team/",
+              logo: "https://kreator.team/brand/horizontal/logo-kreator-default-horizontal.png",
               sameAs: [
                 "https://www.linkedin.com/company/kreator",
                 "https://www.facebook.com/kreator",
-                "https://www.instagram.com/kreator"
+                "https://www.instagram.com/kreator",
               ],
 
               contactPoint: {
@@ -96,17 +99,36 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: "Kreator",
-              url: "https://kreator-teaser-page.vercel.app/",
+              url: "https://kreator.team/",
               potentialAction: {
                 "@type": "SearchAction",
-                target: "https://kreator-teaser-page.vercel.app/buscar?q={search_term_string}",
+                target: "https://kreator.team/buscar?q={search_term_string}",
                 "query-input": "required name=search_term_string",
               },
             }),
           }}
         />
+        {/* Google Tag Manager (Head) */}
+        <Script id="gtm-head" strategy="afterInteractive">
+          {`
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id=' + '${GTM_ID}' + dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer');
+          `}
+        </Script>
       </head>
       <body className="font-sans antialiased">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
         <Suspense fallback={null}>{children}</Suspense>
       </body>
     </html>
