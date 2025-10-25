@@ -1,4 +1,4 @@
-"use client"
+/*"use client"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -39,14 +39,14 @@ export function LoginForm() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* General Error */}
+
         {errors.general && (
           <div className="bg-red-50 border border-red-200 rounded-md p-3">
             <p className="text-sm text-red-600">{errors.general}</p>
           </div>
         )}
 
-        {/* Email Field */}
+
         <div className="space-y-2">
           <Label htmlFor="email" className="text-sm font-medium">
             Email *
@@ -63,7 +63,7 @@ export function LoginForm() {
           {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
         </div>
 
-        {/* Password Field */}
+
         <div className="space-y-2">
           <Label htmlFor="password" className="text-sm font-medium">
             Contraseña *
@@ -80,7 +80,7 @@ export function LoginForm() {
           {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
         </div>
 
-        {/* Submit Button */}
+
         <Button
           type="submit"
           disabled={isSubmitting}
@@ -89,7 +89,7 @@ export function LoginForm() {
           {isSubmitting ? "Iniciando sesión..." : "Iniciar Sesión"}
         </Button>
 
-        {/* Links */}
+
         <div className="text-center space-y-2">
           <a 
             href="#" 
@@ -107,4 +107,4 @@ export function LoginForm() {
       </form>
     </div>
   )
-}
+}*/
