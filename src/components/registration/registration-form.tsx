@@ -1,18 +1,24 @@
 "use client"
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { FieldWrapper, ValidationError } from "@/components/ui/validation"
-import { zones, professions } from "@/data/registration"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Check, ChevronsUpDown } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { professionsData, professionCategories, regionsData, regions } from "@/data/registration"
 import { useRegistrationForm } from "@/hooks/use-registration"
 import { RegistrationSuccess } from "@/components/registration/registration-success"
-import { GoogleMaps } from "@/components/registration/registration-map"
 
 export function RegistrationForm() {
+  const [openZone, setOpenZone] = useState(false)
+  const [openProfession, setOpenProfession] = useState(false)
+  
   const {
     formData,
     errors,
@@ -42,11 +48,6 @@ export function RegistrationForm() {
         noValidate
         aria-label="Formulario de registro a la comunidad Kreator"
       >
-        {errors.acceptTerms && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4" role="alert" aria-live="polite">
-            <ValidationError message={errors.acceptTerms} variant="error" size="md" />
-          </div>
-        )}
         <fieldset className="space-y-2">
           <legend className="text-sm font-medium text-gray-700">
             Tipo de Registro{" "}
@@ -150,79 +151,175 @@ export function RegistrationForm() {
                 Introduce un teléfono con al menos 9 dígitos
               </div>
             </FieldWrapper>
+
+            <FieldWrapper label="NIF/CIF" required error={errors.nifCif}>
+              <Input
+                id="nifCif"
+                type="text"
+                value={formData.nifCif || ""}
+                onChange={e => updateFormData("nifCif", e.target.value.toUpperCase())}
+                onBlur={() => handleFieldBlur("nifCif")}
+                className={errors.nifCif ? "border-red-300 focus:border-red-500" : ""}
+                placeholder="12345678Z o A12345674"
+                aria-required="true"
+                aria-invalid={!!errors.nifCif}
+                aria-describedby={errors.nifCif ? "nifCif-error" : "nifCif-description"}
+                maxLength={9}
+              />
+              <div id="nifCif-description" className="sr-only">
+                Introduce tu NIF (DNI) o CIF de empresa
+              </div>
+            </FieldWrapper>
           </div>
         </fieldset>
         <fieldset>
           <legend className="sr-only">Información profesional</legend>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FieldWrapper label="Profesión" required error={errors.profession}>
-              <Select value={formData.profession} onValueChange={value => updateFormData("profession", value)} required>
-                <SelectTrigger
-                  className={errors.profession ? "border-red-300 focus:border-red-500" : ""}
-                  aria-required="true"
-                  aria-invalid={!!errors.profession}
-                  aria-describedby={errors.profession ? "profession-error" : undefined}
-                >
-                  <SelectValue placeholder="Selecciona tu profesión" />
-                </SelectTrigger>
-                <SelectContent>
-                  {professions.map(profession => (
-                    <SelectItem key={profession} value={profession}>
-                      {profession}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover open={openProfession} onOpenChange={(open) => {
+                setOpenProfession(open)
+                if (!open && formData.profession) {
+                  handleFieldBlur("profession")
+                }
+              }}>
+                <PopoverTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={openProfession}
+                    aria-required="true"
+                    aria-invalid={!!errors.profession}
+                    aria-describedby={errors.profession ? "profession-error" : undefined}
+                    className={cn(
+                      "w-full justify-between font-normal text-foreground",
+                      !formData.profession && "text-muted-foreground",
+                      errors.profession && "border-red-300 focus:border-red-500"
+                    )}
+                  >
+                    {formData.profession || "Selecciona tu profesión"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[--radix-popover-trigger-width] max-h-[300px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Buscar profesión..." />
+                    <CommandList>
+                      <CommandEmpty>No se encontró ninguna profesión.</CommandEmpty>
+                      {professionCategories.map((category) => (
+                        <CommandGroup key={category} heading={category}>
+                          {professionsData[category].map((profession) => (
+                            <CommandItem
+                              key={`${category}-${profession}`}
+                              value={profession}
+                              keywords={[profession.toLowerCase()]}
+                              onSelect={() => {
+                                updateFormData("profession", profession)
+                                setOpenProfession(false)
+                              }}
+                              className="hover:text-accent-foreground cursor-pointer"
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  formData.profession === profession ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {profession}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      ))}
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </FieldWrapper>
 
             <FieldWrapper label="Zona/Región" required error={errors.zone}>
-              <Select value={formData.zone} onValueChange={value => updateFormData("zone", value)} required>
-                <SelectTrigger
-                  className={errors.zone ? "border-red-300 focus:border-red-500" : ""}
-                  aria-required="true"
-                  aria-invalid={!!errors.zone}
-                  aria-describedby={errors.zone ? "zone-error" : undefined}
-                >
-                  <SelectValue placeholder="Selecciona tu zona" />
-                </SelectTrigger>
-                <SelectContent>
-                  {zones.map(zone => (
-                    <SelectItem key={zone} value={zone}>
-                      {zone}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Popover open={openZone} onOpenChange={(open) => {
+                setOpenZone(open)
+                if (!open && formData.zone) {
+                  handleFieldBlur("zone")
+                }
+              }}>
+                <PopoverTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={openZone}
+                    aria-required="true"
+                    aria-invalid={!!errors.zone}
+                    aria-describedby={errors.zone ? "zone-error" : undefined}
+                    className={cn(
+                      "w-full justify-between font-normal text-foreground",
+                      !formData.zone && "text-muted-foreground",
+                      errors.zone && "border-red-300 focus:border-red-500"
+                    )}
+                  >
+                    {formData.zone?.comarca || "Selecciona tu zona"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[--radix-popover-trigger-width] max-h-[300px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Buscar zona..." />
+                    <CommandList>
+                      <CommandEmpty>No se encontró ninguna zona.</CommandEmpty>
+                      {regions.map((region) => {
+                        const provincesObj = regionsData[region]
+                        if (!provincesObj) return null
+                        
+                        // Flatten all comarcas from all provinces in this region
+                        const allComarcas = Object.entries(provincesObj).flatMap(([province, comarcas]) =>
+                          comarcas.map((comarca, index) => ({
+                            comarca,
+                            province,
+                            region,
+                            index
+                          }))
+                        )
+                        
+                        if (allComarcas.length === 0) return null
+                        
+                        return (
+                          <CommandGroup key={region} heading={region}>
+                            {allComarcas.map((item) => {
+                              const zoneObj = {
+                                region: item.region,
+                                comarca: item.comarca,
+                                province: item.province
+                              }
+                              return (
+                                <CommandItem
+                                  key={`${item.region}-${item.province}-${item.index}-${item.comarca}`}
+                                  value={item.comarca}
+                                  keywords={[item.comarca.toLowerCase()]}
+                                  onSelect={() => {
+                                    updateFormData("zone", zoneObj)
+                                    setOpenZone(false)
+                                  }}
+                                  className="hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      formData.zone?.comarca === item.comarca ? "opacity-100" : "opacity-0"
+                                    )}
+                                  />
+                                  {item.comarca}
+                                </CommandItem>
+                              )
+                            })}
+                          </CommandGroup>
+                        )
+                      })}
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </FieldWrapper>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend className="sr-only">Ubicación</legend>
-          <div className="space-y-4">
-            <FieldWrapper label="Código Postal" required error={errors.postalCode}>
-              <Input
-                id="postalCode"
-                type="text"
-                value={formData.postalCode}
-                onChange={e => updateFormData("postalCode", e.target.value)}
-                onBlur={() => handleFieldBlur("postalCode")}
-                className={errors.postalCode ? "border-red-300 focus:border-red-500" : ""}
-                placeholder="Ejemplo: 28001"
-                maxLength={5}
-                pattern="[0-9]{5}"
-                aria-required="true"
-              />
-            </FieldWrapper>
-            {/* Google Maps - Visual reference only */}
-            <div>
-              <GoogleMaps
-                onLocationSelect={location => {
-                  if (location.postalCode) {
-                    updateFormData("postalCode", location.postalCode)
-                  }
-                }}
-              />
-            </div>
           </div>
         </fieldset>
         <fieldset>
@@ -248,24 +345,30 @@ export function RegistrationForm() {
                 aria-required="true"
                 aria-invalid={!!errors.acceptTerms}
                 aria-describedby="terms-description"
+                className={errors.acceptTerms ? "border-red-500" : ""}
               />
-              <Label htmlFor="terms" className="text-sm cursor-pointer leading-relaxed">
-                <span id="terms-description">
-                  Acepto los{" "}
-                  <a
-                    href="#"
-                    className="text-secondary hover:underline font-medium"
-                    aria-label="Leer términos y condiciones (se abre en nueva ventana)"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Términos y Condiciones
-                  </a>{" "}
-                  <span className="text-red-500" aria-label="obligatorio">
-                    *
+              <div className="flex-1">
+                <Label htmlFor="terms" className="text-sm cursor-pointer leading-relaxed">
+                  <span id="terms-description">
+                    Acepto los{" "}
+                    <a
+                      href="#"
+                      className="text-secondary hover:underline font-medium"
+                      aria-label="Leer términos y condiciones (se abre en nueva ventana)"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Términos y Condiciones
+                    </a>{" "}
+                    <span className="text-red-500" aria-label="obligatorio">
+                      *
+                    </span>
                   </span>
-                </span>
-              </Label>
+                </Label>
+                {errors.acceptTerms && (
+                  <ValidationError message={errors.acceptTerms} variant="error" size="sm" />
+                )}
+              </div>
             </div>
           </div>
         </fieldset>

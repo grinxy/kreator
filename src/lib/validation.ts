@@ -1,7 +1,7 @@
-import type { FormData, FormErrors } from "@/types/registration-form"
+import type { FormData, FormErrors, ZoneSelection } from "@/types/registration-form"
 
-// Updated validatable fields to include nifCif and postalCode instead of zone
-type ValidatableFields = 'firstName' | 'lastName' | 'email' | 'phone' | 'profession' |'acceptTerms' | 'postalCode' | 'nifCif'
+// Updated validatable fields to include nifCif and zone
+type ValidatableFields = 'firstName' | 'lastName' | 'email' | 'phone' | 'profession' | 'zone' | 'acceptTerms' | 'nifCif'
 
 // Centralized field validation rules
 const fieldValidators: Record<ValidatableFields, (value: any) => string | undefined> = {
@@ -43,10 +43,8 @@ const fieldValidators: Record<ValidatableFields, (value: any) => string | undefi
     return undefined
   },
 
-  postalCode: (value: string) => {
-    if (!value?.trim()) return "El código postal es obligatorio."
-    // Spanish postal code validation (5 digits)
-    if (!/^\d{5}$/.test(value.trim())) return "El código postal debe tener 5 dígitos."
+  zone: (value: ZoneSelection | null) => {
+    if (!value || !value.comarca || !value.region) return "La zona es obligatoria."
     return undefined
   },
 
@@ -128,7 +126,7 @@ const validateCIF = (cif: string): string | undefined => {
 }
 
 const validatableFields: ValidatableFields[] = [
-  'firstName', 'lastName', 'email', 'phone', 'profession', 'postalCode', 'nifCif', 'acceptTerms'
+  'firstName', 'lastName', 'email', 'phone', 'profession', 'zone', 'nifCif', 'acceptTerms'
 ]
 
 export const validateForm = (formData: FormData): FormErrors => {

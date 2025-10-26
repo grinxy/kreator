@@ -1,6 +1,6 @@
 import { collection, addDoc, Timestamp } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import type { FormData } from "@/types/registration-form"
+import type { FormData, ZoneSelection } from "@/types/registration-form"
 import type { UserDocument, UserResponse, Zone } from "@/types/database"
 import type { ApiResponse, ApiError } from "@/types/api"
 
@@ -10,19 +10,25 @@ export class UserService {
   static async createUser(formData: FormData, authUid?: string): Promise<ApiResponse<UserResponse>> {
     try {
       console.log("Creating user document with authUid:", authUid)
+      console.log("Form data zone:", formData.zone)
 
       const zone: Zone = this.parseZone(formData.zone)
+      console.log("Parsed zone:", zone)
 
       const userData: Omit<UserDocument, "id"> = {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
         phone: formData.phone,
         profession: formData.profession,
+        nif_cif: formData.nifCif,
         role: formData.role === "team-leader" ? "team_leader" : "professional",
         zone: zone,
+        zone_assigned: false, // Not assigned yet
         interested_in_leadership: formData.interestedInLeadership,
-        status: "pending",
+        status: "approved", // Auto-approve all registrations
+        payment_status: "pending", // Will be updated when Stripe integration is added
         auth_uid: authUid,
+        registration_order: Date.now(), // Timestamp for ordering by registration time
         created_at: Timestamp.now(),
         updated_at: Timestamp.now(),
       }
@@ -66,10 +72,19 @@ export class UserService {
     }
   }
 
-  private static parseZone(zoneString: string): Zone {
+  private static parseZone(zoneSelection: ZoneSelection | null): Zone {
+    if (!zoneSelection) {
+      return {
+        region: "",
+        comarca: "",
+        province: "",
+      }
+    }
+    
     return {
-      city: zoneString,
-      province: zoneString,
+      region: zoneSelection.region,
+      comarca: zoneSelection.comarca,
+      province: zoneSelection.province,
     }
   }
 

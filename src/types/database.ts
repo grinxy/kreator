@@ -1,9 +1,10 @@
 import { Timestamp } from 'firebase/firestore'
 
 export interface Zone {
+  region: string // e.g., "ANDALUSIA", "MURCIA", "MADRID"
+  comarca: string // e.g., "Almería", "Costa del Sol"
+  province: string // e.g., "Almería", "Málaga"
   postal_code?: string
-  city: string
-  province: string
   neighborhood?: string
 }
 
@@ -16,11 +17,16 @@ export interface UserDocument {
   nif_cif?: string
   role: 'professional' | 'team_leader' | 'admin'
   zone: Zone
+  zone_assigned?: boolean // Whether they've been assigned their zone
+  zone_assignment_date?: Timestamp // When zone was assigned
   referrer_id?: string
   contacts_estimate?: number
   interested_in_leadership: boolean
   status: 'pending' | 'approved' | 'rejected'
+  payment_status?: 'pending' | 'completed' | 'failed' // For future Stripe integration
+  payment_id?: string // Stripe payment ID
   auth_uid?: string // Our "link" to Firebase Auth
+  registration_order?: number // For tracking who registered first
   created_at: Timestamp
   updated_at: Timestamp
 }
