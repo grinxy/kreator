@@ -28,14 +28,11 @@ export function GoogleMaps({ onLocationSelect, className }: GoogleMapsProps) {
       return
     }
 
-    // Create new map URL with search query
     const encodedQuery = encodeURIComponent(searchQuery.trim())
     const newMapSrc = `https://maps.google.com/maps?q=${encodedQuery}&t=&z=13&ie=UTF8&iwloc=&output=embed`
     
-    // Update the map
     setMapSrc(newMapSrc)
 
-    // Extract postal code if present
     const postalCodeMatch = searchQuery.match(/\b(\d{5})\b/)
     if (postalCodeMatch && onLocationSelect) {
       onLocationSelect({
@@ -47,7 +44,6 @@ export function GoogleMaps({ onLocationSelect, className }: GoogleMapsProps) {
       setFeedback(`📍 Mostrando ubicación: ${searchQuery}`)
     }
 
-    // Clear feedback after 4 seconds
     setTimeout(() => setFeedback(""), 4000)
   }
 

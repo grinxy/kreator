@@ -325,17 +325,19 @@ export function RegistrationForm() {
         <fieldset>
           <legend className="sr-only">Preferencias adicionales</legend>
           <div className="space-y-4">
-            <div className="flex items-start space-x-3">
-              <Checkbox
-                id="leadership"
-                checked={formData.interestedInLeadership}
-                onCheckedChange={checked => updateFormData("interestedInLeadership", checked)}
-                aria-describedby="leadership-description"
-              />
-              <Label htmlFor="leadership" className="text-sm cursor-pointer leading-relaxed">
-                <span id="leadership-description">Estoy abierto/a a asumir el rol de Jefe de Equipo más adelante.</span>
-              </Label>
-            </div>
+            {formData.role === "professional" && (
+              <div className="flex items-start space-x-3">
+                <Checkbox
+                  id="leadership"
+                  checked={formData.interestedInLeadership}
+                  onCheckedChange={checked => updateFormData("interestedInLeadership", checked)}
+                  aria-describedby="leadership-description"
+                />
+                <Label htmlFor="leadership" className="text-sm cursor-pointer leading-relaxed">
+                  <span id="leadership-description">Estoy abierto/a a asumir el rol de Jefe de Equipo más adelante.</span>
+                </Label>
+              </div>
+            )}
 
             <div className="flex items-start space-x-3">
               <Checkbox
