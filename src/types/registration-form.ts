@@ -1,3 +1,9 @@
+export interface ZoneSelection {
+  region: string
+  comarca: string
+  province: string
+}
+
 export interface FormData {
   firstName: string
   lastName: string
@@ -6,13 +12,14 @@ export interface FormData {
   // password: string       // Commented for future use
   // confirmPassword: string // Commented for future use
   profession: string
-  zone: string
+  zone: ZoneSelection | null
   role: "professional" | "team-leader"
   interestedInLeadership: boolean
-  acceptTerms: boolean
   createdAt?: Date
-  status?: "pending" | "approved" | "rejected",
+  status?: "pending" | "approved" | "rejected"
   id?: string
+  nifCif?: string
+  acceptTerms?: boolean
 }
 
 export interface FormErrors {
@@ -26,6 +33,7 @@ export interface FormErrors {
   zone?: string
   role?: string
   acceptTerms?: string
+  nifCif?: string
 }
 
 export interface RegistrationValidationError {
