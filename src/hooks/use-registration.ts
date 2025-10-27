@@ -10,9 +10,10 @@ const initialFormData: FormData = {
   email: "",
   phone: "",
   profession: "",
-  zone: "",
+  zone: null,
   role: "professional",
   interestedInLeadership: false,
+  nifCif: "",
   acceptTerms: false,
 }
 
@@ -44,7 +45,7 @@ export function useRegistrationForm() {
       setErrors(prev => ({ ...prev, [field]: undefined }))
     }
 
-    if (["firstName", "lastName", "email", "phone"].includes(field)) {
+    if (["firstName", "lastName", "email", "phone", "nifCif"].includes(field)) {
       debouncedValidateField(field, sanitizedValue)
     }
   }
@@ -52,7 +53,7 @@ export function useRegistrationForm() {
   const handleFieldBlur = (field: keyof FormData) => {
     const value = formData[field]
 
-    if (["firstName", "lastName", "email", "phone", "profession", "zone"].includes(field)) {
+    if (["firstName", "lastName", "email", "phone", "profession", "zone", "nifCif"].includes(field)) {
       if (!value || (typeof value === "string" && !value.trim())) {
         const fieldNames = {
           firstName: "El nombre",
@@ -61,6 +62,7 @@ export function useRegistrationForm() {
           phone: "El teléfono",
           profession: "La profesión",
           zone: "La zona",
+          nifCif: "El NIF/CIF",
         }
         setErrors(prev => ({
           ...prev,

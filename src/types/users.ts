@@ -17,7 +17,6 @@ export interface UserDocument {
   zone: Zone
   referrer_id?: string   // Not implemented yet
   interested_in_leadership: boolean
-  accept_terms: boolean
   status: 'pending' | 'approved' | 'rejected'
   created_at: Timestamp
   updated_at: Timestamp
