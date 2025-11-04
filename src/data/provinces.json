@@ -1,13 +1,6 @@
 {
-  "Andalusia": {
-    "Almería": [
-      "Almanzora",
-      "Almería",
-      "Filabres-Tabernas",
-      "Levante Almeriense",
-      "Los Vélez",
-      "Poniente Almeriense"
-    ],
+  "Andalucía": {
+    "Almería": ["Almanzora", "Almería", "Filabres-Tabernas", "Levante Almeriense", "Los Vélez", "Poniente Almeriense"],
     "Cádiz": [
       "Bahía de Cádiz",
       "Campiña de Jerez",
@@ -72,7 +65,7 @@
       "Sierra Norte de Sevilla"
     ]
   },
-  "Aragon": {
+  "Aragón": {
     "Huesca": [
       "Alto Gállego",
       "Bajo Cinca / Baix Cinca",
@@ -111,7 +104,7 @@
       "Sierra de Albarracín"
     ]
   },
-  "Asturias": {
+  "Principado de Asturias": {
     "Asturias": [
       "Aller-Lena",
       "Avilés",
@@ -132,9 +125,9 @@
       "Villaviciosa"
     ]
   },
-  "Illes Balears": {
-    "Illes Balears": [
-      "Eivissa",
+  "Islas Baleares": {
+    "Islas Baleares": [
+      "Ibiza",
       "Formentera",
       "Mallorca - Llevant",
       "Mallorca - Migjorn",
@@ -146,18 +139,8 @@
     ]
   },
   "Canarias": {
-    "Las Palmas": [
-      "Fuerteventura",
-      "Gran Canaria",
-      "La Graciosa",
-      "Lanzarote"
-    ],
-    "Santa Cruz de Tenerife": [
-      "El Hierro",
-      "La Gomera",
-      "La Palma",
-      "Tenerife"
-    ]
+    "Las Palmas": ["Fuerteventura", "Gran Canaria", "La Graciosa", "Lanzarote"],
+    "Santa Cruz de Tenerife": ["El Hierro", "La Gomera", "La Palma", "Tenerife"]
   },
   "Cantabria": {
     "Cantabria": [
@@ -172,67 +155,19 @@
     ]
   },
   "Castilla y León": {
-    "Ávila": [
-      "Ávila i entorn",
-      "Barco de Ávila - Piedrahíta",
-      "La Moraña",
-      "Valle del Alberche",
-      "Valle del Tiétar"
-    ],
-    "Burgos": [
-      "Arlanza",
-      "Bureba",
-      "Burgos i alfoz",
-      "Merindades",
-      "Páramos",
-      "Ribera del Duero"
-    ],
-    "León": [
-      "Bierzo",
-      "Esla-Campos",
-      "Montaña de León",
-      "Tierra de León"
-    ],
-    "Palencia": [
-      "Cerrato",
-      "Montaña Palentina",
-      "Tierra de Campos"
-    ],
-    "Salamanca": [
-      "Campo Charro",
-      "Ciudad Rodrigo",
-      "Las Arribes",
-      "Salamanca capital i entorn",
-      "Sierra de Francia"
-    ],
-    "Segovia": [
-      "Segovia i alfoz",
-      "Sepúlveda-Duraton",
-      "Tierra de Pinares"
-    ],
-    "Soria": [
-      "Campo de Gómara",
-      "Soria i entorn",
-      "Tierras Altas"
-    ],
-    "Valladolid": [
-      "Montes Torozos",
-      "Tierra de Campos",
-      "Tierra de Medina",
-      "Valladolid capital i entorn"
-    ],
-    "Zamora": [
-      "Aliste",
-      "Benavente y los Valles",
-      "Sanabria",
-      "Sayago",
-      "Tierra de Campos",
-      "Tierra del Pan"
-    ]
+    "Ávila": ["Ávila y entorno", "Barco de Ávila - Piedrahíta", "La Moraña", "Valle del Alberche", "Valle del Tiétar"],
+    "Burgos": ["Arlanza", "Bureba", "Burgos y alfoz", "Merindades", "Páramos", "Ribera del Duero"],
+    "León": ["Bierzo", "Esla-Campos", "Montaña de León", "Tierra de León"],
+    "Palencia": ["Cerrato", "Montaña Palentina", "Tierra de Campos"],
+    "Salamanca": ["Campo Charro", "Ciudad Rodrigo", "Las Arribes", "Salamanca capital y entorno", "Sierra de Francia"],
+    "Segovia": ["Segovia y alfoz", "Sepúlveda-Duratón", "Tierra de Pinares"],
+    "Soria": ["Campo de Gómara", "Soria y entorno", "Tierras Altas"],
+    "Valladolid": ["Montes Torozos", "Tierra de Campos", "Tierra de Medina", "Valladolid capital y entorno"],
+    "Zamora": ["Aliste", "Benavente y los Valles", "Sanabria", "Sayago", "Tierra de Campos", "Tierra del Pan"]
   },
   "Castilla-La Mancha": {
     "Albacete": [
-      "Albacete i alfoz",
+      "Albacete y alfoz",
       "Almansa",
       "Campos de Hellín",
       "La Manchuela",
@@ -253,24 +188,19 @@
       "Manchuela Conquense",
       "Serranía Alta",
       "Serranía Baja",
-      "Tarancón i entorn"
+      "Tarancón y entorno"
     ],
-    "Guadalajara": [
-      "Alcarria de Guadalajara",
-      "Campiña de Guadalajara",
-      "Molina de Aragón-Alto Tajo",
-      "Sierra Norte"
-    ],
+    "Guadalajara": ["Alcarria de Guadalajara", "Campiña de Guadalajara", "Molina de Aragón-Alto Tajo", "Sierra Norte"],
     "Toledo": [
       "La Mancha Toledana",
       "La Sagra",
       "Montes de Toledo (TO)",
       "Talavera de la Reina",
-      "Toledo i alfoz",
+      "Toledo y alfoz",
       "Torrijos"
     ]
   },
-  "Catalunya": {
+  "Cataluña": {
     "Barcelona": [
       "Alt Penedès",
       "Anoia",
@@ -287,7 +217,7 @@
     "Girona": [
       "Alt Empordà",
       "Baix Empordà",
-      "Cerdanya (part Girona)",
+      "Cerdanya (parte de Girona)",
       "Garrotxa",
       "Gironès",
       "Pla de l'Estany",
@@ -298,7 +228,7 @@
       "Alt Urgell",
       "Alta Ribagorça",
       "Aran",
-      "Cerdanya (part Lleida)",
+      "Cerdanya (parte de Lleida)",
       "Garrigues",
       "Noguera",
       "Pallars Jussà",
@@ -338,9 +268,9 @@
     ],
     "Cáceres": [
       "Alagón",
-      "Cáceres i entorn",
+      "Cáceres y entorno",
       "Campo Arañuelo",
-      "Hurdes",
+      "Las Hurdes",
       "Las Villuercas-Ibores-Jara",
       "Monfragüe",
       "Plasencia",
@@ -349,7 +279,7 @@
       "Tierra de Granadilla",
       "Valle del Alagón",
       "Valle del Jerte",
-      "Vera"
+      "La Vera"
     ]
   },
   "Galicia": {
@@ -384,7 +314,7 @@
     "Ourense": [
       "Allariz-Maceda",
       "Baixa Limia",
-      "Carballiño",
+      "O Carballiño",
       "Celanova",
       "Ourense",
       "Terra de Caldelas",
@@ -393,15 +323,7 @@
       "Verín",
       "Viana"
     ],
-    "Pontevedra": [
-      "Caldas",
-      "Condado",
-      "Deza",
-      "Paradanta",
-      "Pontevedra",
-      "Tabeirós-Terra de Montes",
-      "Vigo"
-    ]
+    "Pontevedra": ["Caldas", "Condado", "Deza", "Paradanta", "Pontevedra", "Tabeirós-Terra de Montes", "Vigo"]
   },
   "Comunidad de Madrid": {
     "Madrid": [
@@ -446,14 +368,8 @@
       "Valdizarbe"
     ]
   },
-  "País Vasco": {
-    "Álava": [
-      "Añana",
-      "Arabako Lautada (Llanada Alavesa)",
-      "Campezo-Montaña Alavesa",
-      "Gorbeialdea",
-      "Rioja Alavesa"
-    ],
+  "Euskadi / País Vasco": {
+    "Álava": ["Añana", "Arabako Lautada (Llanada Alavesa)", "Campezo-Montaña Alavesa", "Gorbeialdea", "Rioja Alavesa"],
     "Bizkaia": [
       "Arratia-Nerbioi",
       "Busturialdea",
@@ -464,15 +380,7 @@
       "Lea-Artibai",
       "Uribe-Kosta"
     ],
-    "Gipuzkoa": [
-      "Alto Deba",
-      "Bajo Deba",
-      "Bidasoa Beherea",
-      "Donostialdea",
-      "Goierri",
-      "Tolosaldea",
-      "Urola Kosta"
-    ]
+    "Gipuzkoa": ["Alto Deba", "Bajo Deba", "Bidasoa Beherea", "Donostialdea", "Goierri", "Tolosaldea", "Urola Kosta"]
   },
   "La Rioja": {
     "La Rioja": [
@@ -488,13 +396,9 @@
     ]
   },
   "Ceuta": {
-    "Ceuta": [
-      "Ceuta (Ciutat Autònoma)"
-    ]
+    "Ceuta": ["Ceuta (Ciudad Autónoma)"]
   },
   "Melilla": {
-    "Melilla": [
-      "Melilla (Ciutat Autònoma)"
-    ]
+    "Melilla": ["Melilla (Ciudad Autónoma)"]
   }
 }

@@ -10,10 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-kreator-yellow text-kreator-blue shadow-xs hover:bg-primary/90 hover:text-white",
-        destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 ",
+        destructive: "bg-destructive text-white shadow-xs hover:bg-destructive/90 ",
         outline:
-          "border-2 border-white text-white rounded-lg hover:bg-white hover:text-orange-500 hover:scale-105 transition-all duration-200 text-lg font-semibold",
+          "border-2 border-white text-white rounded-lg hover:bg-white hover:text-orange-500 hover:scale-105 transition-all duration-200 text-sm md:text-base font-semibold",
         primary:
           "bg-kreator-yellow text-kreator-blue rounded-lg hover:bg-orange-500 hover:scale-105 transition-all duration-200 text-lg font-semibold",
         secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
@@ -27,6 +26,8 @@ const buttonVariants = cva(
 
         profileBlue:
           "w-full bg-kreator-blue text-white font-semibold py-6 text-base md:text-lg rounded-lg transition-all duration-200 hover:bg-kreator-blue hover:scale-105",
+        outlineGray:
+          "border border-[var(--kreator-gray-dark)] text-[var(--kreator-gray-dark)] rounded-md font-normal text-base transition-all duration-200 hover:bg-[var(--kreator-yellow)]/50 hover:text-[var(--kreator-gray-dark)] hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--kreator-gray-dark)] cursor-pointer",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

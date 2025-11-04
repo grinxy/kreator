@@ -38,8 +38,6 @@ function AccordionTrigger({
           // Base
           'relative flex flex-1 items-center justify-between gap-4 text-left cursor-pointer transition-all px-4 sm:px-6 py-4 sm:py-5 rounded-md',
           'text-base sm:text-lg md:text-xl font-semibold text-[var(--kreator-blue)] font-[family-name:var(--font-poppins)]',
-          // Focus 
-          'focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[var(--kreator-orange)] focus-visible:ring-offset-2 focus-visible:ring-offset-white',
           // Hover
           'hover:bg-gray-40',
           '[&[data-state=open]>svg]:rotate-180',
