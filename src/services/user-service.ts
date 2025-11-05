@@ -25,7 +25,7 @@ export class UserService {
         zone: zone,
         zone_assigned: false, // Not assigned yet
         interested_in_leadership: formData.interestedInLeadership,
-        status: "approved", // Auto-approve all registrations
+        status: "pending", // pending all registrations
         payment_status: "pending", // Will be updated when Stripe integration is added
         auth_uid: authUid,
         registration_order: Date.now(), // Timestamp for ordering by registration time

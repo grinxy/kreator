@@ -39,7 +39,7 @@ export function RegistrationForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-2xl bg-white rounded-xl shadow-lg mx-auto p-4 sm:p-6 md:p-8 space-y-2"
+      className="w-full max-w-3xl bg-white rounded-xl shadow-lg mx-auto p-4 sm:p-6 md:p-8 space-y-2"
       noValidate
       aria-label="Formulario de registro a la comunidad Kreator"
     >
@@ -195,12 +195,13 @@ export function RegistrationForm() {
                   aria-describedby={errors.profession ? "profession-error" : undefined}
                   className={cn(
                     "w-full justify-between font-normal text-foreground",
+                    "overflow-hidden",
                     !formData.profession && "text-muted-foreground",
                     errors.profession && "border-red-300 focus:border-red-500"
                   )}
                 >
-                  {formData.profession || "Selecciona tu profesión"}
-                  <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-80" />
+                  <span className="truncate">{formData.profession || "Selecciona tu profesión"}</span>
+                  <ChevronsUpDown className="ml-2 h-4 w-4 flex-shrink-0 opacity-80" />
                 </Button>
               </PopoverTrigger>
 
@@ -282,12 +283,13 @@ export function RegistrationForm() {
                   aria-describedby={errors.zone ? "zone-error" : undefined}
                   className={cn(
                     "w-full justify-between font-normal text-foreground",
+                    "overflow-hidden",
                     !formData.zone && "text-muted-foreground",
                     errors.zone && "border-red-300 focus:border-red-500"
                   )}
                 >
-                  {formData.zone?.comarca || "Selecciona tu zona"}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-80" />
+                  <span className="truncate">{formData.zone?.comarca || "Selecciona tu zona"}</span>
+                  <ChevronsUpDown className="ml-2 h-4 w-4 flex-shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
 
@@ -389,7 +391,6 @@ export function RegistrationForm() {
                 checked={formData.interestedInLeadership}
                 onCheckedChange={checked => updateFormData("interestedInLeadership", checked)}
                 aria-describedby="leadership-description"
-                className="translate-y-[1px]"
               />
               <Label
                 htmlFor="leadership"
@@ -413,16 +414,25 @@ export function RegistrationForm() {
             <div className="flex-1">
               <Label htmlFor="terms" className="text-sm cursor-pointer leading-relaxed text-[var(--kreator-gray-dark)]">
                 <span id="terms-description">
-                  Acepto los{" "}
+                  Acepto la{" "}
                   <a
-                    href="#"
-                    className="text-[var(--kreator-orange)] hover:underline font-medium"
-                    aria-label="Leer términos y condiciones (se abre en nueva ventana)"
+                    href="/politica-privacidad"
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="text-[var(--kreator-orange)] hover:underline font-medium"
+                  >
+                    Política de Privacidad
+                  </a>{" "}
+                  y los{" "}
+                  <a
+                    href="/terminos-condiciones"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[var(--kreator-orange)] hover:underline font-medium"
                   >
                     Términos y Condiciones
-                  </a>{" "}
+                  </a>
+                  .{" "}
                   <span className="text-red-500" aria-label="obligatorio">
                     *
                   </span>

@@ -43,19 +43,19 @@ export function PrivacyPolicy() {
                 <h2 className="text-2xl font-semibold text-primary mb-4">1. Responsable del Tratamiento</h2>
                 <div className="bg-muted/50 p-6 rounded-lg">
                   <p className="font-medium text-foreground mb-2">Responsable:</p>
-                  <p className="text-muted-foreground mb-4">[NOMBRE DE LA EMPRESA]</p>
+                  <p className="text-muted-foreground mb-4">Kreator Synergies S.L.U.</p>
 
                   <p className="font-medium text-foreground mb-2">NIF/CIF:</p>
-                  <p className="text-muted-foreground mb-4">[CIF DE LA EMPRESA]</p>
+                  <p className="text-muted-foreground mb-4">B55460612</p>
 
                   <p className="font-medium text-foreground mb-2">Dirección:</p>
-                  <p className="text-muted-foreground mb-4">[DIRECCIÓN COMPLETA]</p>
+                  <p className="text-muted-foreground mb-4">Calle Santa María 11, 1C, 17230 Palamós (Girona), España</p>
 
                   <p className="font-medium text-foreground mb-2">Email de contacto:</p>
-                  <p className="text-muted-foreground mb-4">privacidad@kreator.com</p>
+                  <p className="text-muted-foreground mb-4">info@kreator.team</p>
 
                   <p className="font-medium text-foreground mb-2">Delegado de Protección de Datos (DPO):</p>
-                  <p className="text-muted-foreground">dpo@kreator.com</p>
+                  <p className="text-muted-foreground">info@kreator.team</p>
                 </div>
               </section>
 
@@ -220,7 +220,7 @@ export function PrivacyPolicy() {
 
                 <div className="mt-6 p-4 bg-secondary/10 border border-secondary/20 rounded-lg">
                   <p className="text-sm text-muted-foreground">
-                    <strong>Para ejercer tus derechos:</strong> Envía un email a <strong>privacidad@kreator.com</strong>{" "}
+                    <strong>Para ejercer tus derechos:</strong> Envía un email a <strong>info@kreator.team</strong>{" "}
                     adjuntando copia de tu documento de identidad. Responderemos en un plazo máximo de 30 días.
                   </p>
                 </div>
@@ -323,13 +323,13 @@ export function PrivacyPolicy() {
                     Para cualquier consulta sobre esta política de privacidad o el tratamiento de tus datos:
                   </p>
                   <p className="text-muted-foreground mb-2">
-                    <strong>Email:</strong> privacidad@kreator.com
+                    <strong>Email:</strong> info@kreator.team
                   </p>
                   <p className="text-muted-foreground mb-2">
-                    <strong>DPO:</strong> dpo@kreator.com
+                    <strong>DPO:</strong> info@kreator.team
                   </p>
                   <p className="text-muted-foreground">
-                    <strong>Dirección postal:</strong> [DIRECCIÓN COMPLETA]
+                    <strong>Dirección postal:</strong> Calle Santa María 11, 1C, 17230 Palamós (Girona), España
                   </p>
                 </div>
 
@@ -355,8 +355,10 @@ export function PrivacyPolicy() {
             </div>
           </div>
           <div className="mt-8 text-center">
-            <Button asChild size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
-              <Link href="/">Volver al Inicio</Link>
+            <Button asChild variant="legal" size="sm">
+              <Link href="/#inicio">
+                Volver al Inicio
+              </Link>
             </Button>
           </div>
         </div>

@@ -21,6 +21,11 @@ const buttonVariants = cva(
         cta: "bg-kreator-yellow text-kreator-blue font-bold rounded-lg px-8 py-6 text-lg transition-all duration-200 hover:bg-kreator-orange hover:scale-105",
         navbar:
           "bg-kreator-yellow text-kreator-blue font-medium rounded-md transition-all duration-200 hover:bg-kreator-orange",
+        legal:
+          "bg-kreator-yellow text-kreator-blue font-medium rounded-md transition-all duration-200 hover:bg-kreator-orange hover:scale-105",
+        form:
+          "w-full bg-secondary hover:bg-secondary/90 text-primary font-semibold py-3 text-lg cursor-pointer",
+          
         profileYellow:
           "w-full bg-kreator-yellow text-kreator-blue font-semibold py-6 text-base md:text-lg rounded-lg transition-all duration-200 hover:bg-kreator-orange hover:scale-105",
 

@@ -5,6 +5,7 @@ import { faqData } from "@/data/faq"
 import ReactMarkdown, { type Components } from "react-markdown"
 import remarkGfm from "remark-gfm"
 import rehypeRaw from "rehype-raw"
+import { SectionWrapper } from "@/components/layout/section-wrapper"
 
 interface MarkdownProps {
   children: string
@@ -32,13 +33,12 @@ export function FAQSection() {
   }
 
   return (
-    <section
+    <SectionWrapper
       id="faq"
-      tabIndex={-1}
       aria-labelledby="faq-heading"
-      className="py-12 sm:py-16 md:py-24 bg-[var(--kreator-light-gray)] scroll-mt-24 md:scroll-mt-4 focus:outline-none"
+      className="py-12 sm:py-16 md:py-24 bg-[var(--kreator-light-gray)] scroll-mt-10 md:scroll-mt-2 focus:outline-none"
     >
-      <div className="mx-auto px-4 sm:px-6 max-w-4xl">
+      <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <h2
@@ -107,6 +107,6 @@ export function FAQSection() {
           </a>
         </div>
       </div>
-    </section>
+    </SectionWrapper>
   )
 }

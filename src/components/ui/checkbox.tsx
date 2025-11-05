@@ -10,18 +10,21 @@ function Checkbox({ className, ...props }: React.ComponentProps<typeof CheckboxP
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        "mt-0.5 flex items-center justify-center",
-        "size-5 rounded-md border border-[var(--kreator-gray-dark)]/50 bg-transparent shadow-sm transition-[color,box-shadow,border-color]",
-        "hover:bg-[var(--kreator-gray-light)]/50 hover:border-[var(--kreator-gray-dark)] cursor-pointer",
-        "focus-visible:border-[var(--kreator-blue)] focus-visible:ring-2 focus-visible:ring-[color-mix(in oklch,var(--kreator-blue)_40%,transparent)] focus-visible:ring-offset-1",
+        // Tamaño y forma consistente
+        "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border border-[var(--kreator-gray-dark)]/50",
+        "bg-transparent shadow-sm transition-colors duration-150 cursor-pointer",
+        // Estados
+        "hover:bg-[var(--kreator-gray-light)]/40 hover:border-[var(--kreator-gray-dark)]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in oklch,var(--kreator-blue)_40%,transparent)] focus-visible:ring-offset-2 focus-visible:border-[var(--kreator-blue)]",
         "data-[state=checked]:bg-[var(--kreator-blue)] data-[state=checked]:border-[var(--kreator-blue)] data-[state=checked]:text-white",
-        "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+        // Disabled
+        "disabled:pointer-events-none disabled:opacity-50",
         className
       )}
       {...props}
     >
       <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
-        <CheckIcon className="h-3.5 w-3.5" />
+        <CheckIcon className="h-3 w-3" strokeWidth={3} />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

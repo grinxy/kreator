@@ -1,10 +1,11 @@
-import { RegistrationForm } from "./registration-form"
+import { RegistrationForm } from "@/components/registration/registration-form"
+import { SectionWrapper } from "@/components/layout/section-wrapper"
 
 export function RegistrationSection() {
   return (
-    <section id="registro" className="py-16 px-4 bg-[var(--kreator-gray-light)]/60" aria-labelledby="registro-title">
-      <div className="container mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <SectionWrapper id="registro" className="py-16 bg-[var(--kreator-gray-light)]/60" aria-labelledby="registro-title">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-0">
           {/* Text block on the left */}
           <div className="space-y-6 text-center lg:text-left">
             <h1
@@ -62,6 +63,6 @@ export function RegistrationSection() {
           </div>
         </div>
       </div>
-    </section>
+    </SectionWrapper>
   )
 }
