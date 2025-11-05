@@ -4,7 +4,7 @@ import {SectionDivider} from "@/components/ui/section-divider"
 export function AboutSection() {
   return (
     <div className="relative">
-      <SectionWrapper id="sobre-kreator" tabIndex={0} className="py-16 md:py-24 bg-white scroll-mt-10 md:scroll-mt-2">
+      <SectionWrapper id="sobre-kreator" className="py-16 md:py-24 bg-white scroll-mt-10 md:scroll-mt-2">
         <div className="relative max-w-4xl mx-auto z-10">
           <h2 className="text-2xl md:text-4xl font-bold text-kreator-blue mb-8 text-center">¿Qué es Kreator?</h2>
 

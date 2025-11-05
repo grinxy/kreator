@@ -53,7 +53,7 @@ const fieldValidators: Record<ValidatableFields, (value: any) => string | undefi
     
     const cleanValue = value.trim().toUpperCase()
     
-    // Check if it's a NIF (DNI) - 8 digits + 1 letter
+    // Check if it's a NIF - 8 digits + 1 letter
     const nifRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/
     if (nifRegex.test(cleanValue)) {
       return validateNIF(cleanValue)

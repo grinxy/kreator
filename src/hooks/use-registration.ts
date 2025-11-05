@@ -24,6 +24,7 @@ export function useRegistrationForm() {
   const [registrationSuccess, setRegistrationSuccess] = useState(false)
   const [userEmail, setUserEmail] = useState<string>("")
   const [submitError, setSubmitError] = useState<string>("")
+  const [hasSubmitted, setHasSubmitted] = useState(false)
 
   const debouncedValidateField = useCallback(
     debounce((field: keyof FormData, value: any) => {
@@ -38,21 +39,24 @@ export function useRegistrationForm() {
 
   const updateFormData = (field: keyof FormData, value: any) => {
     const sanitizedValue = typeof value === "string" ? sanitizeInput(value) : value
-
     setFormData(prev => ({ ...prev, [field]: sanitizedValue }))
 
+    // limpiar errores si el usuario corrige algo
     if (errors[field as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [field]: undefined }))
     }
 
-    if (["firstName", "lastName", "email", "phone", "nifCif"].includes(field)) {
+    // seguir permitiendo validaciones progresivas si el formulario ya fue enviado
+    if (hasSubmitted && ["firstName", "lastName", "email", "phone", "nifCif"].includes(field)) {
       debouncedValidateField(field, sanitizedValue)
     }
   }
 
+  // ⛔️ Ahora el blur solo valida si ya se intentó enviar el formulario
   const handleFieldBlur = (field: keyof FormData) => {
-    const value = formData[field]
+    if (!hasSubmitted) return
 
+    const value = formData[field]
     if (["firstName", "lastName", "email", "phone", "profession", "zone", "nifCif"].includes(field)) {
       if (!value || (typeof value === "string" && !value.trim())) {
         const fieldNames = {
@@ -81,6 +85,8 @@ export function useRegistrationForm() {
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault()
+
+      setHasSubmitted(true)
 
       const formErrors = validateForm(formData)
       if (Object.keys(formErrors).length > 0) {
@@ -138,6 +144,7 @@ export function useRegistrationForm() {
     setRegistrationSuccess(false)
     setUserEmail("")
     setSubmitError("")
+    setHasSubmitted(false)
   }
 
   return {

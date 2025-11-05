@@ -30,27 +30,27 @@ export function LegalNotice() {
               </p>
               <div className="bg-muted/50 p-6 rounded-lg">
                 <p className="font-medium text-foreground mb-2">Denominación social:</p>
-                <p className="text-muted-foreground mb-4">[NOMBRE DE LA EMPRESA]</p>
+                <p className="text-muted-foreground mb-4">Kreator Synergies S.L.U.</p>
 
                 <p className="font-medium text-foreground mb-2">NIF/CIF:</p>
-                <p className="text-muted-foreground mb-4">[CIF DE LA EMPRESA]</p>
+                <p className="text-muted-foreground mb-4">B55460612</p>
 
                 <p className="font-medium text-foreground mb-2">Domicilio social:</p>
-                <p className="text-muted-foreground mb-4">[DIRECCIÓN COMPLETA]</p>
+                <p className="text-muted-foreground mb-4">Calle Santa María 11, 1C, 17230 Palamós (Girona), España</p>
 
                 <p className="font-medium text-foreground mb-2">Correo electrónico:</p>
-                <p className="text-muted-foreground mb-4">legal@kreator.com</p>
+                <p className="text-muted-foreground mb-4">info@kreator.team</p>
 
                 <p className="font-medium text-foreground mb-2">Teléfono:</p>
-                <p className="text-muted-foreground">[TELÉFONO DE CONTACTO]</p>
+                <p className="text-muted-foreground">+34 629 90 44 63</p>
               </div>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-primary mb-4">2. Objeto y Ámbito de Aplicación</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                El presente aviso legal regula el uso del sitio web <strong>kreator.com</strong> (en adelante, "la
-                Plataforma"), propiedad de [NOMBRE DE LA EMPRESA], que pone a disposición de los usuarios de forma
+                El presente aviso legal regula el uso del sitio web <strong>https://kreator.team/</strong> (en adelante, "la
+                Plataforma"), propiedad de Kreator Synergies S.L.U. , que pone a disposición de los usuarios de forma
                 gratuita.
               </p>
               <p className="text-muted-foreground leading-relaxed">
@@ -89,7 +89,7 @@ export function LegalNotice() {
               <h2 className="text-2xl font-semibold text-primary mb-4">4. Propiedad Intelectual e Industrial</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Todos los contenidos de la Plataforma, incluyendo textos, imágenes, diseños, logotipos, código fuente y
-                cualquier otro elemento, son propiedad de [NOMBRE DE LA EMPRESA] o de terceros que han autorizado su
+                cualquier otro elemento, son propiedad de Kreator Synergies S.L.U. o de terceros que han autorizado su
                 uso, y están protegidos por las leyes de propiedad intelectual e industrial.
               </p>
               <p className="text-muted-foreground leading-relaxed">
@@ -102,12 +102,12 @@ export function LegalNotice() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-primary mb-4">5. Responsabilidad</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
-                [NOMBRE DE LA EMPRESA] no se hace responsable de los daños y perjuicios que pudieran derivarse del uso
+                Kreator Synergies S.L.U. no se hace responsable de los daños y perjuicios que pudieran derivarse del uso
                 incorrecto de la Plataforma, de la falta de disponibilidad o continuidad del funcionamiento de la misma,
                 ni de los contenidos introducidos por los usuarios.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                La Plataforma puede contener enlaces a sitios web de terceros. [NOMBRE DE LA EMPRESA] no controla ni se
+                La Plataforma puede contener enlaces a sitios web de terceros. Kreator Synergies S.L.U. no controla ni se
                 hace responsable del contenido de dichos sitios web.
               </p>
             </section>
@@ -115,7 +115,7 @@ export function LegalNotice() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-primary mb-4">6. Modificaciones</h2>
               <p className="text-muted-foreground leading-relaxed">
-                [NOMBRE DE LA EMPRESA] se reserva el derecho de modificar el presente aviso legal en cualquier momento.
+                Kreator Synergies S.L.U. se reserva el derecho de modificar el presente aviso legal en cualquier momento.
                 Las modificaciones serán efectivas desde su publicación en la Plataforma. Se recomienda revisar
                 periódicamente este documento.
               </p>
@@ -126,7 +126,7 @@ export function LegalNotice() {
               <p className="text-muted-foreground leading-relaxed">
                 El presente aviso legal se rige por la legislación española. Para la resolución de cualquier
                 controversia que pudiera derivarse del acceso o uso de la Plataforma, las partes se someten expresamente
-                a la jurisdicción de los Juzgados y Tribunales de [CIUDAD], renunciando a cualquier otro fuero que
+                a la jurisdicción de los Juzgados y Tribunales de Barcelona, renunciando a cualquier otro fuero que
                 pudiera corresponderles.
               </p>
             </section>
@@ -138,10 +138,10 @@ export function LegalNotice() {
               </p>
               <div className="bg-muted/50 p-6 rounded-lg">
                 <p className="text-muted-foreground mb-2">
-                  <strong>Email:</strong> legal@kreator.com
+                  <strong>Email:</strong> info@kreator.team
                 </p>
                 <p className="text-muted-foreground">
-                  <strong>Dirección postal:</strong> [DIRECCIÓN COMPLETA]
+                  <strong>Dirección postal:</strong> Calle Santa María 11, 1C, 17230 Palamós (Girona), España
                 </p>
               </div>
             </section>
@@ -158,8 +158,8 @@ export function LegalNotice() {
             </div>
           </div>
           <div className="mt-8 text-center">
-            <Button asChild size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
-              <Link href="/">Volver al Inicio</Link>
+            <Button asChild variant="legal" size="sm">
+              <Link href="/#inicio">Volver al Inicio</Link>
             </Button>
           </div>
         </div>

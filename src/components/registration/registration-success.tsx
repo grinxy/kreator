@@ -10,7 +10,7 @@ interface RegistrationSuccessProps {
 }
 
 export function RegistrationSuccess({}: RegistrationSuccessProps) {
-  const [countdown, setCountdown] = useState(5)
+  const [countdown, setCountdown] = useState(30)
   const router = useRouter()
 
   useEffect(() => {
@@ -55,10 +55,7 @@ export function RegistrationSuccess({}: RegistrationSuccessProps) {
         </div>
 
         <div className="space-y-6 max-w-sm mx-auto">
-          <Button
-            onClick={handleGoHome}
-            className="w-full bg-secondary hover:bg-secondary/90 text-primary font-semibold py-4 text-xl transition-colors"
-          >
+          <Button onClick={handleGoHome} variant="form" size="lg" className="w-full py-4 text-xl">
             Ir al Inicio
           </Button>
 

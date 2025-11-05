@@ -1,11 +1,23 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Suspense } from "react"
 import Script from "next/script"
+import Header from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
+import { NavigationLoaderProvider } from "@/providers/navigation-loader-provider"
 import "@/styles/globals.css"
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
+// ✅ Nuevo export separado para viewport
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: true,
+}
+
+// ✅ Metadata sin el campo viewport dentro
 export const metadata: Metadata = {
   title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales y Pymes",
   description:
@@ -68,6 +80,8 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon-512.png" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#003C71" />
+
+        {/* JSON-LD Organización */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -75,7 +89,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Kreator",
-              description: "La primera red empresarial exclusiva por zonas para profesionales y pymes",
+              description:
+                "La primera red empresarial exclusiva por zonas para profesionales y pymes",
               url: "https://kreator.team/",
               logo: "https://kreator.team/brand/horizontal/logo-kreator-default-horizontal.png",
               sameAs: [
@@ -83,7 +98,6 @@ export default function RootLayout({
                 "https://www.facebook.com/kreator",
                 "https://www.instagram.com/kreator",
               ],
-
               contactPoint: {
                 "@type": "ContactPoint",
                 contactType: "Customer Service",
@@ -92,6 +106,8 @@ export default function RootLayout({
             }),
           }}
         />
+
+        {/* JSON-LD WebSite */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -108,6 +124,7 @@ export default function RootLayout({
             }),
           }}
         />
+
         {/* Google Tag Manager (Head) */}
         <Script id="gtm-head" strategy="afterInteractive">
           {`
@@ -127,9 +144,14 @@ export default function RootLayout({
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
+          />
         </noscript>
-        <Suspense fallback={null}>{children}</Suspense>
+
+        <NavigationLoaderProvider>
+          <Header />
+          <Suspense fallback={null}>{children}</Suspense>
+          <Footer />
+        </NavigationLoaderProvider>
       </body>
     </html>
   )

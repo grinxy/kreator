@@ -72,6 +72,7 @@ export function MobileMenu({ className }: MobileMenuProps) {
         aria-controls="mobile-menu"
         aria-expanded={isOpen}
         aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+        className="cursor-pointer"
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </Button>
