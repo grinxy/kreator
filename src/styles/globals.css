@@ -132,24 +132,32 @@
     @apply border-border outline-ring/50;
   }
 
+  html {
+  scroll-behavior: smooth;
+}
   body {
     @apply bg-background text-foreground font-sans;
   }
 
-  /* ================================================
-    Global Focus & Accessibility
-     ================================================ */
+
+
+  /* Global Focus & Accessibility*/
+
+  /* Avoid the orange outline in popover search engines */
+  [data-radix-popper-content-wrapper] *:focus-visible,
+  [data-radix-popper-content-wrapper] input:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
 
   *:focus:not(:focus-visible) {
     outline: none;
   }
 
   *:focus-visible {
-    outline: 3px solid var(--kreator-orange);
-    outline-offset: 4px;
-    border-radius: 0.375rem;
-    box-shadow: 0 0 0 4px color-mix(in oklch, var(--kreator-orange) 30%, transparent);
-    transition: outline-color 0.2s ease, box-shadow 0.2s ease;
+    outline: 3px solid var(--kreator-orange) !important;
+    outline-offset: 1px !important;
+    border-radius: 0.375rem !important;
   }
 
   a:hover,
@@ -214,9 +222,7 @@
     background-image: var(--kreator-gradient-blue);
   }
 
-  /* --------------------------------------------------
-  Text color utilities
-  -------------------------------------------------- */
+  /*Text color utilities */
   .text-kreator-blue {
     color: var(--kreator-blue);
   }
@@ -267,9 +273,7 @@
     color: transparent;
   }
 
-  /* --------------------------------------------------
-  Border utilities
-  -------------------------------------------------- */
+  /*Border utilities */
   .border-kreator-blue {
     border-color: var(--kreator-blue);
   }
@@ -290,66 +294,12 @@
     border-image: var(--kreator-gradient-blue) 1;
   }
 
-  /* --------------------------------------------------
-  Font family utilities
-  -------------------------------------------------- */
+  /*Font family utilities */
   .font-heading {
     font-family: "Poppins", system-ui, sans-serif;
   }
   .font-body {
     font-family: "Open Sans", sans-serif;
-  }
-
-  @keyframes underlineGrow {
-    from {
-      width: 0;
-    }
-    to {
-      width: 100%;
-    }
-  }
-
-  .hero-accent {
-    position: relative;
-    display: inline-block;
-  }
-
-  .hero-accent::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -0.05em;
-    height: 0.35em;
-    width: 0;
-    background: currentColor;
-    opacity: 0.35;
-    border-radius: 0.25rem;
-    animation: underlineGrow 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) 0.12s forwards;
-  }
-
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(0.5rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .fade-up {
-    animation: fadeUp 0.6s ease-out both;
-  }
-  .fade-up-delay {
-    animation: fadeUp 0.6s ease-out 0.12s both;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-accent::after,
-    .fade-up,
-    .fade-up-delay {
-      animation: none !important;
-    }
   }
 }
 

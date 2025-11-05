@@ -29,7 +29,7 @@ export function TestimonialsSection() {
   ]
 
   return (
-    <SectionWrapper id="testimonios" className="py-16 md:py-24 bg-muted" aria-labelledby="testimonials-heading">
+    <SectionWrapper id="testimonios" className="py-16 md:py-24 bg-muted scroll-mt-10 md:scroll-mt-2" aria-labelledby="testimonials-heading">
       <div className="text-center mb-12">
         <h2 id="testimonials-heading" className="text-xl md:text-4xl font-bold text-kreator-blue mb-4">
           Lo que dicen nuestros clientes

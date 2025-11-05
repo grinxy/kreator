@@ -309,8 +309,8 @@ export function CookiesPolicy() {
           </div>
 
           <div className="mt-8 text-center">
-            <Button asChild size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
-              <Link href="/">Volver al Inicio</Link>
+            <Button asChild variant="legal" size="sm">
+              <Link href="/#inicio">Volver al Inicio</Link>
             </Button>
           </div>
         </div>

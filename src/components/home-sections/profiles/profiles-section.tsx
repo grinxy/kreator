@@ -5,7 +5,7 @@ import { SectionWrapper } from "@/components/layout/section-wrapper"
 
 export function ProfilesSection() {
   return (
-    <SectionWrapper id="perfiles" className="bg-white" innerClassName="py-10 md:py-16">
+    <SectionWrapper id="perfiles" className="bg-white scroll-mt-10 md:scroll-mt-2" innerClassName="py-10 md:py-16">
       <h2 className="text-2xl md:text-4xl font-bold text-kreator-blue text-center mb-8 sm:mb-12">
         Elige tu perfil
       </h2>
