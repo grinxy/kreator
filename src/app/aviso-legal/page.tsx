@@ -1,4 +1,4 @@
-import { LegalNotice } from "@/components/legal/legal-notice"
+import { LegalNotice } from "@/components/legal/LegalNotice"
 
 export default function LegalNoticePage() {
   return (

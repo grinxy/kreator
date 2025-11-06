@@ -1,4 +1,4 @@
-import { CookiesPolicy } from "@/components/legal/cookies-policy"
+import { CookiesPolicy } from "@/components/legal/CookiesPolicy"
 
 export default function CookiesPolicyPage() {
   return (

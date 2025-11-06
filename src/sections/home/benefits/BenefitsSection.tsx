@@ -1,9 +1,9 @@
-import { SectionWrapper } from "@/components/layout/section-wrapper"
+import { SectionWrapper } from "@/components/layout/SectionWrapper"
 
 export function BenefitsSection() {
   return (
     <SectionWrapper id="beneficios" className="py-16 md:py-24 bg-kreator-gray-light scroll-mt-10 md:scroll-mt-2">
-      <h2 className="text-2xl md:text-4xl font-bold text-kreator-blue mb-12 text-center">Beneficios</h2>
+      <h2 className="text-2xl md:text-4xl text-kreator-blue mb-12 text-center">Beneficios</h2>
 
       <div className="max-w-4xl mx-auto">
         <ul className="space-y-4">
@@ -12,9 +12,9 @@ export function BenefitsSection() {
               ✓
             </div>
             <div>
-              <h3 className="text-lg md:text-xl font-semibold text-kreator-blue mb-2">Exclusividad de sector en tu zona</h3>
+              <h3 className="text-lg md:text-xl text-kreator-blue mb-2">Exclusividad de sector en tu equipo</h3>
               <p className="text-gray-700">
-                Serás el único profesional de tu sector en tu área, eliminando la competencia interna.
+                Serás el único profesional de tu especialidad dentro de tu equipo local, sin competencia interna.
               </p>
             </div>
           </li>
@@ -24,7 +24,7 @@ export function BenefitsSection() {
               ✓
             </div>
             <div>
-              <h3 className="text-lg md:text-xl font-semibold text-kreator-blue mb-2">
+              <h3 className="text-lg md:text-xl text-kreator-blue mb-2">
                 Clientes gracias a la red extendida de tus compañeros
               </h3>
               <p className="text-gray-700">Accede a oportunidades de negocio compartidas por todo tu equipo local.</p>
@@ -36,9 +36,7 @@ export function BenefitsSection() {
               ✓
             </div>
             <div>
-              <h3 className="text-lg md:text-xl font-semibold text-kreator-blue mb-2">
-                Comisiones mensuales por referidos directos
-              </h3>
+              <h3 className="text-lg md:text-xl text-kreator-blue mb-2">Comisiones mensuales por referidos directos</h3>
               <p className="text-gray-700">
                 Reduce tu cuota o genera ingresos adicionales invitando a otros profesionales.
               </p>
@@ -50,7 +48,7 @@ export function BenefitsSection() {
               ✓
             </div>
             <div>
-              <h3 className="text-lg md:text-xl font-semibold text-kreator-blue mb-2">
+              <h3 className="text-lg md:text-xl text-kreator-blue mb-2">
                 Networking continuo con profesionales locales
               </h3>
               <p className="text-gray-700">
@@ -64,7 +62,7 @@ export function BenefitsSection() {
               ✨
             </div>
             <div>
-              <h3 className="text-base md:text-lg font-semibold mb-2">Próximamente: programa de puntos y referidos indirectos</h3>
+              <h3 className="text-base md:text-lg mb-2">Próximamente: programa de puntos y referidos indirectos</h3>
               <p className="text-gray-200">Nuevas formas de maximizar tus ingresos y beneficios dentro de la red.</p>
             </div>
           </li>

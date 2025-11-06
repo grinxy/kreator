@@ -1,11 +1,11 @@
-import { HeroSection } from "@/components/home-sections/hero/hero-section"
-import { HowItWorksSection } from "@/components/home-sections/how-it-works/how-it-works-section"
-import { AboutSection } from "@/components/home-sections/about/about-section"
-import { ProfilesSection } from "@/components/home-sections/profiles/profiles-section"
-import { BenefitsSection } from "@/components/home-sections/benefits/benefits-section"
-import { FinalCTASection } from "@/components/home-sections/final-cta/final-cta-section"
-import { TestimonialsSection } from "@/components/home-sections/testimonial/testimonials-section"
-import { FAQSection } from "@/components/home-sections/faq/faq-section"
+import { HeroSection } from "@/sections/home/hero/HeroSection"
+import { HowItWorksSection } from "@/sections/home/how-it-works/HowItWorksSection"
+import { AboutSection } from "@/sections/home/about/AboutSection"
+import { ProfilesSection } from "@/sections/home/profiles/ProfilesSection"
+import { BenefitsSection } from "@/sections/home/benefits/BenefitsSection"
+import { FinalCtaSection } from "@/sections/home/final-cta/FinalCtaSection"
+import { TestimonialsSection } from "@/sections/home/testimonial/TestimonialsSection"
+import { FAQSection } from "@/sections/home/faq/FaqSection"
 
 export default function HomePage() {
   return (
@@ -17,7 +17,7 @@ export default function HomePage() {
         <ProfilesSection />
         <BenefitsSection />
         <FAQSection />
-        <FinalCTASection />
+        <FinalCtaSection />
         <TestimonialsSection />
       </main>
     </div>

@@ -12,7 +12,7 @@ import { Check, ChevronsUpDown, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { professionsData, professionCategories, regionsData, regions } from "@/data/registration"
 import { useRegistrationForm } from "@/hooks/use-registration"
-import { RegistrationSuccess } from "@/components/registration/registration-success"
+import { RegistrationSuccess } from "@/components/registration/RegistrationSuccess"
 
 export function RegistrationForm() {
   const [openZone, setOpenZone] = useState(false)

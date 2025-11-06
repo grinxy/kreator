@@ -15,7 +15,7 @@ export function CookiesPolicy() {
     <div className="min-h-screen bg-background">
       <header className="bg-primary text-primary-foreground py-6">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl font-bold mt-4 text-center text-balance">Política de Cookies</h1>
+          <h1 className="text-3xl md:text-4xl mt-4 text-center text-balance">Política de Cookies</h1>
           <p className="text-primary-foreground/80 mt-2 text-center">Información sobre el uso de cookies en Kreator</p>
         </div>
       </header>
@@ -27,7 +27,7 @@ export function CookiesPolicy() {
               <div className="flex items-start gap-3">
                 <Cookie className="w-6 h-6 text-secondary mt-1 flex-shrink-0" />
                 <div>
-                  <h2 className="text-xl font-semibold text-foreground mb-3">Introducción</h2>
+                  <h3 className="text-xl text-foreground mb-3">Introducción</h3>
                   <p className="text-muted-foreground leading-relaxed mb-3">
                     En Kreator utilizamos cookies y tecnologías similares para mejorar tu experiencia de navegación,
                     analizar el uso de nuestra plataforma y personalizar el contenido que te mostramos.
@@ -44,17 +44,17 @@ export function CookiesPolicy() {
 
           <div className="bg-card rounded-lg p-6 md:p-8 shadow-sm border space-y-8">
             <section>
-              <h2 className="text-2xl font-semibold text-primary mb-4 flex items-center gap-2">
+              <h3 className="text-2xl text-primary mb-4 flex items-center gap-2">
                 <Settings className="w-6 h-6" />
                 Tipos de Cookies Utilizadas
-              </h2>
+              </h3>
               <p className="text-muted-foreground leading-relaxed mb-6">
                 En Kreator utilizamos diferentes tipos de cookies según su finalidad y funcionalidad:
               </p>
 
               <div className="space-y-6">
                 <div className="border-l-4 border-secondary pl-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-2">Cookies Técnicas o Necesarias</h3>
+                  <h3 className="text-lg text-foreground mb-2">Cookies Técnicas o Necesarias</h3>
                   <p className="text-muted-foreground leading-relaxed mb-3">
                     Son esenciales para el correcto funcionamiento de la plataforma. Permiten la navegación y el uso de
                     las diferentes funcionalidades, como el acceso a áreas seguras o la gestión de tu sesión.
@@ -76,7 +76,7 @@ export function CookiesPolicy() {
                 </div>
 
                 <div className="border-l-4 border-secondary pl-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="text-lg text-foreground mb-2">
                     Cookies de Preferencias o Personalización
                   </h3>
                   <p className="text-muted-foreground leading-relaxed mb-3">
@@ -101,7 +101,7 @@ export function CookiesPolicy() {
                 </div>
 
                 <div className="border-l-4 border-secondary pl-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <h3 className="text-lg text-foreground mb-2 flex items-center gap-2">
                     <BarChart3 className="w-5 h-5" />
                     Cookies de Análisis o Estadísticas
                   </h3>
@@ -127,7 +127,7 @@ export function CookiesPolicy() {
                 </div>
 
                 <div className="border-l-4 border-secondary pl-4">
-                  <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <h3 className="text-lg text-foreground mb-2 flex items-center gap-2">
                     <Target className="w-5 h-5" />
                     Cookies de Marketing o Publicidad
                   </h3>
@@ -156,10 +156,10 @@ export function CookiesPolicy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-primary mb-4 flex items-center gap-2">
+              <h3 className="text-2xl text-primary mb-4 flex items-center gap-2">
                 <Globe className="w-6 h-6" />
                 Cookies de Terceros
-              </h2>
+              </h3>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Además de nuestras propias cookies, utilizamos servicios de terceros que pueden instalar cookies en tu
                 dispositivo cuando visitas nuestra plataforma. Estos terceros tienen sus propias políticas de privacidad
@@ -168,7 +168,7 @@ export function CookiesPolicy() {
 
               <div className="space-y-4">
                 <div className="bg-muted/30 p-4 rounded-lg">
-                  <h4 className="font-semibold text-foreground mb-2">Google Analytics</h4>
+                  <h4 className="text-foreground mb-2">Google Analytics</h4>
                   <p className="text-sm text-muted-foreground mb-2">
                     Utilizamos Google Analytics para analizar el uso de nuestra web y obtener estadísticas sobre el
                     comportamiento de los usuarios.
@@ -187,7 +187,7 @@ export function CookiesPolicy() {
                 </div>
 
                 <div className="bg-muted/30 p-4 rounded-lg">
-                  <h4 className="font-semibold text-foreground mb-2">Redes Sociales</h4>
+                  <h4 className="text-foreground mb-2">Redes Sociales</h4>
                   <p className="text-sm text-muted-foreground mb-2">
                     Nuestra web puede incluir plugins de redes sociales (Facebook, LinkedIn, Twitter, Instagram) que
                     pueden instalar cookies para facilitar la interacción con estas plataformas.
@@ -199,7 +199,7 @@ export function CookiesPolicy() {
                 </div>
 
                 <div className="bg-muted/30 p-4 rounded-lg">
-                  <h4 className="font-semibold text-foreground mb-2">Servicios de Marketing</h4>
+                  <h4 className="text-foreground mb-2">Servicios de Marketing</h4>
                   <p className="text-sm text-muted-foreground">
                     Podemos utilizar servicios de terceros como Google Ads, Facebook Pixel u otras plataformas de
                     marketing digital que instalan cookies para medir la efectividad de nuestras campañas publicitarias
@@ -210,7 +210,7 @@ export function CookiesPolicy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-primary mb-4">Gestión de Cookies</h2>
+              <h4 className="text-2xl text-primary mb-4">Gestión de Cookies</h4>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Tienes el control total sobre las cookies que se instalan en tu dispositivo. Puedes gestionar tus
                 preferencias de las siguientes formas:
@@ -218,7 +218,7 @@ export function CookiesPolicy() {
 
               <div className="space-y-4">
                 <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-4">
-                  <h4 className="font-semibold text-foreground mb-2">1. Banner de Cookies</h4>
+                  <h4 className="text-foreground mb-2">1. Banner de Cookies</h4>
                   <p className="text-sm text-muted-foreground">
                     La primera vez que visitas nuestra web, te mostramos un banner donde puedes aceptar o rechazar las
                     cookies no esenciales. Puedes modificar tus preferencias en cualquier momento desde el enlace
@@ -227,7 +227,7 @@ export function CookiesPolicy() {
                 </div>
 
                 <div className="bg-secondary/10 border border-secondary/20 rounded-lg p-4">
-                  <h4 className="font-semibold text-foreground mb-2">2. Configuración del Navegador</h4>
+                  <h4 className="text-foreground mb-2">2. Configuración del Navegador</h4>
                   <p className="text-sm text-muted-foreground mb-3">
                     Puedes configurar tu navegador para aceptar, rechazar o eliminar cookies. A continuación te
                     indicamos cómo hacerlo en los navegadores más comunes:
@@ -262,7 +262,7 @@ export function CookiesPolicy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-primary mb-4">Cambios en la Política de Cookies</h2>
+              <h3 className="text-2xl text-primary mb-4">Cambios en la Política de Cookies</h3>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Kreator se reserva el derecho a modificar esta Política de Cookies en cualquier momento para adaptarla a
                 cambios legislativos, jurisprudenciales o en nuestra forma de operar.
@@ -275,10 +275,10 @@ export function CookiesPolicy() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-primary mb-4 flex items-center gap-2">
+              <h3 className="text-2xl text-primary mb-4 flex items-center gap-2">
                 <Mail className="w-6 h-6" />
                 Contacto
-              </h2>
+              </h3>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Si tienes alguna duda sobre esta Política de Cookies o sobre cómo gestionamos las cookies en nuestra
                 plataforma, puedes contactarnos en:

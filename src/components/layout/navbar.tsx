@@ -1,8 +1,8 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { NavLink } from "@/components/layout/nav-link"
-import { MobileMenu } from "@/components/layout/mobile-menu"
+import { NavLink } from "@/components/layout/NavLink"
+import { MobileMenu } from "@/components/layout/MobileMenu"
 import { useNavigationLoader } from "@/providers/navigation-loader-provider"
 
 export function Navbar() {

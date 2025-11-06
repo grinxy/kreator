@@ -1,26 +1,29 @@
-import { SectionWrapper } from "@/components/layout/section-wrapper"
-import {SectionDivider} from "@/components/ui/section-divider"
+import { SectionWrapper } from "@/components/layout/SectionWrapper"
+import { SectionDivider } from "@/components/ui/section-divider"
 
 export function AboutSection() {
   return (
     <div className="relative">
       <SectionWrapper id="sobre-kreator" className="py-16 md:py-24 bg-white scroll-mt-10 md:scroll-mt-2">
         <div className="relative max-w-4xl mx-auto z-10">
-          <h2 className="text-2xl md:text-4xl font-bold text-kreator-blue mb-8 text-center">¿Qué es Kreator?</h2>
+          <h2 className="text-2xl md:text-4xl text-kreator-blue mb-8 text-center">¿Qué es Kreator?</h2>
 
           <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
             <p>
-              Kreator es la primera comunidad empresarial exclusiva por zonas, creada para autónomos y pymes que quieren
-              vender más y ampliar sus contactos.
+              Kreator es la primera comunidad empresarial colaborativa por equipos, creada para autónomos y pymes que
+              quieren vender más, generar contactos de calidad y crecer en red.
             </p>
 
             <p>
-              En cada área solo puede haber un profesional por sector, lo que te da visibilidad y elimina la competencia
-              interna dentro de tu zona.
+              En cada equipo solo puede haber un profesional por sector, lo que te da visibilidad y elimina la
+              competencia interna dentro del grupo.<br></br> En una misma zona puede haber varios equipos, según el volumen de
+              negocio disponible.
             </p>
 
+            <p></p>
+
             <div className="bg-kreator-gray-light p-6 rounded-lg my-8">
-              <h3 className="text-lg md:text-xl font-semibold text-kreator-blue mb-4">
+              <h3 className="text-lg md:text-xl text-kreator-blue mb-4">
                 Formarás parte de un equipo local multidisciplinar, con perfiles como:
               </h3>
               <ul className="text-base md:text-lg grid md:grid-cols-2 gap-3 text-gray-800">
@@ -62,7 +65,7 @@ export function AboutSection() {
             </div>
 
             <div>
-              <h3 className="text-lg md:text-2xl font-semibold text-kreator-blue mb-4">
+              <h3 className="text-lg md:text-2xl text-kreator-blue mb-4">
                 Además de ampliar tu red, puedes generar ingresos de dos formas:
               </h3>
               <ol className="text-base md:text-xl list-decimal list-inside space-y-3 ml-4">
@@ -85,7 +88,7 @@ export function AboutSection() {
         </div>
       </SectionWrapper>
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-screen overflow-hidden">
-        <SectionDivider color = "var(--kreator-yellow)" />
+        <SectionDivider color="var(--kreator-yellow)" />
       </div>
     </div>
   )

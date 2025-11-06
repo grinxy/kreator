@@ -49,8 +49,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-kreator-yellow transition-colors duration-200">
-                  Blog
+                <Link href="/#testimonios" className="hover:text-kreator-yellow transition-colors duration-200">
+                  Testimonios
                 </Link>
               </li>
               <li>
@@ -89,7 +89,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-[#004A8F] mt-8 pt-8 text-center text-gray-300">
-          <p>&copy; 2025 Kreator. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Kreator. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>
