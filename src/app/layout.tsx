@@ -1,13 +1,12 @@
 import type React from "react"
+import Script from "next/script"
 import type { Metadata, Viewport } from "next"
 import { Suspense } from "react"
-import Script from "next/script"
-import Header from "@/components/layout/Header"
+import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
 import { NavigationLoaderProvider } from "@/providers/navigation-loader-provider"
+import { Poppins, Open_Sans } from "next/font/google"
 import "@/styles/globals.css"
-import { Poppins, Open_Sans } from "next/font/google";
-
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
@@ -15,13 +14,13 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-heading",
-});
+})
 
 const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-body",
-});
+})
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -32,9 +31,7 @@ export const viewport: Viewport = {
 
 const baseUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "https://kreator-omega.vercel.app")
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://kreator-omega.vercel.app")
 
 export const metadata: Metadata = {
   title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales y Pymes",
@@ -99,8 +96,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Kreator",
-              description:
-                "La primera red empresarial exclusiva por zonas para profesionales y pymes",
+              description: "La primera red empresarial exclusiva por zonas para profesionales y pymes",
               url: "https://kreator.team/",
               logo: "https://kreator.team/brand/horizontal/logo-kreator-default-horizontal.png",
               sameAs: [

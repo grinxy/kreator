@@ -1,4 +1,4 @@
-import CaseInsensitivePathsPlugin from 'case-insensitive-paths-webpack-plugin'
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -31,8 +31,8 @@ const nextConfig = {
     ]
   },
   webpack: (config) => {
-    // Add plugin to make imports case-insensitive
-    config.plugins.push(new CaseInsensitivePathsPlugin())
+    // Use the plugin to prevent case-sensitivity issues on Linux/Vercel
+    config.plugins.push(new CaseSensitivePathsPlugin())
     return config
   },
 }
