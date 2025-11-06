@@ -22,10 +22,10 @@ export function NavigationLoaderProvider({ children }: { children: React.ReactNo
 
   const showLoader = () => {
     manualTrigger.current = true
-    // Wait 400 ms before displaying the loader
+    // Wait 300 ms before displaying the loader
     timerRef.current = setTimeout(() => {
       setLoading(true)
-    }, 400)
+    }, 300)
   }
 
   const hideLoader = () => {

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { Navbar } from "@/components/layout/Navbar"
+import { Navbar } from "@/components/layout/navbar/Navbar"
 import jest from "jest" // Import jest to fix the undeclared variable error
 
 // Mock Next.js Image component

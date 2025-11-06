@@ -2,8 +2,8 @@ import type React from "react"
 import Script from "next/script"
 import type { Metadata, Viewport } from "next"
 import { Suspense } from "react"
-import { Header } from "@/components/layout/Header"
-import { Footer } from "@/components/layout/Footer"
+import { Navbar } from "@/components/layout/navbar/Navbar"
+import { Footer } from "@/components/layout/footer/Footer"
 import { NavigationLoaderProvider } from "@/providers/navigation-loader-provider"
 import { Poppins, Open_Sans } from "next/font/google"
 import "@/styles/globals.css"
@@ -154,7 +154,7 @@ export default function RootLayout({
         </noscript>
 
         <NavigationLoaderProvider>
-          <Header />
+          <Navbar />
           <Suspense fallback={null}>{children}</Suspense>
           <Footer />
         </NavigationLoaderProvider>
