@@ -34,17 +34,17 @@ const baseUrl =
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://kreator-omega.vercel.app")
 
 export const metadata: Metadata = {
-  title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales y Pymes",
+  title: "Kreator - La 1ª Comunidad Empresarial Colaborativa por Equipos",
   description:
-    "Únete a la primera red empresarial exclusiva por zonas. Un solo profesional por sector en tu área. Multiplica tus oportunidades, genera comisiones y amplía tu red de contactos. Sin permanencia.",
+    "Kreator es la primera comunidad empresarial colaborativa por equipos, creada para autónomos y pymes que quieren vender más, generar contactos de calidad y crecer en red. En cada equipo solo puede haber un profesional por sector, pero en una misma zona pueden coexistir varios equipos según el volumen de negocio disponible.",
   metadataBase: new URL(baseUrl),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales",
+    title: "Kreator - Comunidad Empresarial por Equipos para Profesionales y Pymes",
     description:
-      "Un solo profesional por sector en tu área. Multiplica tus oportunidades gracias a los contactos de todo tu equipo. Reserva tu plaza ahora.",
+      "Forma parte de la primera comunidad empresarial colaborativa por equipos. En cada equipo solo puede haber un profesional por sector, pero pueden existir varios equipos por zona según la demanda. Expande tu red, gana visibilidad y multiplica tus oportunidades.",
     url: baseUrl,
     siteName: "Kreator",
     images: [
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
         url: `${baseUrl}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Kreator - Red Exclusiva por Zonas para Profesionales",
+        alt: "Kreator - Comunidad Empresarial por Equipos para Profesionales y Pymes",
       },
     ],
     locale: "es_ES",
@@ -73,6 +73,7 @@ export const metadata: Metadata = {
     google: "your-google-verification-code",
   },
 }
+
 
 export default function RootLayout({
   children,
