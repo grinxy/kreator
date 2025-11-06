@@ -1,15 +1,27 @@
 import type React from "react"
+import Script from "next/script"
 import type { Metadata, Viewport } from "next"
 import { Suspense } from "react"
-import Script from "next/script"
-import Header from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
+import { Navbar } from "@/components/layout/navbar/Navbar"
+import { Footer } from "@/components/layout/footer/Footer"
 import { NavigationLoaderProvider } from "@/providers/navigation-loader-provider"
+import { Poppins, Open_Sans } from "next/font/google"
 import "@/styles/globals.css"
 
 const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID
 
-// ✅ Nuevo export separado para viewport
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-heading",
+})
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-body",
+})
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -17,20 +29,15 @@ export const viewport: Viewport = {
   userScalable: true,
 }
 
-// ✅ Metadata sin el campo viewport dentro
+const baseUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://kreator-omega.vercel.app")
+
 export const metadata: Metadata = {
   title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales y Pymes",
   description:
     "Únete a la primera red empresarial exclusiva por zonas. Un solo profesional por sector en tu área. Multiplica tus oportunidades, genera comisiones y amplía tu red de contactos. Sin permanencia.",
-  authors: [{ name: "Kreator Team" }],
-  creator: "Kreator",
-  publisher: "Kreator",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL("https://kreator.team/"),
+  metadataBase: new URL(baseUrl),
   alternates: {
     canonical: "/",
   },
@@ -38,11 +45,11 @@ export const metadata: Metadata = {
     title: "Kreator - La 1ª Red Exclusiva por Zonas para Profesionales",
     description:
       "Un solo profesional por sector en tu área. Multiplica tus oportunidades gracias a los contactos de todo tu equipo. Reserva tu plaza ahora.",
-    url: "https://kreator.team/",
+    url: baseUrl,
     siteName: "Kreator",
     images: [
       {
-        url: "/og-image.jpg",
+        url: `${baseUrl}/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: "Kreator - Red Exclusiva por Zonas para Profesionales",
@@ -73,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" className={`${poppins.variable} ${openSans.variable}`}>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon-192.png" type="image/png" />
@@ -81,7 +88,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#003C71" />
 
-        {/* JSON-LD Organización */}
+        {/* JSON-LD Organisation */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -89,8 +96,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Kreator",
-              description:
-                "La primera red empresarial exclusiva por zonas para profesionales y pymes",
+              description: "La primera red empresarial exclusiva por zonas para profesionales y pymes",
               url: "https://kreator.team/",
               logo: "https://kreator.team/brand/horizontal/logo-kreator-default-horizontal.png",
               sameAs: [
@@ -148,7 +154,7 @@ export default function RootLayout({
         </noscript>
 
         <NavigationLoaderProvider>
-          <Header />
+          <Navbar />
           <Suspense fallback={null}>{children}</Suspense>
           <Footer />
         </NavigationLoaderProvider>

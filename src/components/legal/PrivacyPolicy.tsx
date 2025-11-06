@@ -15,7 +15,7 @@ export function PrivacyPolicy() {
     <div className="min-h-screen bg-background">
       <header className="bg-primary text-primary-foreground py-6">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl text-center font-bold mt-4 text-balance">Política de Privacidad</h1>
+          <h1 className="text-3xl md:text-4xl text-center mt-4 text-balance">Política de Privacidad</h1>
           <p className="text-primary-foreground/80 text-center mt-2">Conforme al RGPD y LOPDGDD</p>
         </div>
       </header>
@@ -26,7 +26,7 @@ export function PrivacyPolicy() {
             <div className="flex items-start gap-3">
               <Shield className="w-6 h-6 text-secondary mt-1 flex-shrink-0" />
               <div>
-                <h2 className="text-lg font-semibold text-foreground mb-2">Compromiso con la Privacidad</h2>
+                <h3 className="text-lg text-foreground mb-2">Compromiso con la Privacidad</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   En Kreator respetamos tu privacidad y nos comprometemos a proteger tus datos personales. Esta política
                   explica cómo recopilamos, utilizamos y protegemos tu información conforme al Reglamento General de
@@ -40,7 +40,7 @@ export function PrivacyPolicy() {
           <div className="prose prose-lg max-w-none">
             <div className="bg-card rounded-lg p-8 shadow-sm border">
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">1. Responsable del Tratamiento</h2>
+                <h3 className="text-2xl text-primary mb-4">1. Responsable del Tratamiento</h3>
                 <div className="bg-muted/50 p-6 rounded-lg">
                   <p className="font-medium text-foreground mb-2">Responsable:</p>
                   <p className="text-muted-foreground mb-4">Kreator Synergies S.L.U.</p>
@@ -60,14 +60,14 @@ export function PrivacyPolicy() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">2. Datos que Recopilamos</h2>
+                <h3 className="text-2xl text-primary mb-4">2. Datos que Recopilamos</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   Recopilamos los siguientes tipos de datos personales cuando utilizas nuestra plataforma:
                 </p>
 
                 <div className="space-y-4">
                   <div className="border-l-4 border-secondary pl-4">
-                    <h3 className="text-lg font-medium text-foreground mb-2">Datos de Identificación</h3>
+                    <h4 className="text-lg font-medium text-foreground mb-2">Datos de Identificación</h4>
                     <ul className="list-disc list-inside text-muted-foreground space-y-1 ml-4">
                       <li>Nombre y apellidos</li>
                       <li>Documento de identidad (DNI/NIE/CIF)</li>
@@ -99,7 +99,7 @@ export function PrivacyPolicy() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">3. Finalidades del Tratamiento</h2>
+                <h3 className="text-2xl text-primary mb-4">3. Finalidades del Tratamiento</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   Utilizamos tus datos personales para las siguientes finalidades:
                 </p>
@@ -136,7 +136,7 @@ export function PrivacyPolicy() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">4. Base Legal del Tratamiento</h2>
+                <h3 className="text-2xl text-primary mb-4">4. Base Legal del Tratamiento</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">El tratamiento de tus datos se basa en:</p>
                 <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
                   <li>
@@ -155,7 +155,7 @@ export function PrivacyPolicy() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">5. Tus Derechos</h2>
+                <h3 className="text-2xl text-primary mb-4">5. Tus Derechos</h3>
                 <p className="text-muted-foreground leading-relaxed mb-6">
                   Como titular de los datos, tienes los siguientes derechos que puedes ejercer contactando con nosotros:
                 </p>
@@ -227,7 +227,7 @@ export function PrivacyPolicy() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">6. Cookies y Tecnologías de Seguimiento</h2>
+                <h3 className="text-2xl text-primary mb-4">6. Cookies y Tecnologías de Seguimiento</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   Utilizamos cookies y tecnologías similares para mejorar tu experiencia en nuestra plataforma:
                 </p>
@@ -262,7 +262,7 @@ export function PrivacyPolicy() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">7. Conservación de Datos</h2>
+                <h3 className="text-2xl text-primary mb-4">7. Conservación de Datos</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   Conservamos tus datos personales durante el tiempo necesario para cumplir con las finalidades para las
                   que fueron recopilados:
@@ -284,7 +284,7 @@ export function PrivacyPolicy() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">8. Seguridad de los Datos</h2>
+                <h3 className="text-2xl text-primary mb-4">8. Seguridad de los Datos</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   Implementamos medidas técnicas y organizativas apropiadas para proteger tus datos personales contra el
                   acceso no autorizado, la alteración, divulgación o destrucción, incluyendo:
@@ -299,7 +299,7 @@ export function PrivacyPolicy() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">9. Transferencias Internacionales</h2>
+                <h3 className="text-2xl text-primary mb-4">9. Transferencias Internacionales</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   En caso de realizar transferencias internacionales de datos, nos aseguraremos de que se realicen con
                   las garantías adecuadas conforme al RGPD, incluyendo decisiones de adecuación de la Comisión Europea o
@@ -308,7 +308,7 @@ export function PrivacyPolicy() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">10. Modificaciones de la Política</h2>
+                <h3 className="text-2xl text-primary mb-4">10. Modificaciones de la Política</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   Podemos actualizar esta política de privacidad ocasionalmente. Te notificaremos cualquier cambio
                   significativo por email o mediante un aviso destacado en nuestra plataforma. Te recomendamos revisar
@@ -317,7 +317,7 @@ export function PrivacyPolicy() {
               </section>
 
               <section>
-                <h2 className="text-2xl font-semibold text-primary mb-4">11. Contacto y Reclamaciones</h2>
+                <h3 className="text-2xl text-primary mb-4">11. Contacto y Reclamaciones</h3>
                 <div className="bg-muted/50 p-6 rounded-lg mb-4">
                   <p className="text-muted-foreground mb-4">
                     Para cualquier consulta sobre esta política de privacidad o el tratamiento de tus datos:

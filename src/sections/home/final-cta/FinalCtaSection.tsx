@@ -1,14 +1,15 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { SectionWrapper } from "@/components/layout/section-wrapper"
+import { SectionWrapper } from "@/components/layout/SectionWrapper"
 
-export function FinalCTASection() {
+export function FinalCtaSection() {
   return (
-    <SectionWrapper id="contacto" className="py-16 md:py-48 bg-kreator-gradient-blue text-white scroll-mt-10 md:scroll-mt-4">
+    <SectionWrapper
+      id="contacto"
+      className="py-16 md:py-48 bg-kreator-gradient-blue text-white scroll-mt-10 md:scroll-mt-4"
+    >
       <div className="mx-auto text-center">
-        <h2 className="text-2xl md:text-4xl font-bold mb-6 text-balance">
-          Tu sector en tu zona puede estar disponible todavía
-        </h2>
+        <h2 className="text-2xl md:text-4xl mb-6 text-balance">Tu sector en tu zona puede estar disponible todavía</h2>
         <h3 className="text-xl mb-8 text-gray-200 max-w-3xl mx-auto leading-relaxed">
           No dejes que otro profesional ocupe tu lugar en la red exclusiva de tu área.
         </h3>

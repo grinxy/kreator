@@ -5,11 +5,11 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none ",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none font-heading",
   {
     variants: {
       variant: {
-        default: "bg-kreator-yellow text-kreator-blue shadow-xs hover:bg-primary/90 hover:text-white",
+        default: "bg-kreator-yellow text-kreator-blue font-medium rounded-md transition-all duration-200 hover:bg-kreator-orange hover:scale-105",
         destructive: "bg-destructive text-white shadow-xs hover:bg-destructive/90 ",
         outline:
           "border-2 border-white text-white rounded-lg hover:bg-white hover:text-orange-500 hover:scale-105 transition-all duration-200 text-sm md:text-base font-semibold",
@@ -20,7 +20,7 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         cta: "bg-kreator-yellow text-kreator-blue font-bold rounded-lg px-8 py-6 text-lg transition-all duration-200 hover:bg-kreator-orange hover:scale-105",
         navbar:
-          "bg-kreator-yellow text-kreator-blue font-medium rounded-md transition-all duration-200 hover:bg-kreator-orange",
+          "bg-kreator-yellow text-kreator-blue font-medium rounded-md transition-all duration-200 hover:bg-kreator-orange hover:scale-105",
         legal:
           "bg-kreator-yellow text-kreator-blue font-medium rounded-md transition-all duration-200 hover:bg-kreator-orange hover:scale-105",
         form:

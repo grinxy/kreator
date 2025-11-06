@@ -1,4 +1,4 @@
-import  TermsAndConditions  from "@/components/legal/terms-and-conditions"
+import  TermsAndConditions  from "@/components/legal/TermsAndConditions"
 
 export default function TermsAndConditionsPage() {
   return (

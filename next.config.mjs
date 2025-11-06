@@ -1,3 +1,5 @@
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -15,29 +17,23 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
-  // Enable static optimization
   trailingSlash: false,
-  // Security headers
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
-          },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'origin-when-cross-origin' },
         ],
       },
     ]
+  },
+  webpack: (config) => {
+    // Use the plugin to prevent case-sensitivity issues on Linux/Vercel
+    config.plugins.push(new CaseSensitivePathsPlugin())
+    return config
   },
 }
 

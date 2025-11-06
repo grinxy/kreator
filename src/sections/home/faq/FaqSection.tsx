@@ -5,7 +5,8 @@ import { faqData } from "@/data/faq"
 import ReactMarkdown, { type Components } from "react-markdown"
 import remarkGfm from "remark-gfm"
 import rehypeRaw from "rehype-raw"
-import { SectionWrapper } from "@/components/layout/section-wrapper"
+import { SectionWrapper } from "@/components/layout/SectionWrapper"
+import { Button } from "@/components/ui/button"
 
 interface MarkdownProps {
   children: string
@@ -43,7 +44,7 @@ export function FAQSection() {
         <div className="text-center mb-10 sm:mb-12 md:mb-16">
           <h2
             id="faq-heading"
-            className="text-2xl md:text-4xl font-bold text-[var(--kreator-blue)] mb-3 sm:mb-4 font-[family-name:var(--font-poppins)]"
+            className="text-2xl md:text-4xl text-[var(--kreator-blue)] mb-3 sm:mb-4 font-[family-name:var(--font-poppins)]"
           >
             ¿Tienes dudas?
           </h2>
@@ -64,7 +65,7 @@ export function FAQSection() {
             >
               <AccordionTrigger
                 id={`faq-question-${index}`}
-                className="text-base sm:text-lg md:text-xl font-semibold text-[var(--kreator-blue)] font-[family-name:var(--font-poppins)] px-4 sm:px-6 py-4 sm:py-5 hover:bg-gray-50 cursor-pointer flex items-center justify-between w-full text-left"
+                className="text-base sm:text-lg md:text-xl text-[var(--kreator-blue)] font-[family-name:var(--font-poppins)] px-4 sm:px-6 py-4 sm:py-5 hover:bg-gray-50 cursor-pointer flex items-center justify-between w-full text-left"
               >
                 {item.question}
               </AccordionTrigger>
@@ -97,14 +98,19 @@ export function FAQSection() {
         </p>
 
         <div className="text-center mt-3 sm:mt-5">
-          <a
-            href="mailto:info@kreator.es"
-            className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-kreator-blue bg-[var(--kreator-yellow)] rounded-lg hover:bg-[var(--kreator-orange)] transition-colors duration-200 shadow-md hover:shadow-lg font-[family-name:var(--font-poppins)]"
+          <Button
+            asChild
+            variant="default"
+            size="lg"
             data-analytics="faq-contact-support"
-            aria-label="Enviar correo al equipo de soporte de Kreator para resolver dudas"
           >
-            Contactar
-          </a>
+            <a
+              href="mailto:info@kreator.es"
+              aria-label="Enviar correo al equipo de soporte de Kreator para resolver dudas"
+            >
+              Contactar
+            </a>
+          </Button>
         </div>
       </div>
     </SectionWrapper>
