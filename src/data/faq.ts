@@ -5,8 +5,9 @@ export interface FAQItem {
 
 export const faqData: FAQItem[] = [
   {
-    question: "1. ¿Qué significa que Kreator sea “por zonas”?",
-    answer: `Cada zona representa un área geográfica con un número mínimo de habitantes o actividad empresarial suficiente para generar negocio real. \nSegún el territorio, puede abarcar un barrio, una ciudad o una comarca.\n\nCada zona forma un **equipo local compuesto por profesionales de distintos sectores**, y solo puede haber **un representante por especialidad**, garantizando colaboración sin competencia interna.`,
+    question: "1. ¿Qué significa que Kreator funcione “por equipos”?",
+    answer: `Cada equipo reúne a profesionales de **distintos sectores** que colaboran activamente para generar oportunidades de negocio reales.
+En cada equipo solo puede haber **un representante por sector**, lo que garantiza la exclusividad y elimina la competencia interna. \nDentro de una misma zona pueden crearse **varios equipos**, siempre que exista suficiente volumen de negocio y profesionales interesados para asegurar la rentabilidad y la dinámica del grupo.\n\nDe esta forma, cada equipo mantiene su equilibrio y potencial de crecimiento.`,
   },
   {
     question: "2. ¿Tengo que asistir a las reuniones?",
@@ -34,9 +35,9 @@ Puedes darte de baja en cualquier momento, **sin penalizaciones**.`,
   },
   {
     question: "5. ¿Puedo unirme si mi sector ya está ocupado en mi zona?",
-    answer: `Si el sector ya está cubierto, puedes inscribirte en la **lista de espera** o explorar otra zona cercana que aún tenga plazas disponibles.
+    answer: `Si tu sector ya está representado en todos los equipos activos de tu zona, podrás inscribirte en la **lista de espera** para ser el siguiente en incorporarte cuando se libere una plaza o cuando se abra un nuevo equipo por aumento del volumen de negocio.
 
-Ten en cuenta que deberá ser una zona a la que puedas asistir fácilmente, ya que las reuniones presenciales se realizan una vez al mes con tu equipo local.`,
+También puedes elegir otra zona cercana siempre que puedas **asistir con facilidad a las reuniones** presenciales de tu equipo (habitualmente una vez al mes).`,
   },
   {
     question: "6. ¿Qué necesito para empezar?",

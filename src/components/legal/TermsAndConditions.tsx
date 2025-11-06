@@ -15,7 +15,7 @@ export default function TermsAndConditions() {
     <div className="min-h-screen bg-background">
       <header className="bg-primary text-primary-foreground py-6">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mt-4 text-balance">Términos y Condiciones del Servicio</h1>
+          <h1 className="text-3xl md:text-4xl mt-4 text-balance">Términos y Condiciones del Servicio</h1>
           <p className="text-primary-foreground/80 mt-2">
             Normas de uso, registro y funcionamiento de la plataforma Kreator
           </p>
@@ -28,7 +28,7 @@ export default function TermsAndConditions() {
             <div className="flex items-start gap-3">
               <FileText className="w-6 h-6 text-secondary mt-1 flex-shrink-0" />
               <div>
-                <h2 className="text-lg font-semibold text-foreground mb-2">Objeto del Documento</h2>
+                <h3 className="text-lg text-foreground mb-2">Objeto del Documento</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   El presente documento regula el acceso, registro y uso de la plataforma <strong>Kreator</strong>,
                   propiedad de Kreator Synergies S.L.U., así como las condiciones de contratación, pago y participación
@@ -41,7 +41,7 @@ export default function TermsAndConditions() {
           <div className="prose prose-lg max-w-none">
             <div className="bg-card rounded-lg p-8 shadow-sm border">
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">1. Información General</h2>
+                <h3 className="text-2xl text-primary mb-4">1. Información General</h3>
                 <p className="text-muted-foreground leading-relaxed mb-4">
                   En cumplimiento del artículo 10 de la Ley 34/2002, de Servicios de la Sociedad de la Información y de
                   Comercio Electrónico (LSSI-CE), se informa que la plataforma <strong>kreator.team</strong> es
@@ -67,7 +67,7 @@ export default function TermsAndConditions() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">2. Objeto del Servicio</h2>
+                <h3 className="text-2xl text-primary mb-4">2. Objeto del Servicio</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   Kreator ofrece una plataforma digital de networking profesional que conecta autónomos y pymes por
                   zonas geográficas, permitiendo la generación de oportunidades de negocio y comisiones entre sus
@@ -76,7 +76,7 @@ export default function TermsAndConditions() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">3. Registro y Acceso</h2>
+                <h3 className="text-2xl text-primary mb-4">3. Registro y Acceso</h3>
                 <div className="flex items-start gap-3 mb-3">
                   <Users className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
                   <p className="text-muted-foreground leading-relaxed">
@@ -95,7 +95,7 @@ export default function TermsAndConditions() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">4. Cuotas y Pagos</h2>
+                <h3 className="text-2xl text-primary mb-4">4. Cuotas y Pagos</h3>
                 <div className="flex items-start gap-3 mb-3">
                   <CreditCard className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
                   <p className="text-muted-foreground leading-relaxed">
@@ -118,7 +118,7 @@ export default function TermsAndConditions() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">5. Programa de Referidos</h2>
+                <h3 className="text-2xl text-primary mb-4">5. Programa de Referidos</h3>
                 <div className="flex items-start gap-3 mb-3">
                   <Network className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
                   <p className="text-muted-foreground leading-relaxed">
@@ -138,7 +138,7 @@ export default function TermsAndConditions() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">6. Uso de la Plataforma</h2>
+                <h3 className="text-2xl text-primary mb-4">6. Uso de la Plataforma</h3>
                 <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
                   <li>Utilizar la plataforma con fines profesionales lícitos y respetuosos.</li>
                   <li>No publicar contenido ofensivo, engañoso o que infrinja derechos de terceros.</li>
@@ -148,7 +148,7 @@ export default function TermsAndConditions() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">7. Exclusividad por Zona y Sector</h2>
+                <h3 className="text-2xl text-primary mb-4">7. Exclusividad por Zona y Sector</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   Cada profesional contará con exclusividad de su sector dentro del equipo al que pertenezca. Podrán
                   existir varios equipos en una misma zona geográfica, en función del tamaño o densidad del área (por
@@ -160,7 +160,7 @@ export default function TermsAndConditions() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">8. Responsabilidad</h2>
+                <h3 className="text-2xl text-primary mb-4">8. Responsabilidad</h3>
                 <div className="flex items-start gap-3 mb-3">
                   <Shield className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
                   <p className="text-muted-foreground leading-relaxed">
@@ -172,7 +172,7 @@ export default function TermsAndConditions() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">9. Cancelación y Baja</h2>
+                <h3 className="text-2xl text-primary mb-4">9. Cancelación y Baja</h3>
                 <div className="flex items-start gap-3 mb-3">
                   <RefreshCcw className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
                   <p className="text-muted-foreground leading-relaxed">
@@ -184,7 +184,7 @@ export default function TermsAndConditions() {
               </section>
 
               <section className="mb-8">
-                <h2 className="text-2xl font-semibold text-primary mb-4">10. Modificaciones del Servicio</h2>
+                <h3 className="text-2xl text-primary mb-4">10. Modificaciones del Servicio</h3>
                 <div className="flex items-start gap-3 mb-3">
                   <AlertTriangle className="w-5 h-5 text-secondary mt-1 flex-shrink-0" />
                   <p className="text-muted-foreground leading-relaxed">
@@ -196,7 +196,7 @@ export default function TermsAndConditions() {
               </section>
 
               <section>
-                <h2 className="text-2xl font-semibold text-primary mb-4">11. Legislación y Jurisdicción</h2>
+                <h3 className="text-2xl text-primary mb-4">11. Legislación y Jurisdicción</h3>
                 <p className="text-muted-foreground leading-relaxed">
                   Estos Términos y Condiciones se rigen por la legislación española. Para cualquier controversia, las
                   partes se someten expresamente a los Juzgados y Tribunales de [CIUDAD], renunciando a cualquier otro

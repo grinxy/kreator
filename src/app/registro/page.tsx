@@ -1,4 +1,4 @@
-import { RegistrationSection } from "@/components/registration/registration-section"
+import { RegistrationSection } from "@/components/registration/RegistrationSection"
 
 export default function RegistroPage() {
   return (

@@ -14,7 +14,7 @@ export function LegalNotice() {
     <div className="min-h-screen bg-background">
       <header className="bg-primary text-primary-foreground py-6">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl md:text-4xl text-center font-bold mt-4 text-balance">Aviso Legal</h1>
+          <h1 className="text-3xl md:text-4xl text-center mt-4 text-balance">Aviso Legal</h1>
         </div>
       </header>
 
@@ -22,7 +22,7 @@ export function LegalNotice() {
         <div className="max-w-4xl mx-auto prose prose-lg">
           <div className="bg-card rounded-lg p-8 shadow-sm border">
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-primary mb-4">1. Información General</h2>
+              <h3 className="text-2xl text-primary mb-4">1. Información General</h3>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la
                 Información y de Comercio Electrónico, se informa a los usuarios de los datos identificativos de la
@@ -47,7 +47,7 @@ export function LegalNotice() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-primary mb-4">2. Objeto y Ámbito de Aplicación</h2>
+              <h3 className="text-2xl text-primary mb-4">2. Objeto y Ámbito de Aplicación</h3>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 El presente aviso legal regula el uso del sitio web <strong>https://kreator.team/</strong> (en adelante, "la
                 Plataforma"), propiedad de Kreator Synergies S.L.U. , que pone a disposición de los usuarios de forma
@@ -61,7 +61,7 @@ export function LegalNotice() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-primary mb-4">3. Condiciones de Uso</h2>
+              <h3 className="text-2xl text-primary mb-4">3. Condiciones de Uso</h3>
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-medium text-foreground mb-2">3.1. Uso Permitido</h3>
@@ -86,7 +86,7 @@ export function LegalNotice() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-primary mb-4">4. Propiedad Intelectual e Industrial</h2>
+              <h3 className="text-2xl text-primary mb-4">4. Propiedad Intelectual e Industrial</h3>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Todos los contenidos de la Plataforma, incluyendo textos, imágenes, diseños, logotipos, código fuente y
                 cualquier otro elemento, son propiedad de Kreator Synergies S.L.U. o de terceros que han autorizado su
@@ -100,7 +100,7 @@ export function LegalNotice() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-primary mb-4">5. Responsabilidad</h2>
+              <h3 className="text-2xl text-primary mb-4">5. Responsabilidad</h3>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Kreator Synergies S.L.U. no se hace responsable de los daños y perjuicios que pudieran derivarse del uso
                 incorrecto de la Plataforma, de la falta de disponibilidad o continuidad del funcionamiento de la misma,
@@ -113,7 +113,7 @@ export function LegalNotice() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-primary mb-4">6. Modificaciones</h2>
+              <h3 className="text-2xl text-primary mb-4">6. Modificaciones</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Kreator Synergies S.L.U. se reserva el derecho de modificar el presente aviso legal en cualquier momento.
                 Las modificaciones serán efectivas desde su publicación en la Plataforma. Se recomienda revisar
@@ -122,7 +122,7 @@ export function LegalNotice() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-primary mb-4">7. Legislación Aplicable y Jurisdicción</h2>
+              <h3 className="text-2xl text-primary mb-4">7. Legislación Aplicable y Jurisdicción</h3>
               <p className="text-muted-foreground leading-relaxed">
                 El presente aviso legal se rige por la legislación española. Para la resolución de cualquier
                 controversia que pudiera derivarse del acceso o uso de la Plataforma, las partes se someten expresamente
@@ -132,7 +132,7 @@ export function LegalNotice() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold text-primary mb-4">8. Contacto</h2>
+              <h3 className="text-2xl text-primary mb-4">8. Contacto</h3>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 Para cualquier consulta relacionada con este aviso legal, puede contactar con nosotros a través de:
               </p>

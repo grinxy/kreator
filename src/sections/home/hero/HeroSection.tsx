@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { SectionWrapper } from "@/components/layout/section-wrapper"
+import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { ChevronDown } from "lucide-react"
 
 export function HeroSection() {
@@ -12,16 +12,16 @@ export function HeroSection() {
       id="inicio"
       className="relative flex flex-col justify-center items-center bg-kreator-blue text-white min-h-[90dvh]"
     >
-      <div className="text-center max-w-5xl mx-auto mt-2 md:mt-20">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 text-balance">
-          Haz crecer tu negocio con la 1ª red <span className="text-kreator-yellow">exclusiva</span> por zonas
+      <div className="text-center max-w-6xl mx-auto mt-2 md:mt-14">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading mb-6 text-balance">
+          Haz crecer tu negocio con la 1ª red por equipos, con{" "}
+          <span className="text-kreator-yellow font-bold font-heading">exclusividad</span> de sector
         </h1>
 
-        <h2 className="text-lg md:text-2xl mb-4 text-gray-100">Un solo profesional por sector y zona.</h2>
+        <h3 className="text-lg md:text-2xl mb-4 text-gray-100">Un solo profesional por sector en cada equipo.</h3>
 
         <h3 className="text-lg md:text-xl mb-8 text-gray-200">
-          Un solo profesional por sector en tu área. Multiplica tus oportunidades gracias a los contactos de todo tu
-          equipo.
+          Multiplica tus oportunidades con los contactos y proyectos compartidos de tu equipo local.
         </h3>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -32,13 +32,13 @@ export function HeroSection() {
           </Button>
         </div>
 
-        <p className="mt-6 text-sm text-gray-300">Reserva ahora tu sector profesional y zona.</p>
+        <p className="mt-6 text-sm text-gray-300 font-semibold">Sin permanencia · Comisiones desde el primer mes</p>
       </div>
 
-      {/* Filo amarillo */}
+      {/* Yellow edge */}
       <div className="absolute bottom-0 left-0 right-0 h-[7px] bg-kreator-yellow" />
 
-      {/* Flecha */}
+      {/* Arrow */}
       <div className="mt-12 md:mt-20 flex justify-center">
         <Link
           href="#sobre-kreator"

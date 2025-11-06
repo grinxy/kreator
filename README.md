@@ -1,124 +1,124 @@
 # Kreator Landing Page
 
-Landing page profesional para **Kreator**, la plataforma que conecta profesionales industriales para generar *referrals* y hacer crecer negocios.
+A professional landing page for **Kreator**, the platform that connects professionals across industries and regions to generate referrals and grow their businesses.
 
-## 🚀 Características
+## 🚀 Features
 
-- **Next.js 14.2.16** con App Router  
-- **React 18** y **React DOM 18**  
-- **TypeScript 5** estricto para type safety  
-- **Tailwind CSS 4.1.9** para estilos modernos  
-- **Estructura de componentes clara** (UI, Layout, Sections, Registration)  
-- **Accesibilidad completa** (WAI-ARIA, navegación por teclado)  
-- **Responsive design** (mínimo 300px de ancho)  
-- **Tests unitarios** con Vitest + React Testing Library  
-- **Tests E2E** con Playwright  
+- **Next.js 14.2.16**  
+- **React 18** and **React DOM 18**  
+- **TypeScript 5**  
+- **Tailwind CSS 4.1.9**  
+- **Clean component structure** (UI, Layout, Sections, Registration)  
+- **Full accessibility best practices** (WAI-ARIA, keyboard navigation)  
+- **Responsive design** (optimized for screens starting at 300px wide)  
+- **Unit tests** with Vitest + React Testing Library  
+- **End-to-end tests (E2E)** with Playwright  
 
-## 🛠️ Instalación y Desarrollo
+## 🛠️ Installation and Development
 
 ```bash
-# Instalar dependencias
+# Install dependencies
 pnpm install
 
-# Ejecutar en modo desarrollo
+# Run in development mode
 pnpm dev
 
-# Construir para producción
+# Build for production
 pnpm build
 
-# Ejecutar en producción
+# Run in production
 pnpm start
+
 ```
 
 ## 🧪 Testing
 
 ```bash
-# Tests unitarios
+# Unit tests
 pnpm test
 
-# Tests unitarios en modo watch
+# Unit tests in watch mode
 pnpm test:watch
 
-# Tests E2E
+# End-to-end tests
 pnpm test:e2e
 
-# Tests E2E con interfaz visual
+# E2E tests with visual UI
 pnpm test:e2e:ui
 ```
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```bash
 src/
-├── app/                 # Next.js App Router
-│   ├── layout.tsx       # Layout principal
-│   ├── page.tsx         # Página de inicio
-│   └── globals.css      # Estilos globales
-├── components/          # Componentes reutilizables
-│   ├── layout/          # Navbar, footer, header, mobile menu
-│   ├── registration/    # Formulario y sección de registro
-│   ├── sections/        # Bloques de la landing (hero, features, testimonials, cta)
-│   └── ui/              # Elementos pequeños (botones, inputs, badges…)
-├── data/                # Datos tipados para contenido
-│   ├── features.ts
-│   ├── stats.ts
-│   └── testimonials.ts
-├── hooks/               # Custom hooks
-├── lib/                 # Utilidades y lógica auxiliar
+├── app/                  # Next.js App Router entry (root layout + pages)
+│   ├── layout.tsx        # Root layout (metadata, fonts, providers, GTM)
+│   └── page.tsx          # Home / landing page
+│
+├── components/           # Reusable React components
+│   ├── layout/           # Shell elements: Header, Navbar, Footer, wrappers
+│   ├── legal/            # Legal-related components and layouts
+│   ├── login/            # Login components (forms, views, helpers)
+│   ├── registration/     # Registration form, map and registration UI
+│   └── ui/               # Small reusable UI atoms (Button, Input, Badge…)
+│
+├── sections/             # Page-level sections
+│   └── home/
+│       ├── hero/         # Hero section with main CTA
+│       ├── about/        # “What is Kreator” section
+│       ├── benefits/     # Benefits and value proposition
+│       ├── how-it-works/ # Step-by-step “How it works”
+│       ├── profiles/     # Profiles: Professional / Team Leader
+│       ├── testimonial/  # Testimonials / social proof
+│       └── final-cta/    # Final call-to-action block
+│
+├── data/                 # Typed static content (FAQs, copy, feature lists)
+├── hooks/                # Custom React hooks
+├── lib/                  # Utility functions and helpers
+├── providers/            # Global React context providers
+├── services/             # External services and integrations (e.g. Stripe)
+├── styles/               # Global styles and design tokens
+│   └── globals.css       # Main global stylesheet for the whole app
+└── types/                # Shared TypeScript types and interfaces
+
 ```
 
-Otras carpetas relevantes:
+Other relevant folders:
 
 ```bash
 e2e/          # Tests end-to-end
-__tests__/    # Tests unitarios
-public/       # Assets estáticos (imágenes, favicons, etc.)
+__tests__/    # Unit tests
+public/       # Static assets (images, favicons, etc.)
 ```
 
-## 🎯 Accesibilidad
+## 🎯 Accessibility
 
-La landing page cumple con las mejores prácticas de accesibilidad:
+The landing page complies with best practices for accessibility:
 
-- ✅ Navegación 100% por teclado  
-- ✅ Focus visible en todos los elementos interactivos  
-- ✅ ARIA labels y roles apropiados  
-- ✅ Estructura semántica HTML5  
-- ✅ Contraste de colores WCAG AA  
-- ✅ Textos alternativos para imágenes  
-- ✅ Focus trap en menú móvil  
+- ✅ 100% keyboard navigation  
+- ✅ Visible focus on all interactive elements  
+- ✅ ARIA labels and appropriate roles  
+- ✅ Semantic HTML5 structure  
+- ✅ WCAG AA colour contrast
 
 ## 🎨 Branding
 
-Los colores de marca están definidos en `src/app/globals.css`:
-
-- **Azul Principal**: #003c71  
-- **Naranja Acento**: #FFA00E  
-- **Grises**: Para textos y fondos  
+Brand colors and typography variables are defined in src/styles/globals.css.
 
 ## 📱 Responsive Design
 
-- **Mobile First**: Diseño optimizado desde 300px  
+- **Mobile First**: Optimised design from 300px  
 - **Breakpoints**: sm (640px), md (768px), lg (1024px), xl (1280px)  
-- **Componentes fluidos**: Se adaptan automáticamente al tamaño de pantalla  
-
-## 🔧 Scripts Disponibles
-
-- `pnpm dev` - Servidor de desarrollo  
-- `pnpm build` - Construcción para producción  
-- `pnpm start` - Servidor de producción  
-- `pnpm lint` - Linting con ESLint  
-- `pnpm test` - Tests unitarios  
-- `pnpm test:e2e` - Tests end-to-end  
+- **Fluid components**: Automatically adapt to different screen sizes    
 
 ## 👥 Colaboradores
 
-Proyecto creado y mantenido por:
+Project created and maintained by:
 
 - [Mónica](https://github.com/grinxy)  
 - [Aless](https://github.com/AlessHub)  
 - [Jess](https://github.com/jess-ar)
 
-## 📄 Licencia
+## 📄 Licence
 
-© 2025 Kreator. Todos los derechos reservados.
-
+© 2025 Kreator. All rights reserved.
