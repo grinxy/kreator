@@ -93,7 +93,7 @@ export function FAQSection() {
         </div>
 
         {/* CTA */}
-        <p className="text-center text-gray-700 dark:text-gray-300 mt-6">
+        <p className="text-center text-[var(--kreator-dark-gray)] mt-6">
           ¿Aún tienes dudas? Ponte en contacto con nuestro equipo.
         </p>
 
