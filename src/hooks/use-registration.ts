@@ -10,7 +10,10 @@ const initialFormData: FormData = {
   email: "",
   phone: "",
   profession: "",
+  customProfession: "",
+  professionSearch: "",
   zone: null,
+  zoneSearch: "",
   role: "professional",
   interestedInLeadership: false,
   nifCif: "",
@@ -38,21 +41,23 @@ export function useRegistrationForm() {
   )
 
   const updateFormData = (field: keyof FormData, value: any) => {
-    const sanitizedValue = typeof value === "string" ? sanitizeInput(value) : value
+    // Allow spaces in "Others (customProfession)"
+    const sanitizedValue = typeof value === "string" && field !== "customProfession" ? sanitizeInput(value) : value
+
     setFormData(prev => ({ ...prev, [field]: sanitizedValue }))
 
-    // limpiar errores si el usuario corrige algo
+    // clean up errors if the user corrects something
     if (errors[field as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [field]: undefined }))
     }
 
-    // seguir permitiendo validaciones progresivas si el formulario ya fue enviado
+    // progressive validations if sending has already been attempted
     if (hasSubmitted && ["firstName", "lastName", "email", "phone", "nifCif"].includes(field)) {
       debouncedValidateField(field, sanitizedValue)
     }
   }
 
-  // ⛔️ Ahora el blur solo valida si ya se intentó enviar el formulario
+  //  The blur only validates if the form has already been submitted.
   const handleFieldBlur = (field: keyof FormData) => {
     if (!hasSubmitted) return
 

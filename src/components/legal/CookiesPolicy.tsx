@@ -27,7 +27,7 @@ export function CookiesPolicy() {
               <div className="flex items-start gap-3">
                 <Cookie className="w-6 h-6 text-secondary mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="text-xl text-foreground mb-3">Introducción</h3>
+                  <h2 className="text-xl text-foreground mb-3">Introducción</h2>
                   <p className="text-muted-foreground leading-relaxed mb-3">
                     En Kreator utilizamos cookies y tecnologías similares para mejorar tu experiencia de navegación,
                     analizar el uso de nuestra plataforma y personalizar el contenido que te mostramos.

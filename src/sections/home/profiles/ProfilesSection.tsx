@@ -26,7 +26,7 @@ export function ProfilesSection() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-kreator-yellow font-bold">✓</span>
-                <span className="text-gray-700">Puedes ganar dinero recomendando trabajos a otros compañeros</span>
+                <span className="text-gray-700">Puedes ganar dinero recomendando trabajos a otros/as compañeros/as</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-kreator-yellow font-bold">✓</span>
@@ -63,7 +63,7 @@ export function ProfilesSection() {
           </div>
 
           <CardHeader className="py-3 bg-kreator-gradient-yellow to-kreator-orange text-kreator-blue">
-            <CardTitle className="text-xl sm:text-2xl">Jefe de Equipo</CardTitle>
+            <CardTitle className="text-xl sm:text-2xl">Jefe/a de Equipo</CardTitle>
             <CardDescription className="text-kreator-blue">
               Para profesionales con red de contactos y liderazgo.
             </CardDescription>
@@ -104,7 +104,7 @@ export function ProfilesSection() {
             <div className="mt-4 p-3 bg-blue-50 border-l-4 border-kreator-blue text-sm text-gray-700">
               <p className="font-semibold mb-1">Nota:</p>
               <p>
-                Inscripción inicial 80 € + IVA como profesional. Si eres elegido como jefe de equipo, se abonan 170 € +
+                Inscripción inicial 80 € + IVA como profesional. Si eres elegido/a como jefe/a de equipo, se abonan 170 € +
                 IVA adicionales.
               </p>
             </div>
@@ -112,7 +112,7 @@ export function ProfilesSection() {
 
           <CardFooter>
             <Button asChild variant="profileBlue" className="w-full" data-analytics="profile-team-leader-apply">
-              <Link href="/registro?perfil=jefe-equipo">Ser jefe de equipo</Link>
+              <Link href="/registro?perfil=jefe-equipo">Ser jefe/a de equipo</Link>
             </Button>
           </CardFooter>
         </Card>

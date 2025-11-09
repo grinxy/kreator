@@ -7,14 +7,14 @@ export const faqData: FAQItem[] = [
   {
     question: "1. ¿Qué significa que Kreator funcione “por equipos”?",
     answer: `Cada equipo reúne a profesionales de **distintos sectores** que colaboran activamente para generar oportunidades de negocio reales.
-En cada equipo solo puede haber **un representante por sector**, lo que garantiza la exclusividad y elimina la competencia interna. \nDentro de una misma zona pueden crearse **varios equipos**, siempre que exista suficiente volumen de negocio y profesionales interesados para asegurar la rentabilidad y la dinámica del grupo.\n\nDe esta forma, cada equipo mantiene su equilibrio y potencial de crecimiento.`,
+En cada equipo solo puede haber **un/a representante por sector**, lo que garantiza la exclusividad y elimina la competencia interna. \nDentro de una misma zona pueden crearse **varios equipos**, siempre que exista suficiente volumen de negocio y profesionales interesados para asegurar la rentabilidad y la dinámica del grupo.\n\nDe esta forma, cada equipo mantiene su equilibrio y potencial de crecimiento.`,
   },
   {
     question: "2. ¿Tengo que asistir a las reuniones?",
     answer: `Sí, **una vez al mes.**
 Son encuentros presenciales donde los miembros del equipo comparten contactos, proyectos y oportunidades reales.
 
-Es donde surgen colaboraciones valiosas: un compañero puede estar buscando un diseñador gráfico, otro necesita reparar su aire acondicionado, o quizá alguien tiene contactos en una empresa donde te gustaría ofrecer tus servicios.
+Es donde surgen colaboraciones valiosas: un/a compañero/a puede estar buscando un diseñador gráfico, otro necesita reparar su aire acondicionado, o quizá alguien tiene contactos en una empresa donde te gustaría ofrecer tus servicios.
 
 El resto del seguimiento se gestiona fácilmente desde la plataforma online.`,
   },

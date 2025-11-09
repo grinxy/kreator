@@ -14,18 +14,20 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-heading",
+  display: "swap",
 })
 
 const openSans = Open_Sans({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-body",
+  display: "swap",
 })
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
+  maximumScale: 5,
   userScalable: true,
 }
 

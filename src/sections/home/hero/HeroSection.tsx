@@ -13,12 +13,12 @@ export function HeroSection() {
       className="relative flex flex-col justify-center items-center bg-kreator-blue text-white min-h-[90dvh]"
     >
       <div className="text-center max-w-6xl mx-auto mt-2 md:mt-14">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading mb-6 text-balance">
+        <h1 className="font-heading mb-6 leading-tight font-semibold text-[clamp(2.25rem,4vw+1rem,3.75rem)]">
           Haz crecer tu negocio con la 1ª red por equipos, con{" "}
-          <span className="text-kreator-yellow font-bold font-heading">exclusividad</span> de sector
+          <strong className="text-kreator-yellow font-bold font-heading align-baseline">exclusividad</strong> de sector
         </h1>
 
-        <h3 className="text-lg md:text-2xl mb-4 text-gray-100">Un solo profesional por sector en cada equipo.</h3>
+        <h2 className="text-lg md:text-2xl mb-4 text-gray-100">Un solo profesional por sector en cada equipo.</h2>
 
         <h3 className="text-lg md:text-xl mb-8 text-gray-200">
           Multiplica tus oportunidades con los contactos y proyectos compartidos de tu equipo local.
@@ -32,7 +32,9 @@ export function HeroSection() {
           </Button>
         </div>
 
-        <p className="mt-6 text-sm text-gray-300 font-semibold">Sin permanencia · Comisiones desde el primer mes</p>
+        <p className="mt-6 text-sm text-gray-300 font-semibold mx-auto text-center max-w-[26ch] sm:max-w-none">
+          Sin permanencia · Comisiones desde el primer mes
+        </p>
       </div>
 
       {/* Yellow edge */}
@@ -44,7 +46,8 @@ export function HeroSection() {
           href="#sobre-kreator"
           className="text-kreator-yellow hover:text-kreator-yellow/80 transition-colors duration-200 animate-bounce"
         >
-          <ChevronDown className="w-8 h-8 md:w-10 md:h-10" />
+          <span className="sr-only">Ir a la sección Sobre Kreator</span>
+          <ChevronDown className="w-8 h-8 md:w-10 md:h-10" aria-hidden="true" />
         </Link>
       </div>
     </SectionWrapper>

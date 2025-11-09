@@ -16,7 +16,7 @@ export function HowItWorksSection() {
             Elige tu sector y únete a un equipo activo en tu zona.
           </p>
           <p className="text-gray-700 text-center leading-relaxed">
-            Serás el único profesional que lo represente dentro de ese grupo.
+            Serás la persona profesional que lo represente dentro de ese grupo.
           </p>
         </div>
 
@@ -55,7 +55,7 @@ export function HowItWorksSection() {
             </li>
             <li className="flex items-start gap-2">
               <span className="text-kreator-yellow">•</span>
-              <span>Cada trabajo que refieras a un compañero te da una comisión inmediata.</span>
+              <span>Cada trabajo que refieras a un compañero/a te da una comisión inmediata.</span>
             </li>
           </ul>
         </div>

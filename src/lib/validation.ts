@@ -1,7 +1,7 @@
 import type { FormData, FormErrors, ZoneSelection } from "@/types/registration-form"
 
 // Updated validatable fields to include nifCif and zone
-type ValidatableFields = 'firstName' | 'lastName' | 'email' | 'phone' | 'profession' | 'zone' | 'acceptTerms' | 'nifCif'
+type ValidatableFields = "firstName" | "lastName" | "email" | "phone" | "profession" | "zone" | "acceptTerms" | "nifCif"
 
 // Centralized field validation rules
 const fieldValidators: Record<ValidatableFields, (value: any) => string | undefined> = {
@@ -12,7 +12,7 @@ const fieldValidators: Record<ValidatableFields, (value: any) => string | undefi
     if (!/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]+$/.test(value)) return "Solo letras y espacios."
     return undefined
   },
-  
+
   lastName: (value: string) => {
     if (!value?.trim()) return "Los apellidos son obligatorios."
     if (value.length < 2) return "Mínimo 2 caracteres."
@@ -23,7 +23,8 @@ const fieldValidators: Record<ValidatableFields, (value: any) => string | undefi
 
   email: (value: string) => {
     if (!value?.trim()) return "El email es obligatorio."
-    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.([a-zA-Z]{2,})+$/
+    const emailRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.([a-zA-Z]{2,})+$/
     if (!emailRegex.test(value)) return "Formato de email inválido."
     if (value.length > 254) return "Email demasiado largo."
     return undefined
@@ -49,84 +50,118 @@ const fieldValidators: Record<ValidatableFields, (value: any) => string | undefi
   },
 
   nifCif: (value: string) => {
-    if (!value?.trim()) return "El NIF/CIF es obligatorio."
-    
+    if (!value?.trim()) return "El NIF/CIF/NIE es obligatorio."
+
     const cleanValue = value.trim().toUpperCase()
-    
+
     // Check if it's a NIF - 8 digits + 1 letter
     const nifRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/
     if (nifRegex.test(cleanValue)) {
       return validateNIF(cleanValue)
     }
-    
+
+    // Check if it's NIE - X/Y/Z + 7 dígitos + letter
+    const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/
+    if (nieRegex.test(cleanValue)) {
+      return validateNIE(cleanValue)
+    }
+
     // Check if it's a CIF - 1 letter + 7 digits + 1 letter/digit
     const cifRegex = /^[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J]$/
     if (cifRegex.test(cleanValue)) {
       return validateCIF(cleanValue)
     }
-    
-    return "Formato NIF/CIF inválido. Ejemplos: 12345678Z (NIF) o A12345674 (CIF)."
+
+    return "Formato NIF/CIF/NIE inválido. Ejemplos: 12345678Z (NIF), X1234567L (NIE), A12345674 (CIF)."
   },
 
   acceptTerms: (value: boolean) => {
     if (!value) return "Debes aceptar los términos y condiciones."
     return undefined
-  }
+  },
 }
 
 // NIF validation with check digit
 const validateNIF = (nif: string): string | undefined => {
-  const letters = 'TRWAGMYFPDXBNJZSQVHLCKE'
+  const letters = "TRWAGMYFPDXBNJZSQVHLCKE"
   const numbers = nif.slice(0, 8)
   const letter = nif.slice(8, 9)
-  
+
   const expectedLetter = letters[parseInt(numbers) % 23]
-  
+
   if (letter !== expectedLetter) {
     return "NIF inválido. La letra de control no es correcta."
   }
-  
+
+  return undefined
+}
+
+// NIE validation (X, Y o Z + 7 dígitos + letra)
+const validateNIE = (nie: string): string | undefined => {
+  const letters = "TRWAGMYFPDXBNJZSQVHLCKE"
+  const prefix = nie.charAt(0)
+  const numbers = nie.slice(1, 8)
+  const letter = nie.slice(8, 9)
+
+  // Reemplazar letra inicial por número equivalente
+  const prefixNumber = prefix === "X" ? 0 : prefix === "Y" ? 1 : 2
+  const fullNumber = parseInt(`${prefixNumber}${numbers}`, 10)
+  const expectedLetter = letters[fullNumber % 23]
+
+  if (letter !== expectedLetter) {
+    return "NIE inválido. La letra de control no es correcta."
+  }
+
   return undefined
 }
 
 // CIF validation with check digit
 const validateCIF = (cif: string): string | undefined => {
-  const organizationTypes = 'ABCDEFGHJNPQRSUVW'
+  const organizationTypes = "ABCDEFGHJNPQRSUVW"
   const firstLetter = cif[0]
   const numbers = cif.slice(1, 8)
   const controlChar = cif[8]
-  
+
   if (!organizationTypes.includes(firstLetter)) {
     return "CIF inválido. Letra de organización no válida."
   }
-  
+
   // Calculate control digit
   let sum = 0
   for (let i = 0; i < numbers.length; i++) {
     let digit = parseInt(numbers[i])
-    if (i % 2 === 1) { // Even positions (1, 3, 5...)
+    if (i % 2 === 1) {
+      // Even positions (1, 3, 5...)
       sum += digit
-    } else { // Odd positions (0, 2, 4, 6)
+    } else {
+      // Odd positions (0, 2, 4, 6)
       digit *= 2
       sum += digit > 9 ? digit - 9 : digit
     }
   }
-  
+
   const controlDigit = (10 - (sum % 10)) % 10
-  const controlLetter = 'JABCDEFGHI'[controlDigit]
-  
+  const controlLetter = "JABCDEFGHI"[controlDigit]
+
   // Some CIFs end with letter, others with digit
   const expectedControls = [controlDigit.toString(), controlLetter]
-  
+
   if (!expectedControls.includes(controlChar)) {
     return "CIF inválido. El dígito/letra de control no es correcto."
   }
-  
+
   return undefined
 }
 
 const validatableFields: ValidatableFields[] = [
-  'firstName', 'lastName', 'email', 'phone', 'profession', 'zone', 'nifCif', 'acceptTerms'
+  "firstName",
+  "lastName",
+  "email",
+  "phone",
+  "profession",
+  "zone",
+  "nifCif",
+  "acceptTerms",
 ]
 
 export const validateForm = (formData: FormData): FormErrors => {
@@ -135,9 +170,9 @@ export const validateForm = (formData: FormData): FormErrors => {
   validatableFields.forEach(field => {
     const validator = fieldValidators[field]
     const error = validator(formData[field])
-    
+
     if (error) {
-      (errors as any)[field] = error
+      ;(errors as any)[field] = error
     }
   })
 
@@ -183,20 +218,26 @@ export const formatPhoneNumber = (phone: string): string => {
   return phone
 }
 
-// New formatter for NIF/CIF
+// New formatter for NIF / CIF / NIE
 export const formatNifCif = (value: string): string => {
   const cleaned = value.replace(/[^0-9A-Za-z]/g, "").toUpperCase()
-  
-  // Format NIF: 12345678Z
+
+  // NIF → 12345678Z
   if (/^[0-9]{8}[A-Z]$/.test(cleaned)) {
     return cleaned
   }
-  
-  // Format CIF: A12345674
+
+  // CIF → A12345674
   if (/^[A-Z][0-9]{7}[0-9A-Z]$/.test(cleaned)) {
     return cleaned
   }
-  
+
+  // NIE → X1234567L / Y1234567X / Z1234567T
+  // (First letter can be X, Y or Z, followed by 7 digits and a final letter)
+  if (/^[XYZ][0-9]{7}[A-Z]$/.test(cleaned)) {
+    return cleaned
+  }
+
   return cleaned
 }
 

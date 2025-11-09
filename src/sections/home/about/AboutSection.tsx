@@ -15,7 +15,7 @@ export function AboutSection() {
             </p>
 
             <p>
-              En cada equipo solo puede haber un profesional por sector, lo que te da visibilidad y elimina la
+              En cada equipo solo puede haber un/a profesional por sector, lo que te da visibilidad y elimina la
               competencia interna dentro del grupo.<br></br> En una misma zona puede haber varios equipos, según el volumen de
               negocio disponible.
             </p>
@@ -70,11 +70,11 @@ export function AboutSection() {
               </h3>
               <ol className="text-base md:text-xl list-decimal list-inside space-y-3 ml-4">
                 <li className="text-gray-700">
-                  Cada nuevo profesional que invites a la red reduce tu cuota mes a mes (hasta incluso generar saldo
+                  Cada nuevo/a profesional que invites a la red reduce tu cuota mes a mes (hasta incluso generar saldo
                   positivo).
                 </li>
                 <li className="text-gray-700">
-                  Cada trabajo que refieras a otros compañeros te aporta una comisión inmediata.
+                  Cada trabajo que refieras a otros/as compañeros/as te aporta una comisión inmediata.
                 </li>
               </ol>
             </div>
