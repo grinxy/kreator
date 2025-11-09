@@ -18,7 +18,7 @@ import { RegistrationSuccess } from "@/components/registration/RegistrationSucce
 import { useSearchFilter } from "@/hooks/use-search"
 
 type Props = {
-  selectedRole: "professional" | "team-leader"
+  selectedRole?: "professional" | "team-leader"
 }
 
 export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRole }, ref) => {
@@ -26,6 +26,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
   const [openProfession, setOpenProfession] = useState(false)
   const [openCategory, setOpenCategory] = useState<string | null>(null)
   const [openProvinceKey, setOpenProvinceKey] = useState<string | null>(null)
+  const [customProfessionError, setCustomProfessionError] = useState<string | null>(null)
 
   const {
     formData,
@@ -40,13 +41,6 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
   } = useRegistrationForm()
 
   const popoverZoneRef = useRef<HTMLDivElement>(null)
-
-  // useEffect to synchronise the role selected from the buttons in the profiles section
-  useEffect(() => {
-    if (selectedRole && formData.role !== selectedRole) {
-      updateFormData("role", selectedRole)
-    }
-  }, [selectedRole, formData.role, updateFormData])
 
   useEffect(() => {
     if (!formData.zoneSearch) return
@@ -66,7 +60,17 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
   return (
     <form
       ref={ref}
-      onSubmit={handleSubmit}
+      onSubmit={e => {
+        e.preventDefault()
+        setCustomProfessionError(null)
+
+        // If you select "Other" and leave the field blank, we will flag the error.
+        if (formData.profession === "Otros" && !formData.customProfession?.trim()) {
+          setCustomProfessionError("Por favor, especifica tu profesión.")
+        }
+
+        handleSubmit(e)
+      }}
       className="w-full max-w-3xl bg-white rounded-xl shadow-lg mx-auto p-4 sm:p-6 md:p-8 space-y-2"
       noValidate
       aria-label="Formulario de registro a la comunidad Kreator"
@@ -80,16 +84,9 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
         </legend>
         <RadioGroup
           value={formData.role}
-          onValueChange={value => updateFormData("role", value)}
+          onValueChange={value => updateFormData("role", value as "professional" | "team-leader")}
           className="flex gap-6"
           aria-required="true"
-          onKeyDown={e => {
-            if (e.key === "Enter") {
-              e.preventDefault()
-              const active = document.activeElement as HTMLElement
-              active?.click()
-            }
-          }}
         >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="professional" id="professional" />
@@ -227,7 +224,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
                   aria-invalid={!!errors.profession}
                   aria-describedby={errors.profession ? "profession-error" : undefined}
                   className={cn(
-                    "w-full justify-between font-normal text-foreground",
+                    "w-full justify-between font-semibold text-foreground cursor-pointer",
                     "overflow-hidden",
                     !formData.profession && "text-muted-foreground",
                     errors.profession && "border-red-300 focus:border-red-500"
@@ -240,8 +237,8 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
 
               <PopoverContent
                 className={cn(
-                  "border border-[var(--kreator-gray-dark)] rounded-md bg-white",
-                  "w-full sm:w-[380px] md:w-[420px] max-w-[90vw] max-h-[360px]",
+                  "border border-[var(--kreator-gray-dark)] rounded-md bg-white text-left cursor-pointer",
+                  "w-[var(--radix-popover-trigger-width)] max-w-[90vw] max-h-[360px]",
                   "shadow-sm overflow-auto p-0"
                 )}
                 side="bottom"
@@ -282,10 +279,15 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
                           <button
                             type="button"
                             onClick={() => setOpenCategory(isOpen ? null : category)}
-                            className="flex w-full items-center justify-between bg-white py-1.5 px-2 text-sm font-semibold text-[var(--kreator-gray-dark)] hover:bg-[var(--kreator-yellow)]/40 transition"
+                            className="flex w-full items-start bg-white py-1.5 px-2 text-sm text-[var(--kreator-gray-dark)] hover:bg-[var(--kreator-yellow)]/40 transition cursor-pointer"
                           >
-                            {category}
-                            <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
+                            <span className="flex-1 text-left leading-snug font-semibold">{category}</span>
+                            <ChevronDown
+                              className={cn(
+                                "ml-2 h-4 w-4 mt-[2px] flex-shrink-0 transition-transform",
+                                isOpen && "rotate-180"
+                              )}
+                            />
                           </button>
 
                           {isOpen && (
@@ -314,7 +316,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
                                     }
                                   }}
                                   className={cn(
-                                    "flex w-full items-center text-left text-sm text-[var(--kreator-gray-dark)]",
+                                    "flex w-full items-center text-left text-sm text-[var(--kreator-gray-dark)] cursor-pointer",
                                     "border border-[var(--kreator-gray-dark)]/20 rounded-md py-1.5 px-2",
                                     "hover:bg-[var(--kreator-yellow)]/40 focus:bg-[var(--kreator-yellow)]/40",
                                     "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--kreator-blue)] focus-visible:ring-offset-2",
@@ -362,9 +364,14 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
                   id="customProfession"
                   placeholder="Ej. Consultoría en sostenibilidad"
                   value={formData.customProfession || ""}
-                  onChange={e => updateFormData("customProfession", e.target.value)}
+                  onChange={e => {
+                    updateFormData("customProfession", e.target.value)
+                    if (customProfessionError) setCustomProfessionError(null)
+                  }}
+                  className={customProfessionError ? "border-red-300 focus:border-red-500" : ""}
                   required
                 />
+                {customProfessionError && <ValidationError message={customProfessionError} variant="error" size="sm" />}
               </div>
             )}
           </FieldWrapper>
@@ -384,21 +391,21 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
                   role="combobox"
                   aria-expanded={openZone}
                   className={cn(
-                    "w-full justify-between font-normal text-foreground",
+                    "w-full justify-between font-semibold text-foreground",
                     "overflow-hidden",
                     !formData.zone && "text-muted-foreground",
                     errors.zone && "border-red-300 focus:border-red-500"
                   )}
                 >
-                  <span className="truncate">{formData.zone?.comarca || "Selecciona tu zona"}</span>
+                  <span className="truncate ">{formData.zone?.comarca || "Selecciona tu zona"}</span>
                   <ChevronsUpDown className="ml-2 h-4 w-4 flex-shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
 
               <PopoverContent
                 className={cn(
-                  "border border-[var(--kreator-gray-dark)] rounded-md bg-white",
-                  "w-full sm:w-[380px] md:w-[420px] max-w-[90vw] max-h-[360px]",
+                  "border border-[var(--kreator-gray-dark)] rounded-md bg-white cursor-pointer",
+                  "w-[var(--radix-popover-trigger-width)] max-w-[90vw] max-h-[360px]",
                   "shadow-sm overflow-auto p-0"
                 )}
                 side="bottom"
@@ -591,7 +598,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
           type="submit"
           disabled={isSubmitting}
           variant="cta"
-          className="w-full bg-secondary hover:bg-secondary/90 text-primary font-semibold py-3 text-lg cursor-pointer"
+          className="w-full bg-[var(--kreator-yellow)] hover:bg-[var(--kreator-yellow)]/90 text-primary font-semibold py-3 text-lg cursor-pointer"
           aria-describedby="submit-description"
         >
           {isSubmitting ? "Enviando..." : "Únete a la Comunidad"}
