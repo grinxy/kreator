@@ -1,6 +1,8 @@
 "use client"
 
+import { useEffect, useRef } from "react"
 import { useState } from "react"
+import { forwardRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -10,11 +12,16 @@ import { FieldWrapper, ValidationError } from "@/components/ui/validation"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Check, ChevronsUpDown, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { professionsData, professionCategories, regionsData, regions } from "@/data/registration"
+import { professionsData, regionsData, regions } from "@/data/registration"
 import { useRegistrationForm } from "@/hooks/use-registration"
 import { RegistrationSuccess } from "@/components/registration/RegistrationSuccess"
+import { useSearchFilter } from "@/hooks/use-search"
 
-export function RegistrationForm() {
+type Props = {
+  selectedRole: "professional" | "team-leader"
+}
+
+export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRole }, ref) => {
   const [openZone, setOpenZone] = useState(false)
   const [openProfession, setOpenProfession] = useState(false)
   const [openCategory, setOpenCategory] = useState<string | null>(null)
@@ -32,12 +39,33 @@ export function RegistrationForm() {
     resetForm,
   } = useRegistrationForm()
 
+  const popoverZoneRef = useRef<HTMLDivElement>(null)
+
+  // useEffect to synchronise the role selected from the buttons in the profiles section
+  useEffect(() => {
+    if (selectedRole && formData.role !== selectedRole) {
+      updateFormData("role", selectedRole)
+    }
+  }, [selectedRole, formData.role, updateFormData])
+
+  useEffect(() => {
+    if (!formData.zoneSearch) return
+    const firstMatch = popoverZoneRef.current?.querySelector("button")
+    if (firstMatch) {
+      firstMatch.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [formData.zoneSearch])
+
+  const { filterNestedData } = useSearchFilter()
+  const filteredProfessions = filterNestedData(professionsData, formData.professionSearch || "")
+
   if (registrationSuccess) {
     return <RegistrationSuccess email={userEmail} onClose={resetForm} />
   }
 
   return (
     <form
+      ref={ref}
       onSubmit={handleSubmit}
       className="w-full max-w-3xl bg-white rounded-xl shadow-lg mx-auto p-4 sm:p-6 md:p-8 space-y-2"
       noValidate
@@ -55,6 +83,13 @@ export function RegistrationForm() {
           onValueChange={value => updateFormData("role", value)}
           className="flex gap-6"
           aria-required="true"
+          onKeyDown={e => {
+            if (e.key === "Enter") {
+              e.preventDefault()
+              const active = document.activeElement as HTMLElement
+              active?.click()
+            }
+          }}
         >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="professional" id="professional" />
@@ -65,7 +100,7 @@ export function RegistrationForm() {
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="team-leader" id="team-leader" />
             <Label htmlFor="team-leader" className="cursor-pointer">
-              Jefe de Equipo
+              Jefe/a de Equipo
             </Label>
           </div>
         </RadioGroup>
@@ -149,7 +184,7 @@ export function RegistrationForm() {
             </div>
           </FieldWrapper>
 
-          <FieldWrapper label="NIF/CIF" required error={errors.nifCif}>
+          <FieldWrapper label="NIF/CIF/NIE" required error={errors.nifCif}>
             <Input
               id="nifCif"
               type="text"
@@ -157,14 +192,14 @@ export function RegistrationForm() {
               onChange={e => updateFormData("nifCif", e.target.value.toUpperCase())}
               onBlur={() => handleFieldBlur("nifCif")}
               className={errors.nifCif ? "border-red-300 focus:border-red-500" : ""}
-              placeholder="12345678Z o A12345674"
+              placeholder="12345678Z · A12345674 · X1234567L"
               aria-required="true"
               aria-invalid={!!errors.nifCif}
               aria-describedby={errors.nifCif ? "nifCif-error" : "nifCif-description"}
               maxLength={9}
             />
             <div id="nifCif-description" className="sr-only">
-              Introduce tu NIF (DNI) o CIF de empresa
+              Introduce tu NIF (DNI), CIF de empresa o NIE.
             </div>
           </FieldWrapper>
         </div>
@@ -179,9 +214,7 @@ export function RegistrationForm() {
               open={openProfession}
               onOpenChange={open => {
                 setOpenProfession(open)
-                if (!open && formData.profession) {
-                  handleFieldBlur("profession")
-                }
+                if (!open && formData.profession) handleFieldBlur("profession")
               }}
             >
               <PopoverTrigger asChild>
@@ -208,68 +241,140 @@ export function RegistrationForm() {
               <PopoverContent
                 className={cn(
                   "border border-[var(--kreator-gray-dark)] rounded-md bg-white",
-                  "w-full sm:w-[380px] md:w-[420px] max-w-[90vw] max-h-[300px]",
-                  "shadow-sm transition-[color,box-shadow,border-color] outline-none overflow-auto p-0"
+                  "w-full sm:w-[380px] md:w-[420px] max-w-[90vw] max-h-[360px]",
+                  "shadow-sm overflow-auto p-0"
                 )}
                 side="bottom"
                 align="start"
                 sideOffset={4}
               >
-                <div className="divide-y divide-[var(--kreator-gray-dark)]/30">
-                  {professionCategories.map(category => {
-                    const isOpen = openCategory === category
-                    return (
-                      <div key={category}>
-                        <button
-                          type="button"
-                          onClick={() => setOpenCategory(isOpen ? null : category)}
-                          className="flex w-full items-center justify-between bg-white py-1.5 px-2 text-sm font-semibold text-[var(--kreator-gray-dark)] hover:bg-[var(--kreator-yellow)]/50 transition cursor-pointer"
-                        >
-                          {category}
-                          <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
-                        </button>
+                <div className="p-2 space-y-2">
+                  {/* 🔍 Search */}
+                  <Input
+                    id="professionSearch"
+                    placeholder="Buscar profesión..."
+                    className="w-full mb-2"
+                    onChange={e => updateFormData("professionSearch", e.target.value)}
+                    value={formData.professionSearch || ""}
+                    tabIndex={0}
+                    aria-label="Buscar profesión"
+                    onKeyDown={e => {
+                      if (e.key === "Escape") {
+                        e.preventDefault()
+                        setOpenProfession(false)
+                      } else if (e.key === "ArrowDown") {
+                        e.preventDefault()
+                        // Fuerza el foco al primer botón dentro del popover abierto
+                        const content = document.querySelector<HTMLElement>("[data-slot='popover-content']")
+                        const firstButton = content?.querySelector<HTMLButtonElement>("button")
+                        firstButton?.focus()
+                      }
+                    }}
+                  />
 
-                        {isOpen && (
-                          <div className="px-4 pb-2 space-y-1">
-                            {professionsData[category].map(profession => (
-                              <button
-                                key={profession}
-                                type="button"
-                                onClick={() => {
-                                  updateFormData("profession", profession)
-                                  setOpenProfession(false)
-                                  setOpenCategory(null)
-                                }}
-                                className="flex w-full border border-[var(--kreator-gray-dark)]/20 items-center text-left text-sm text-[var(--kreator-gray-dark)] hover:bg-[var(--kreator-yellow)]/50 py-1.5 rounded-md transition cursor-pointer"
-                              >
-                                <Check
+                  {/* Filtered list */}
+                  <div className="divide-y divide-[var(--kreator-gray-dark)]/20">
+                    {Object.keys(filteredProfessions).map(category => {
+                      const isOpen = (formData.professionSearch || "").length > 0 || openCategory === category
+
+                      return (
+                        <div key={category}>
+                          <button
+                            type="button"
+                            onClick={() => setOpenCategory(isOpen ? null : category)}
+                            className="flex w-full items-center justify-between bg-white py-1.5 px-2 text-sm font-semibold text-[var(--kreator-gray-dark)] hover:bg-[var(--kreator-yellow)]/40 transition"
+                          >
+                            {category}
+                            <ChevronDown className={cn("h-4 w-4 transition-transform", isOpen && "rotate-180")} />
+                          </button>
+
+                          {isOpen && (
+                            <div className="px-3 pb-2 space-y-1">
+                              {filteredProfessions[category].map(profession => (
+                                <button
+                                  key={profession}
+                                  type="button"
+                                  tabIndex={0}
+                                  onClick={() => {
+                                    updateFormData("profession", profession)
+                                    updateFormData("professionSearch", "")
+                                    setOpenProfession(false)
+                                    setOpenCategory(null)
+                                  }}
+                                  onKeyDown={e => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                      e.preventDefault()
+                                      updateFormData("profession", profession)
+                                      updateFormData("professionSearch", "")
+                                      setOpenProfession(false)
+                                      setOpenCategory(null)
+                                    } else if (e.key === "Escape") {
+                                      e.preventDefault()
+                                      setOpenProfession(false)
+                                    }
+                                  }}
                                   className={cn(
-                                    "mr-2 h-4 w-4",
-                                    formData.profession === profession ? "opacity-100" : "opacity-0"
+                                    "flex w-full items-center text-left text-sm text-[var(--kreator-gray-dark)]",
+                                    "border border-[var(--kreator-gray-dark)]/20 rounded-md py-1.5 px-2",
+                                    "hover:bg-[var(--kreator-yellow)]/40 focus:bg-[var(--kreator-yellow)]/40",
+                                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--kreator-blue)] focus-visible:ring-offset-2",
+                                    "transition"
                                   )}
-                                />
-                                {profession}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      formData.profession === profession ? "opacity-100" : "opacity-0"
+                                    )}
+                                  />
+                                  {profession}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {/* "Other" option */}
+                  <div className="pt-2 border-t border-[var(--kreator-gray-dark)]/20">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        updateFormData("profession", "Otros")
+                        setOpenProfession(false)
+                      }}
+                      className="w-full text-left text-sm px-3 py-1.5 rounded-md hover:bg-[var(--kreator-yellow)]/40 font-medium text-[var(--kreator-gray-dark)]"
+                    >
+                      Otros (especifica tu profesión)
+                    </button>
+                  </div>
                 </div>
               </PopoverContent>
             </Popover>
+
+            {/* Additional field if you select "Other" */}
+            {formData.profession === "Otros" && (
+              <div className="mt-2">
+                <Label htmlFor="customProfession">Especifica tu profesión</Label>
+                <Input
+                  id="customProfession"
+                  placeholder="Ej. Consultoría en sostenibilidad"
+                  value={formData.customProfession || ""}
+                  onChange={e => updateFormData("customProfession", e.target.value)}
+                  required
+                />
+              </div>
+            )}
           </FieldWrapper>
 
-          {/* AREA/REGION: Province + districts */}
           <FieldWrapper label="Zona/Región" required error={errors.zone}>
             <Popover
               open={openZone}
               onOpenChange={open => {
                 setOpenZone(open)
-                if (!open && formData.zone) {
-                  handleFieldBlur("zone")
-                }
+                if (!open && formData.zone) handleFieldBlur("zone")
               }}
             >
               <PopoverTrigger asChild>
@@ -278,9 +383,6 @@ export function RegistrationForm() {
                   variant="outlineGray"
                   role="combobox"
                   aria-expanded={openZone}
-                  aria-required="true"
-                  aria-invalid={!!errors.zone}
-                  aria-describedby={errors.zone ? "zone-error" : undefined}
                   className={cn(
                     "w-full justify-between font-normal text-foreground",
                     "overflow-hidden",
@@ -296,31 +398,54 @@ export function RegistrationForm() {
               <PopoverContent
                 className={cn(
                   "border border-[var(--kreator-gray-dark)] rounded-md bg-white",
-                  "w-full sm:w-[380px] md:w-[420px] max-w-[90vw] max-h-[300px]",
-                  "shadow-sm transition-[color,box-shadow,border-color] outline-none overflow-auto p-0"
+                  "w-full sm:w-[380px] md:w-[420px] max-w-[90vw] max-h-[360px]",
+                  "shadow-sm overflow-auto p-0"
                 )}
                 side="bottom"
                 align="start"
                 sideOffset={4}
               >
-                <div className="space-y-3 p-2">
-                  {regions.map(region => {
-                    const provincesObj = regionsData[region]
-                    if (!provincesObj) return null
+                <div ref={popoverZoneRef} className="p-2 space-y-2">
+                  {/* 🔍 Search */}
+                  <Input
+                    id="zoneSearch"
+                    placeholder="Buscar comarca o provincia..."
+                    className="w-full mb-2"
+                    onChange={e => updateFormData("zoneSearch", e.target.value)}
+                    value={formData.zoneSearch || ""}
+                    tabIndex={0}
+                    aria-label="Buscar comarca o provincia"
+                    onKeyDown={e => {
+                      if (e.key === "Escape") {
+                        e.preventDefault()
+                        setOpenZone(false)
+                        setOpenProvinceKey(null)
+                      } else if (e.key === "ArrowDown") {
+                        e.preventDefault()
+                        const firstButton = popoverZoneRef.current?.querySelector<HTMLButtonElement>("button")
+                        firstButton?.focus()
+                      }
+                    }}
+                  />
 
-                    const provinces = Object.keys(provincesObj)
+                  <div className="space-y-3">
+                    {regions.map(region => {
+                      const provincesObj = regionsData[region]
+                      if (!provincesObj) return null
 
-                    return (
-                      <div key={region} className="space-y-1">
-                        <p className="px-2 py-1 text-sm font-semibold uppercase tracking-wide text-[var(--kreator-blue)]">
-                          {region}
-                        </p>
+                      // Filtering with the common utility
+                      const filteredProvinces = filterNestedData(provincesObj, formData.zoneSearch || "")
 
-                        <div className="space-y-1">
-                          {provinces.map(province => {
+                      return (
+                        <div key={region} className="space-y-1">
+                          <p className="px-2 py-1 text-sm font-semibold uppercase tracking-wide text-[var(--kreator-blue)]">
+                            {region}
+                          </p>
+
+                          {Object.keys(filteredProvinces).map(province => {
                             const provinceKey = `${region}-${province}`
-                            const isOpenProvince = openProvinceKey === provinceKey
-                            const comarcas = provincesObj[province]
+                            const isOpenProvince =
+                              (formData.zoneSearch || "").length > 0 || openProvinceKey === provinceKey
 
                             return (
                               <div
@@ -340,23 +465,38 @@ export function RegistrationForm() {
 
                                 {isOpenProvince && (
                                   <div className="bg-white pb-1">
-                                    {comarcas.map(comarca => {
+                                    {filteredProvinces[province].map(comarca => {
                                       const isSelected = formData.zone?.comarca === comarca
-
                                       return (
                                         <button
                                           key={`${provinceKey}-${comarca}`}
                                           type="button"
+                                          tabIndex={0}
                                           onClick={() => {
-                                            updateFormData("zone", {
-                                              region,
-                                              province,
-                                              comarca,
-                                            })
+                                            updateFormData("zone", { region, province, comarca })
                                             setOpenZone(false)
                                             setOpenProvinceKey(null)
+                                            updateFormData("zoneSearch", "")
                                           }}
-                                          className="flex w-full items-center text-left text-sm text-[var(--kreator-gray-dark)] hover:bg-[var(--kreator-yellow)]/50 py-1 px-3 transition cursor-pointer"
+                                          onKeyDown={e => {
+                                            if (e.key === "Enter" || e.key === " ") {
+                                              e.preventDefault()
+                                              updateFormData("zone", { region, province, comarca })
+                                              setOpenZone(false)
+                                              setOpenProvinceKey(null)
+                                              updateFormData("zoneSearch", "")
+                                            } else if (e.key === "Escape") {
+                                              e.preventDefault()
+                                              setOpenZone(false)
+                                              setOpenProvinceKey(null)
+                                            }
+                                          }}
+                                          className={cn(
+                                            "flex w-full items-center text-left text-sm text-[var(--kreator-gray-dark)]",
+                                            "hover:bg-[var(--kreator-yellow)]/50 focus:bg-[var(--kreator-yellow)]/50",
+                                            "py-1 px-3 rounded-md transition cursor-pointer",
+                                            "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--kreator-blue)] focus-visible:ring-offset-2"
+                                          )}
                                         >
                                           <Check
                                             className={cn("mr-2 h-4 w-4", isSelected ? "opacity-100" : "opacity-0")}
@@ -371,9 +511,9 @@ export function RegistrationForm() {
                             )
                           })}
                         </div>
-                      </div>
-                    )
-                  })}
+                      )
+                    })}
+                  </div>
                 </div>
               </PopoverContent>
             </Popover>
@@ -396,7 +536,9 @@ export function RegistrationForm() {
                 htmlFor="leadership"
                 className="text-sm cursor-pointer leading-relaxed text-[var(--kreator-gray-dark)]"
               >
-                <span id="leadership-description">Estoy abierto/a a asumir el rol de Jefe de Equipo más adelante.</span>
+                <span id="leadership-description">
+                  Estoy abierto/a a asumir el rol de Jefe/a de Equipo más adelante.
+                </span>
               </Label>
             </div>
           )}
@@ -466,4 +608,6 @@ export function RegistrationForm() {
       </p>
     </form>
   )
-}
+})
+
+RegistrationForm.displayName = "RegistrationForm"

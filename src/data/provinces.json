@@ -1,6 +1,13 @@
 {
   "Andalucía": {
-    "Almería": ["Almanzora", "Almería", "Filabres-Tabernas", "Levante Almeriense", "Los Vélez", "Poniente Almeriense"],
+    "Almería": [
+      "Almanzora",
+      "Almería",
+      "Filabres-Tabernas",
+      "Levante Almeriense",
+      "Los Vélez",
+      "Poniente Almeriense"
+    ],
     "Cádiz": [
       "Bahía de Cádiz",
       "Campiña de Jerez",
@@ -104,7 +111,7 @@
       "Sierra de Albarracín"
     ]
   },
-  "Principado de Asturias": {
+  "Asturias": {
     "Asturias": [
       "Aller-Lena",
       "Avilés",
@@ -139,8 +146,18 @@
     ]
   },
   "Canarias": {
-    "Las Palmas": ["Fuerteventura", "Gran Canaria", "La Graciosa", "Lanzarote"],
-    "Santa Cruz de Tenerife": ["El Hierro", "La Gomera", "La Palma", "Tenerife"]
+    "Las Palmas": [
+      "Fuerteventura",
+      "Gran Canaria",
+      "La Graciosa",
+      "Lanzarote"
+    ],
+    "Santa Cruz de Tenerife": [
+      "El Hierro",
+      "La Gomera",
+      "La Palma",
+      "Tenerife"
+    ]
   },
   "Cantabria": {
     "Cantabria": [
@@ -153,17 +170,6 @@
       "Trasmiera",
       "Valles Pasiegos"
     ]
-  },
-  "Castilla y León": {
-    "Ávila": ["Ávila y entorno", "Barco de Ávila - Piedrahíta", "La Moraña", "Valle del Alberche", "Valle del Tiétar"],
-    "Burgos": ["Arlanza", "Bureba", "Burgos y alfoz", "Merindades", "Páramos", "Ribera del Duero"],
-    "León": ["Bierzo", "Esla-Campos", "Montaña de León", "Tierra de León"],
-    "Palencia": ["Cerrato", "Montaña Palentina", "Tierra de Campos"],
-    "Salamanca": ["Campo Charro", "Ciudad Rodrigo", "Las Arribes", "Salamanca capital y entorno", "Sierra de Francia"],
-    "Segovia": ["Segovia y alfoz", "Sepúlveda-Duratón", "Tierra de Pinares"],
-    "Soria": ["Campo de Gómara", "Soria y entorno", "Tierras Altas"],
-    "Valladolid": ["Montes Torozos", "Tierra de Campos", "Tierra de Medina", "Valladolid capital y entorno"],
-    "Zamora": ["Aliste", "Benavente y los Valles", "Sanabria", "Sayago", "Tierra de Campos", "Tierra del Pan"]
   },
   "Castilla-La Mancha": {
     "Albacete": [
@@ -190,7 +196,12 @@
       "Serranía Baja",
       "Tarancón y entorno"
     ],
-    "Guadalajara": ["Alcarria de Guadalajara", "Campiña de Guadalajara", "Molina de Aragón-Alto Tajo", "Sierra Norte"],
+    "Guadalajara": [
+      "Alcarria de Guadalajara",
+      "Campiña de Guadalajara",
+      "Molina de Aragón-Alto Tajo",
+      "Sierra Norte"
+    ],
     "Toledo": [
       "La Mancha Toledana",
       "La Sagra",
@@ -198,6 +209,65 @@
       "Talavera de la Reina",
       "Toledo y alfoz",
       "Torrijos"
+    ]
+  },
+  "Castilla y León": {
+    "Ávila": [
+      "Ávila y entorno",
+      "Barco de Ávila - Piedrahíta",
+      "La Moraña",
+      "Valle del Alberche",
+      "Valle del Tiétar"
+    ],
+    "Burgos": [
+      "Arlanza",
+      "Bureba",
+      "Burgos y alfoz",
+      "Merindades",
+      "Páramos",
+      "Ribera del Duero"
+    ],
+    "León": [
+      "Bierzo",
+      "Esla-Campos",
+      "Montaña de León",
+      "Tierra de León"
+    ],
+    "Palencia": [
+      "Cerrato",
+      "Montaña Palentina",
+      "Tierra de Campos"
+    ],
+    "Salamanca": [
+      "Campo Charro",
+      "Ciudad Rodrigo",
+      "Las Arribes",
+      "Salamanca capital y entorno",
+      "Sierra de Francia"
+    ],
+    "Segovia": [
+      "Segovia y alfoz",
+      "Sepúlveda-Duratón",
+      "Tierra de Pinares"
+    ],
+    "Soria": [
+      "Campo de Gómara",
+      "Soria y entorno",
+      "Tierras Altas"
+    ],
+    "Valladolid": [
+      "Montes Torozos",
+      "Tierra de Campos",
+      "Tierra de Medina",
+      "Valladolid capital y entorno"
+    ],
+    "Zamora": [
+      "Aliste",
+      "Benavente y los Valles",
+      "Sanabria",
+      "Sayago",
+      "Tierra de Campos",
+      "Tierra del Pan"
     ]
   },
   "Cataluña": {
@@ -250,6 +320,44 @@
       "Ribera d'Ebre",
       "Tarragonès",
       "Terra Alta"
+    ]
+  },
+  "Valencia": {
+    "Alicante": [
+      "L'Alacantí / Campo de Alicante",
+      "Alto Vinalopó",
+      "Bajo Vinalopó",
+      "Marina Alta",
+      "Marina Baja",
+      "L'Alcoià / Hoya de Alcoy",
+      "El Comtat",
+      "Medio Vinalopó",
+      "Vega Baja del Segura"
+    ],
+    "Castellón": [
+      "Alt Maestrat / Alto Maestrazgo",
+      "Baix Maestrat / Bajo Maestrazgo",
+      "Plana Alta",
+      "Plana Baixa / Plana Baja",
+      "Els Ports / Puertos de Morella",
+      "Alt Millars / Alto Mijares",
+      "Alt Palància / Alto Palancia"
+    ],
+    "Valencia": [
+      "Camp de Morvedre / Campo de Morvedre",
+      "Camp de Túria / Campo de Turia",
+      "Canal de Navarrés",
+      "La Costera",
+      "Horta Nord / Huerta Norte",
+      "Horta Oest / Huerta Oeste",
+      "Horta Sud / Huerta Sur",
+      "Plana d'Utiel-Requena / Plana de Utiel-Requena",
+      "Ribera Alta",
+      "Ribera Baixa / Ribera Baja",
+      "La Safor",
+      "Els Serrans / Los Serranos",
+      "Vall d'Albaida / Valle de Albaida",
+      "València Ciutat / Valencia Ciudad"
     ]
   },
   "Extremadura": {
@@ -323,9 +431,17 @@
       "Verín",
       "Viana"
     ],
-    "Pontevedra": ["Caldas", "Condado", "Deza", "Paradanta", "Pontevedra", "Tabeirós-Terra de Montes", "Vigo"]
+    "Pontevedra": [
+      "Caldas",
+      "Condado",
+      "Deza",
+      "Paradanta",
+      "Pontevedra",
+      "Tabeirós-Terra de Montes",
+      "Vigo"
+    ]
   },
-  "Comunidad de Madrid": {
+  "Madrid": {
     "Madrid": [
       "Área Metropolitana de Madrid",
       "Comarca de las Vegas",
@@ -336,7 +452,7 @@
       "Zona Sur / Sur Metropolitano"
     ]
   },
-  "Región de Murcia": {
+  "Murcia": {
     "Murcia": [
       "Alto Guadalentín",
       "Altiplano",
@@ -351,7 +467,7 @@
       "Vega Media del Segura"
     ]
   },
-  "Comunidad Foral de Navarra": {
+  "Navarra": {
     "Navarra": [
       "Aoiz / Lónguida",
       "Baztán / Bidasoa",
@@ -369,7 +485,13 @@
     ]
   },
   "Euskadi / País Vasco": {
-    "Álava": ["Añana", "Arabako Lautada (Llanada Alavesa)", "Campezo-Montaña Alavesa", "Gorbeialdea", "Rioja Alavesa"],
+    "Álava": [
+      "Añana",
+      "Arabako Lautada (Llanada Alavesa)",
+      "Campezo-Montaña Alavesa",
+      "Gorbeialdea",
+      "Rioja Alavesa"
+    ],
     "Bizkaia": [
       "Arratia-Nerbioi",
       "Busturialdea",
@@ -380,7 +502,15 @@
       "Lea-Artibai",
       "Uribe-Kosta"
     ],
-    "Gipuzkoa": ["Alto Deba", "Bajo Deba", "Bidasoa Beherea", "Donostialdea", "Goierri", "Tolosaldea", "Urola Kosta"]
+    "Gipuzkoa": [
+      "Alto Deba",
+      "Bajo Deba",
+      "Bidasoa Beherea",
+      "Donostialdea",
+      "Goierri",
+      "Tolosaldea",
+      "Urola Kosta"
+    ]
   },
   "La Rioja": {
     "La Rioja": [
@@ -396,9 +526,13 @@
     ]
   },
   "Ceuta": {
-    "Ceuta": ["Ceuta (Ciudad Autónoma)"]
+    "Ceuta": [
+      "Ceuta (Ciudad Autónoma)"
+    ]
   },
   "Melilla": {
-    "Melilla": ["Melilla (Ciudad Autónoma)"]
+    "Melilla": [
+      "Melilla (Ciudad Autónoma)"
+    ]
   }
 }

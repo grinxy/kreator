@@ -35,7 +35,7 @@ export function Navbar() {
             <NavLink href="/#perfiles">Perfiles</NavLink>
             <NavLink href="/#beneficios">Beneficios</NavLink>
             <NavLink href="/#faq">FAQ</NavLink>
-            <NavLink href="/#contacto">Contacto</NavLink>
+            <NavLink href="/#contacto">Únete</NavLink>
           </nav>
 
           <div className="hidden lg:flex items-center space-x-4">

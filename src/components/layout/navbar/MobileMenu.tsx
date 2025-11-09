@@ -84,26 +84,26 @@ export function MobileMenu({ className }: MobileMenuProps) {
           className="absolute top-full left-0 right-0 bg-background border-t border-border shadow-lg z-50"
         >
           <nav className="flex flex-col p-4 space-y-2">
-            <NavLink href="#inicio" onClick={closeMenu}>
+            <NavLink href="/#inicio" onClick={closeMenu}>
               Inicio
             </NavLink>
-            <NavLink href="#como-funciona" onClick={closeMenu}>
+            <NavLink href="/#como-funciona" onClick={closeMenu}>
               Cómo Funciona
             </NavLink>
-            <NavLink href="#sobre-kreator" onClick={closeMenu}>
+            <NavLink href="/#sobre-kreator" onClick={closeMenu}>
               Qué es Kreator
             </NavLink>
-            <NavLink href="#perfiles" onClick={closeMenu}>
+            <NavLink href="/#perfiles" onClick={closeMenu}>
               Perfiles
             </NavLink>
-            <NavLink href="#beneficios" onClick={closeMenu}>
+            <NavLink href="/#beneficios" onClick={closeMenu}>
               Beneficios
             </NavLink>
-            <NavLink href="#faq" onClick={closeMenu}>
+            <NavLink href="/#faq" onClick={closeMenu}>
               FAQ
             </NavLink>
-            <NavLink href="#contacto" onClick={closeMenu}>
-              Contacto
+            <NavLink href="/#contacto" onClick={closeMenu}>
+              Únete
             </NavLink>
             <div className="pt-4 border-t border-border space-y-2">
               <Button size="sm" className="w-full" asChild>

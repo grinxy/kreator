@@ -16,24 +16,28 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(
-        "cursor-pointer relative flex items-center justify-center rounded-full border transition-all duration-200",
-        "size-4 shrink-0 aspect-square",
-        "border-[var(--kreator-blue)]",
-        "data-[state=checked]:border-[var(--kreator-blue)] data-[state=checked]:bg-[var(--kreator-blue)]",
-        "hover:border-[var(--kreator-blue-dark)]",
-        "disabled:cursor-not-allowed disabled:opacity-60 aria-invalid:border-[var(--kreator-orange)]",
+        // base structure
+        "relative inline-flex items-center justify-center rounded-full border border-[var(--kreator-blue)] transition-colors",
+        // size and accessibility
+        "size-4 shrink-0 aspect-square focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--kreator-orange)] focus-visible:ring-offset-2",
+        // states
+        "data-[state=checked]:bg-[var(--kreator-blue)] data-[state=checked]:border-[var(--kreator-blue)]",
+        "hover:border-[var(--kreator-blue-dark)] disabled:cursor-not-allowed disabled:opacity-60",
+        "aria-invalid:border-[var(--kreator-orange)]",
         className
       )}
       {...props}
     >
       <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
         <CircleIcon
-          className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-white"
+          className="size-2 fill-white"
           stroke="none"
+          aria-hidden="true"
         />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )
 }
+
 
 export { RadioGroup, RadioGroupItem }
