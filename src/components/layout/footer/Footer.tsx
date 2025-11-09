@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 
 export { Footer as default }
 export function Footer() {
@@ -7,15 +8,16 @@ export function Footer() {
       <div className="max-w-7xl container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <img
+            <Image
               src="/brand/horizontal/logo-horizontal-4.svg"
               alt="Kreator"
-              className="h-10 w-auto mb-4"
-              width="96"
-              height="32"
+              width={96}
+              height={32}
+              className="mb-4 h-10 w-auto"
+              priority={false}
             />
             <p className="text-gray-300 leading-relaxed">
-              La primera red empresarial exclusiva por zonas para profesionales y pymes.
+              Exclusividad de sector dentro de tu equipo. Unimos profesionales, potenciamos equipos.
             </p>
           </div>
 
@@ -55,7 +57,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/#contacto" className="hover:text-kreator-yellow transition-colors duration-200">
-                  Contacto
+                  Únete
                 </Link>
               </li>
             </ul>

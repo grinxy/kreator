@@ -22,7 +22,7 @@ export function LegalNotice() {
         <div className="max-w-4xl mx-auto prose prose-lg">
           <div className="bg-card rounded-lg p-8 shadow-sm border">
             <section className="mb-8">
-              <h3 className="text-2xl text-primary mb-4">1. Información General</h3>
+              <h2 className="text-2xl text-primary mb-4">1. Información General</h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la
                 Información y de Comercio Electrónico, se informa a los usuarios de los datos identificativos de la

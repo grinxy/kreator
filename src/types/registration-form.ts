@@ -12,7 +12,10 @@ export interface FormData {
   // password: string       // Commented for future use
   // confirmPassword: string // Commented for future use
   profession: string
+  customProfession?: string
+  professionSearch?: string
   zone: ZoneSelection | null
+  zoneSearch: string
   role: "professional" | "team-leader"
   interestedInLeadership: boolean
   createdAt?: Date

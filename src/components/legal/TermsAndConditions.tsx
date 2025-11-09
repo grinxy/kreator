@@ -107,7 +107,7 @@ export default function TermsAndConditions() {
                     <strong>Profesional:</strong> Inscripción 80 € + IVA | Mensualidad 40 € + IVA
                   </li>
                   <li>
-                    <strong>Jefe de Equipo:</strong> Inscripción 250 € + IVA | Mensualidad 60 € + IVA
+                    <strong>Jefe/a de Equipo:</strong> Inscripción 250 € + IVA | Mensualidad 60 € + IVA
                   </li>
                 </ul>
                 <p className="text-muted-foreground mt-3">
@@ -129,7 +129,7 @@ export default function TermsAndConditions() {
                 </div>
                 <ul className="list-disc list-inside text-muted-foreground ml-4 space-y-1">
                   <li>Profesional: 10 €/mes por profesional referido activo</li>
-                  <li>Jefe de Equipo: 20 €/mes por profesional directo activo</li>
+                  <li>Jefe/a de Equipo: 20 €/mes por profesional directo activo</li>
                 </ul>
                 <p className="text-muted-foreground mt-3">
                   Las comisiones se aplican automáticamente sobre la cuota mensual. Si el saldo neto resulta negativo,

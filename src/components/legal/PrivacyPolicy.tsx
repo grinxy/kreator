@@ -26,7 +26,7 @@ export function PrivacyPolicy() {
             <div className="flex items-start gap-3">
               <Shield className="w-6 h-6 text-secondary mt-1 flex-shrink-0" />
               <div>
-                <h3 className="text-lg text-foreground mb-2">Compromiso con la Privacidad</h3>
+                <h2 className="text-lg text-foreground mb-2">Compromiso con la Privacidad</h2>
                 <p className="text-muted-foreground leading-relaxed">
                   En Kreator respetamos tu privacidad y nos comprometemos a proteger tus datos personales. Esta política
                   explica cómo recopilamos, utilizamos y protegemos tu información conforme al Reglamento General de

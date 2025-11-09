@@ -14,7 +14,7 @@ export function BenefitsSection() {
             <div>
               <h3 className="text-lg md:text-xl text-kreator-blue mb-2">Exclusividad de sector en tu equipo</h3>
               <p className="text-gray-700">
-                Serás el único profesional de tu especialidad dentro de tu equipo local, sin competencia interna.
+                Serás la única persona profesional de tu especialidad dentro de tu equipo local, sin competencia interna.
               </p>
             </div>
           </li>
@@ -38,7 +38,7 @@ export function BenefitsSection() {
             <div>
               <h3 className="text-lg md:text-xl text-kreator-blue mb-2">Comisiones mensuales por referidos directos</h3>
               <p className="text-gray-700">
-                Reduce tu cuota o genera ingresos adicionales invitando a otros profesionales.
+                Reduce tu cuota o genera ingresos adicionales invitando a otros/as profesionales.
               </p>
             </div>
           </li>

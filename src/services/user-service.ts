@@ -20,6 +20,8 @@ export class UserService {
         email: formData.email,
         phone: formData.phone,
         profession: formData.profession,
+        custom_profession:
+          formData.profession === "Otros" && formData.customProfession ? formData.customProfession : null,
         nif_cif: formData.nifCif,
         role: formData.role === "team-leader" ? "team_leader" : "professional",
         zone: zone,
@@ -80,7 +82,7 @@ export class UserService {
         province: "",
       }
     }
-    
+
     return {
       region: zoneSelection.region,
       comarca: zoneSelection.comarca,

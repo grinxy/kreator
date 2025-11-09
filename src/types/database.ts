@@ -14,6 +14,7 @@ export interface UserDocument {
   email: string
   phone: string
   profession: string
+  custom_profession?: string | null
   nif_cif?: string
   role: 'professional' | 'team_leader' | 'admin'
   zone: Zone
