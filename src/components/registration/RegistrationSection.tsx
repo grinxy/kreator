@@ -7,31 +7,24 @@ import { SectionWrapper } from "@/components/layout/SectionWrapper"
 
 export function RegistrationSection() {
   const formRef = useRef<HTMLFormElement | null>(null)
-  const [role, setRole] = useState<"professional" | "team-leader">("professional")
+  const [role, setRole] = useState<"professional" | "team-leader" | undefined>()
 
   const searchParams = useSearchParams()
 
-  // 🟦 Detectar el parámetro de la URL y actualizar el rol
+  // Detect the URL parameter and update the role
   useEffect(() => {
     const perfil = searchParams.get("perfil")
     if (perfil === "jefe-equipo") {
       setRole("team-leader")
     } else if (perfil === "profesional") {
       setRole("professional")
+    } else {
+      setRole(undefined)
     }
   }, [searchParams])
 
-  const handleSelectRole = (newRole: "professional" | "team-leader") => {
-    setRole(newRole)
-    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
-  }
-
   return (
-    <SectionWrapper
-      id="registro"
-      className="py-16 bg-[var(--kreator-gray-light)]/60"
-      aria-labelledby="registro-title"
-    >
+    <SectionWrapper id="registro" className="py-16 bg-[var(--kreator-gray-light)]/60" aria-labelledby="registro-title">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-0">
           <div className="space-y-6 text-center lg:text-left">

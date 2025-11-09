@@ -19,7 +19,7 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
         // base structure
         "relative inline-flex items-center justify-center rounded-full border border-[var(--kreator-blue)] transition-colors",
         // size and accessibility
-        "size-4 shrink-0 aspect-square focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--kreator-orange)] focus-visible:ring-offset-2",
+        "size-4 shrink-0 aspect-square cursor-pointer",
         // states
         "data-[state=checked]:bg-[var(--kreator-blue)] data-[state=checked]:border-[var(--kreator-blue)]",
         "hover:border-[var(--kreator-blue-dark)] disabled:cursor-not-allowed disabled:opacity-60",
