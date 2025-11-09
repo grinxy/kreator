@@ -71,7 +71,7 @@ export function useRegistrationForm() {
           phone: "El teléfono",
           profession: "La profesión",
           zone: "La zona",
-          nifCif: "El NIF/CIF",
+          nifCif: "El NIF/CIF/NIE",
         }
         setErrors(prev => ({
           ...prev,
@@ -92,6 +92,14 @@ export function useRegistrationForm() {
       e.preventDefault()
 
       setHasSubmitted(true)
+
+      if (formData.profession === "Otros" && !formData.customProfession?.trim()) {
+        setErrors(prev => ({
+          ...prev,
+          customProfession: "Por favor especifica tu profesión si seleccionas 'Otros'.",
+        }))
+        return
+      }
 
       const formErrors = validateForm(formData)
       if (Object.keys(formErrors).length > 0) {
