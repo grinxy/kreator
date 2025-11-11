@@ -22,8 +22,8 @@ export class RegistrationService {
         // Area and role
         zone: formData.zone,
         zoneAssigned: false, // the area has been chosen but not yet validated
-        role: formData.role,
-        interestedInLeadership: formData.interestedInLeadership,
+        role: "professional",
+        interested_in_leadership: formData.interestedInLeadership,
 
         // Overall global validation status (payment, area, sector, role)
         status: "pending" as const,
