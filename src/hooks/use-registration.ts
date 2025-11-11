@@ -46,7 +46,11 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
 
   const updateFormData = (field: keyof FormData, value: any) => {
     // Allow spaces in "Others (customProfession)"
-    const sanitizedValue = typeof value === "string" && field !== "customProfession" ? sanitizeInput(value) : value
+    const sanitizedValue =
+      typeof value === "string" &&
+      !["firstName", "lastName", "professionSearch", "zoneSearch", "customProfession"].includes(field)
+        ? sanitizeInput(value)
+        : value
 
     setFormData(prev => ({ ...prev, [field]: sanitizedValue }))
 
