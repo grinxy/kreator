@@ -20,8 +20,12 @@ const initialFormData: FormData = {
   acceptTerms: false,
 }
 
-export function useRegistrationForm() {
-  const [formData, setFormData] = useState<FormData>(initialFormData)
+export function useRegistrationForm(initialInterestedInLeadership = false) {
+  const [formData, setFormData] = useState<FormData>({
+    ...initialFormData,
+    interestedInLeadership: initialInterestedInLeadership,
+  })
+
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [registrationSuccess, setRegistrationSuccess] = useState(false)
@@ -116,7 +120,22 @@ export function useRegistrationForm() {
 
         if (!authResult.success || !authResult.data) {
           console.error("Auth creation failed:", authResult.error)
-          setSubmitError(authResult.error?.message || "Error al crear la cuenta de usuario")
+
+          // Special handling: email already registered (without disclosing the exact reason)
+          if (authResult.error?.code === "auth/email-already-in-use") {
+            setErrors(prev => ({
+              ...prev,
+              email:
+                "No ha sido posible completar el registro con los datos introducidos. Si ya te habías registrado, revisa tus mensajes o espera nuestra confirmación.",
+            }))
+          } else {
+            // Other generic errors
+            setSubmitError(
+              authResult.error?.message ||
+                "Ha ocurrido un error inesperado al procesar el registro. Inténtalo de nuevo."
+            )
+          }
+
           setIsSubmitting(false)
           return
         }

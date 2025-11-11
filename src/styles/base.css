@@ -90,6 +90,18 @@
     line-height: 1.6;
   }
 
+  @media (hover: hover) and (pointer: fine) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   h1 {
     font-family: var(--font-heading);
     font-weight: 700;

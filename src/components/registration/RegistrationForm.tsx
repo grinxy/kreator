@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { FieldWrapper, ValidationError } from "@/components/ui/validation"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Check, ChevronsUpDown, ChevronDown } from "lucide-react"
@@ -18,10 +17,10 @@ import { RegistrationSuccess } from "@/components/registration/RegistrationSucce
 import { useSearchFilter } from "@/hooks/use-search"
 
 type Props = {
-  selectedRole?: "professional" | "team-leader"
+  initialInterestedInLeadership?: boolean
 }
 
-export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRole }, ref) => {
+export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ initialInterestedInLeadership = false }, ref) => {
   const [openZone, setOpenZone] = useState(false)
   const [openProfession, setOpenProfession] = useState(false)
   const [openCategory, setOpenCategory] = useState<string | null>(null)
@@ -34,11 +33,12 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
     isSubmitting,
     registrationSuccess,
     userEmail,
+    submitError,
     updateFormData,
     handleFieldBlur,
     handleSubmit,
     resetForm,
-  } = useRegistrationForm()
+  } = useRegistrationForm(initialInterestedInLeadership)
 
   const popoverZoneRef = useRef<HTMLDivElement>(null)
 
@@ -75,34 +75,6 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
       noValidate
       aria-label="Formulario de registro a la comunidad Kreator"
     >
-      <fieldset className="space-y-4">
-        <legend className="text-sm font-medium text-gray-700">
-          Tipo de Registro{" "}
-          <span className="text-red-500 ml-1" aria-label="obligatorio">
-            *
-          </span>
-        </legend>
-        <RadioGroup
-          value={formData.role}
-          onValueChange={value => updateFormData("role", value as "professional" | "team-leader")}
-          className="flex gap-6"
-          aria-required="true"
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="professional" id="professional" />
-            <Label htmlFor="professional" className="cursor-pointer">
-              Profesional
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="team-leader" id="team-leader" />
-            <Label htmlFor="team-leader" className="cursor-pointer">
-              Jefe/a de Equipo
-            </Label>
-          </div>
-        </RadioGroup>
-      </fieldset>
-
       <fieldset>
         <legend className="sr-only">Información personal</legend>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -261,7 +233,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
                         setOpenProfession(false)
                       } else if (e.key === "ArrowDown") {
                         e.preventDefault()
-                        // Fuerza el foco al primer botón dentro del popover abierto
+                        // Forces focus to the first button within the open popover
                         const content = document.querySelector<HTMLElement>("[data-slot='popover-content']")
                         const firstButton = content?.querySelector<HTMLButtonElement>("button")
                         firstButton?.focus()
@@ -531,24 +503,20 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
       <fieldset>
         <legend className="sr-only">Preferencias adicionales</legend>
         <div className="space-y-4">
-          {formData.role === "professional" && (
-            <div className="flex items-center gap-3">
-              <Checkbox
-                id="leadership"
-                checked={formData.interestedInLeadership}
-                onCheckedChange={checked => updateFormData("interestedInLeadership", checked)}
-                aria-describedby="leadership-description"
-              />
-              <Label
-                htmlFor="leadership"
-                className="text-sm cursor-pointer leading-relaxed text-[var(--kreator-gray-dark)]"
-              >
-                <span id="leadership-description">
-                  Estoy abierto/a a asumir el rol de Jefe/a de Equipo más adelante.
-                </span>
-              </Label>
-            </div>
-          )}
+          <div className="flex items-center gap-3">
+            <Checkbox
+              id="leadership"
+              checked={formData.interestedInLeadership}
+              onCheckedChange={checked => updateFormData("interestedInLeadership", checked)}
+              aria-describedby="leadership-description"
+            />
+            <Label
+              htmlFor="leadership"
+              className="text-sm cursor-pointer leading-relaxed text-[var(--kreator-gray-dark)]"
+            >
+              <span id="leadership-description">Estoy abierto/a a asumir el rol de Jefe/a de Equipo más adelante.</span>
+            </Label>
+          </div>
 
           <div className="flex items-center gap-3">
             <Checkbox
@@ -594,6 +562,15 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
       </fieldset>
 
       <div className="pt-4">
+        {submitError && (
+          <p
+            className="mb-4 text-sm text-center text-red-700 bg-red-50 border border-red-200 rounded-md py-2 px-3 font-medium"
+            role="alert"
+          >
+            {submitError}
+          </p>
+        )}
+
         <Button
           type="submit"
           disabled={isSubmitting}
@@ -603,6 +580,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ selectedRo
         >
           {isSubmitting ? "Enviando..." : "Únete a la Comunidad"}
         </Button>
+
         <div id="submit-description" className="sr-only">
           {isSubmitting
             ? "Enviando formulario de registro, por favor espera"

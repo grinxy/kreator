@@ -15,6 +15,10 @@ export class UserService {
       const zone: Zone = this.parseZone(formData.zone)
       console.log("Parsed zone:", zone)
 
+      // Temporary safeguard in case older versions send "team-leader"
+      const sanitizedRole = "professional"
+
+
       const userData: Omit<UserDocument, "id"> = {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
@@ -23,7 +27,7 @@ export class UserService {
         custom_profession:
           formData.profession === "Otros" && formData.customProfession ? formData.customProfession : null,
         nif_cif: formData.nifCif,
-        role: formData.role === "team-leader" ? "team_leader" : "professional",
+        role: sanitizedRole, // professional
         zone: zone,
         zone_assigned: false, // Not assigned yet
         interested_in_leadership: formData.interestedInLeadership,
