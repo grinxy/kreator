@@ -1,27 +1,16 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useRef } from "react"
 import { useSearchParams } from "next/navigation"
 import { RegistrationForm } from "@/components/registration/RegistrationForm"
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
 
 export function RegistrationSection() {
   const formRef = useRef<HTMLFormElement | null>(null)
-  const [role, setRole] = useState<"professional" | "team-leader" | undefined>()
-
   const searchParams = useSearchParams()
+  const leadershipParam = searchParams.get("leadership")
+  const initialInterestedInLeadership = leadershipParam === "1"
 
-  // Detect the URL parameter and update the role
-  useEffect(() => {
-    const perfil = searchParams.get("perfil")
-    if (perfil === "jefe-equipo") {
-      setRole("team-leader")
-    } else if (perfil === "profesional") {
-      setRole("professional")
-    } else {
-      setRole(undefined)
-    }
-  }, [searchParams])
 
   return (
     <SectionWrapper id="registro" className="py-16 bg-[var(--kreator-gray-light)]/60" aria-labelledby="registro-title">
@@ -72,7 +61,7 @@ export function RegistrationSection() {
 
           {/* Form on the right */}
           <div>
-            <RegistrationForm ref={formRef} selectedRole={role} />
+            <RegistrationForm ref={formRef} initialInterestedInLeadership={initialInterestedInLeadership} />
           </div>
         </div>
       </div>

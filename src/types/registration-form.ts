@@ -16,7 +16,7 @@ export interface FormData {
   professionSearch?: string
   zone: ZoneSelection | null
   zoneSearch: string
-  role: "professional" | "team-leader"
+  role: "professional"
   interestedInLeadership: boolean
   createdAt?: Date
   status?: "pending" | "approved" | "rejected"

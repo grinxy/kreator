@@ -51,7 +51,7 @@ export function ProfilesSection() {
 
           <CardFooter>
             <Button asChild variant="profileYellow" className="w-full" data-analytics="profile-professional-register">
-              <Link href="/registro?perfil=profesional">Soy profesional</Link>
+              <Link href="/registro">Soy profesional</Link>
             </Button>
           </CardFooter>
         </Card>
@@ -112,7 +112,7 @@ export function ProfilesSection() {
 
           <CardFooter>
             <Button asChild variant="profileBlue" className="w-full" data-analytics="profile-team-leader-apply">
-              <Link href="/registro?perfil=jefe-equipo">Ser jefe/a de equipo</Link>
+              <Link href="/registro?leadership=1">Ser jefe/a de equipo</Link>
             </Button>
           </CardFooter>
         </Card>

@@ -39,11 +39,16 @@ export class AuthService {
     } catch (error: any) {
       console.error("Error creating auth user:", error)
 
+      const errorCode = error.code || "AUTH_CREATION_FAILED"
+      const friendlyMessage = this.getAuthErrorMessage(errorCode)
+
       const apiError: ApiError = {
-        code: error.code || "AUTH_CREATION_FAILED",
-        message: this.getAuthErrorMessage(error.code) || "Error al crear la cuenta",
+        code: errorCode,
+        message: friendlyMessage,
         details: { originalError: error.message },
       }
+
+      console.error("Auth creation failed:", apiError)
 
       return {
         success: false,
@@ -60,10 +65,10 @@ export class AuthService {
 
   private static getAuthErrorMessage(errorCode?: string): string {
     const errorMessages: Record<string, string> = {
-      "auth/email-already-in-use": "Ya existe una cuenta con este email",
-      "auth/invalid-email": "Email inválido",
+      "auth/email-already-in-use": "Ya existe una cuenta con este correo electrónico.",
+      "auth/invalid-email": "El formato del email no es válido",
       "auth/operation-not-allowed": "Operación no permitida",
-      "auth/weak-password": "La contraseña es muy débil",
+      "auth/weak-password": "La contraseña es demasiado débil",
       "auth/network-request-failed": "Error de conexión. Inténtalo de nuevo",
     }
 
