@@ -22,9 +22,12 @@ export function ScrollToTop() {
   }, [])
 
   const scrollToTop = () => {
+    const isOldSafari =
+      /^((?!chrome|android).)*safari/i.test(navigator.userAgent) && /Version\/1[0-6]\./.test(navigator.userAgent) // detect Safari ≤16.x
+
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: isOldSafari ? "auto" : "smooth",
     })
   }
 

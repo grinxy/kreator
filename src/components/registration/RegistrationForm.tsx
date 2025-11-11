@@ -46,7 +46,8 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ initialInt
     if (!formData.zoneSearch) return
     const firstMatch = popoverZoneRef.current?.querySelector("button")
     if (firstMatch) {
-      firstMatch.scrollIntoView({ behavior: "smooth", block: "start" })
+      firstMatch.scrollIntoView()
+
     }
   }, [formData.zoneSearch])
 
