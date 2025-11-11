@@ -444,7 +444,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ initialInt
                                 </button>
 
                                 {isOpenProvince && (
-                                  <div className="bg-white pb-1">
+                                  <div className="bg-white px-3 pb-2 space-y-1">
                                     {filteredProvinces[province].map(comarca => {
                                       const isSelected = formData.zone?.comarca === comarca
                                       return (
@@ -474,8 +474,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(({ initialInt
                                           className={cn(
                                             "flex w-full items-center text-left text-sm text-[var(--kreator-gray-dark)]",
                                             "hover:bg-[var(--kreator-yellow)]/50 focus:bg-[var(--kreator-yellow)]/50",
-                                            "py-1 px-3 rounded-md transition cursor-pointer",
-                                            "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--kreator-blue)] focus-visible:ring-offset-2"
+                                            "py-1 rounded-md transition cursor-pointer"
                                           )}
                                         >
                                           <Check
