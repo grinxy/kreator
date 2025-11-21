@@ -1,49 +1,36 @@
-import * as functions from "firebase-functions";
+import {onCall, HttpsError, onRequest} from "firebase-functions/v2/https";
+import {onDocumentUpdated} from "firebase-functions/v2/firestore";
+import {initializeApp} from "firebase-admin/app";
+import {getFirestore, FieldValue} from "firebase-admin/firestore";
 import Stripe from "stripe";
 
-// Types for functions
-interface CreateSetupIntentData {
-  name: string;
-  email: string;
-}
+initializeApp();
+const db = getFirestore();
 
-interface ApproveAndSubscribeData {
-  customerId: string;
-  priceId: string;
-}
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-// Function to get Stripe instance
+// Stripe
 const getStripe = (): Stripe => {
   const stripeSecret =
-    functions.config().stripe?.secret || process.env.STRIPE_SECRET;
+    process.env.STRIPE_SECRET ||
+    process.env.STRIPE_SECRET_KEY;
 
   if (!stripeSecret) {
-    throw new Error("Missing STRIPE_SECRET in environment variables");
+    throw new Error("Missing STRIPE_SECRET");
   }
 
   return new Stripe(stripeSecret, {
-    apiVersion: "2022-11-15" as Stripe.LatestApiVersion,
+    apiVersion: "2025-11-17.clover",
   });
 };
 
 /**
- * 1. Create customer + SetupIntent (validate card without charging)
+ * 1. Create customer + SetupIntent
  */
-export const createSetupIntent = functions.https.onCall(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async (data: any, context: any) => {
-    const {name, email} = data as CreateSetupIntentData;
+export const createSetupIntent = onCall(
+  async (request) => {
+    const {userId, name, email} = request.data;
 
-    // --- AUTH CHECK (TEMPORARILY DISABLED) ---
-    // if (!context.auth) {
-    //   throw new functions.https.HttpsError(
-    //     "unauthenticated",
-    //     "El usuario debe estar autenticado"
-    //   );
-    // }
-    // -----------------------------------------------
-
-    // CURRENT VERSION WITHOUT AUTH (Teaser Page)
     try {
       const stripe = getStripe();
 
@@ -51,8 +38,8 @@ export const createSetupIntent = functions.https.onCall(
         email,
         name,
         metadata: {
+          userId,
           registration_status: "pending_approval",
-          uid: context.auth?.uid || "anonymous",
         },
       });
 
@@ -61,16 +48,21 @@ export const createSetupIntent = functions.https.onCall(
         payment_method_types: ["card"],
       });
 
+      await db.collection("users").doc(userId).update({
+        stripeCustomerId: customer.id,
+        setupIntentId: setupIntent.id,
+        payment_status: "pending",
+        createdAt: FieldValue.serverTimestamp(),
+      });
+
       return {
         success: true,
-        clientSecret: setupIntent.client_secret,
         customerId: customer.id,
+        clientSecret: setupIntent.client_secret,
       };
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Error desconocido";
-      console.error("Error en createSetupIntent:", errorMessage);
-      throw new functions.https.HttpsError("internal", errorMessage);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      throw new HttpsError("internal", message);
     }
   }
 );
@@ -78,21 +70,10 @@ export const createSetupIntent = functions.https.onCall(
 /**
  * 2. Approve registration + create subscription
  */
-export const approveAndSubscribe = functions.https.onCall(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async (data: any) => {
-    const {customerId, priceId} = data as ApproveAndSubscribeData;
+export const approveAndSubscribe = onCall(
+  async (request) => {
+    const {userId, customerId, priceId} = request.data;
 
-    // --- AUTH CHECK (DESACTIVADO TEMPORALMENTE) ---
-    // if (!context.auth) {
-    //   throw new functions.https.HttpsError(
-    //     "unauthenticated",
-    //     "El usuario debe estar autenticado"
-    //   );
-    // }
-    // -----------------------------------------------
-
-    // CURRENT VERSION WITHOUT AUTH (action performed manually by owner)
     try {
       const stripe = getStripe();
 
@@ -102,42 +83,127 @@ export const approveAndSubscribe = functions.https.onCall(
         expand: ["latest_invoice.payment_intent"],
       });
 
+      await db.collection("users").doc(userId).update({
+        subscriptionId: subscription.id,
+        subscriptionStatus: subscription.status,
+        approvedAt: FieldValue.serverTimestamp(),
+      });
+
       return {
         success: true,
         subscriptionId: subscription.id,
         status: subscription.status,
       };
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Error desconocido";
-      console.error("Error en approveAndSubscribe:", errorMessage);
-      throw new functions.https.HttpsError("internal", errorMessage);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      throw new HttpsError("internal", message);
     }
   }
 );
 
 /**
- * 3. Webhook for handling Stripe events (placeholder)
- *
- * This webhook **does NOT validate signatures** because
- * we do not yet have webhook_secret.
- * It only returns 200 OK so that Stripe does not retry.
+ * 3. Firestore trigger (on status change)
  */
-export const stripeWebhook = functions.https.onRequest(
-  async (req, res): Promise<void> => {
-    console.log("📩 Webhook recibido (placeholder).");
+export const onUserStatusChange = onDocumentUpdated(
+  "users/{userId}",
+  async (event) => {
+    const beforeData = event.data?.before.data();
+    const afterData = event.data?.after.data();
+    const userId = event.params.userId;
 
-    // If there is no webhook_secret → placeholder mode only
-    const webhookSecret =
-      functions.config().stripe?.webhook_secret ||
-      process.env.STRIPE_WEBHOOK_SECRET;
+    const statusChanged = beforeData?.status !== afterData?.status;
+    const isApproved = afterData?.status === "aprobado";
 
-    if (!webhookSecret || webhookSecret === "placeholder") {
-      console.warn("⚠️ Webhook no configurado. Modo placeholder.");
-      res.json({received: true, mode: "placeholder"});
-      return;
+    if (!statusChanged || !isApproved) return;
+
+    try {
+      const stripe = getStripe();
+      const stripeCustomerId = afterData?.stripeCustomerId;
+      const priceId =
+        afterData?.priceId || process.env.DEFAULT_PRICE_ID;
+
+      if (!stripeCustomerId) {
+        throw new Error(
+          `Missing Stripe customer for ${userId}`
+        );
+      }
+
+      if (!priceId) throw new Error("Missing default price ID");
+
+      const subscription = await stripe.subscriptions.create({
+        customer: stripeCustomerId,
+        items: [{price: priceId}],
+        expand: ["latest_invoice.payment_intent"],
+      });
+
+      await db.collection("users").doc(userId).update({
+        subscriptionId: subscription.id,
+        subscriptionStatus: subscription.status,
+        payment_status: "charged",
+        approvedAt: FieldValue.serverTimestamp(),
+      });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+
+      await db.collection("users").doc(userId).update({
+        payment_status: "error",
+        payment_error: message,
+        errorAt: FieldValue.serverTimestamp(),
+      });
+    }
+  }
+);
+
+/**
+ * 4. Webhook for handling Stripe events (v2)
+ */
+export const stripeWebhook = onRequest(
+  {
+    region: "europe-west1",
+    cors: false,
+  },
+  async (...args) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [req, res] = args as unknown as [any, any];
+
+    console.log("📩 Webhook received.");
+
+    if (!webhookSecret) {
+      return res.status(500).send("Missing STRIPE_WEBHOOK_SECRET");
     }
 
-    res.json({received: true, validated: false});
+    const stripe = getStripe();
+    const signature = req.header("stripe-signature") ?? "";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rawBody = (req as any).rawBody as Buffer;
+
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(
+        rawBody,
+        signature,
+        webhookSecret
+      );
+      console.log("🔔 Event:", event.type);
+    } catch (err) {
+      console.error("❌ Signature verification failed:", err);
+      return res.status(400).send("Invalid signature");
+    }
+
+    switch (event.type) {
+    case "payment_intent.succeeded":
+      console.log("💳 Payment OK");
+      break;
+
+    case "customer.subscription.deleted":
+      console.log("❌ Subscription canceled");
+      break;
+
+    default:
+      console.log(`ℹ️ Unhandled: ${event.type}`);
+    }
+
+    return res.status(200).json({received: true});
   }
 );
