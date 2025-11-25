@@ -1,6 +1,12 @@
 import { useState, useCallback } from "react"
 import type { FormData, FormErrors } from "@/types/registration-form"
-import { validateForm, validateField, isFormValid, sanitizeInput, debounce } from "@/lib/validation"
+import {
+  validateForm,
+  validateField,
+  isFormValid,
+  sanitizeInput,
+  debounce,
+} from "@/lib/validation"
 import { UserService } from "@/services/user-service"
 import { AuthService } from "@/services/auth"
 
@@ -28,10 +34,11 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [registrationSuccess, setRegistrationSuccess] = useState(false)
-  const [userEmail, setUserEmail] = useState<string>("")
   const [submitError, setSubmitError] = useState<string>("")
   const [hasSubmitted, setHasSubmitted] = useState(false)
+
+  // Eliminamos registrationSuccess y userEmail
+  // El éxito ahora lo controla RegistrationSection + Stripe Flow
 
   const debouncedValidateField = useCallback(
     debounce((field: keyof FormData, value: any) => {
@@ -45,32 +52,41 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
   )
 
   const updateFormData = (field: keyof FormData, value: any) => {
-    // Allow spaces in "Others (customProfession)"
     const sanitizedValue =
       typeof value === "string" &&
-      !["firstName", "lastName", "professionSearch", "zoneSearch", "customProfession"].includes(field)
+      ![
+        "firstName",
+        "lastName",
+        "professionSearch",
+        "zoneSearch",
+        "customProfession",
+      ].includes(field)
         ? sanitizeInput(value)
         : value
 
     setFormData(prev => ({ ...prev, [field]: sanitizedValue }))
 
-    // clean up errors if the user corrects something
     if (errors[field as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [field]: undefined }))
     }
 
-    // progressive validations if sending has already been attempted
-    if (hasSubmitted && ["firstName", "lastName", "email", "phone", "nifCif"].includes(field)) {
+    if (
+      hasSubmitted &&
+      ["firstName", "lastName", "email", "phone", "nifCif"].includes(field)
+    ) {
       debouncedValidateField(field, sanitizedValue)
     }
   }
 
-  //  The blur only validates if the form has already been submitted.
   const handleFieldBlur = (field: keyof FormData) => {
     if (!hasSubmitted) return
 
     const value = formData[field]
-    if (["firstName", "lastName", "email", "phone", "profession", "zone", "nifCif"].includes(field)) {
+    if (
+      ["firstName", "lastName", "email", "phone", "profession", "zone", "nifCif"].includes(
+        field
+      )
+    ) {
       if (!value || (typeof value === "string" && !value.trim())) {
         const fieldNames = {
           firstName: "El nombre",
@@ -98,21 +114,21 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault()
-
       setHasSubmitted(true)
 
       if (formData.profession === "Otros" && !formData.customProfession?.trim()) {
         setErrors(prev => ({
           ...prev,
-          customProfession: "Por favor especifica tu profesión si seleccionas 'Otros'.",
+          customProfession:
+            "Por favor especifica tu profesión si seleccionas 'Otros'.",
         }))
-        return
+        return null
       }
 
       const formErrors = validateForm(formData)
       if (Object.keys(formErrors).length > 0) {
         setErrors(formErrors)
-        return
+        return null
       }
 
       setIsSubmitting(true)
@@ -120,12 +136,15 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
 
       try {
         console.log("Step 1: Creating Firebase Auth user...")
-        const authResult = await AuthService.createUser(formData.email, formData.firstName, formData.lastName)
+        const authResult = await AuthService.createUser(
+          formData.email,
+          formData.firstName,
+          formData.lastName
+        )
 
         if (!authResult.success || !authResult.data) {
           console.error("Auth creation failed:", authResult.error)
 
-          // Special handling: email already registered (without disclosing the exact reason)
           if (authResult.error?.code === "auth/email-already-in-use") {
             setErrors(prev => ({
               ...prev,
@@ -133,7 +152,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
                 "No ha sido posible completar el registro con los datos introducidos. Si ya te habías registrado, revisa tus mensajes o espera nuestra confirmación.",
             }))
           } else {
-            // Other generic errors
             setSubmitError(
               authResult.error?.message ||
                 "Ha ocurrido un error inesperado al procesar el registro. Inténtalo de nuevo."
@@ -141,31 +159,35 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
           }
 
           setIsSubmitting(false)
-          return
+          return null
         }
 
-        console.log("Step 1 SUCCESS: Auth user created with UID:", authResult.data.uid)
+        const userUid = authResult.data.uid
+        console.log("Auth user created with UID:", userUid)
 
         await new Promise(resolve => setTimeout(resolve, 1000))
 
-        console.log("Step 2: Creating Firestore user document...")
-        const firestoreResult = await UserService.createUser(formData, authResult.data.uid)
+        console.log("Step 2: Creating Firestore document with UID as ID...")
+        const firestoreResult = await UserService.createUser(formData, userUid)
 
-        if (firestoreResult.success && firestoreResult.data) {
-          console.log("Step 2 SUCCESS: Registration complete!", {
-            authUid: authResult.data.uid,
-            firestoreId: firestoreResult.data.id,
-          })
-
-          setUserEmail(formData.email)
-          setRegistrationSuccess(true)
-        } else {
+        if (!firestoreResult.success) {
           console.error("Firestore creation failed:", firestoreResult.error)
-          setSubmitError(firestoreResult.error?.message || "Error al guardar los datos del usuario")
+          setSubmitError("Error al guardar los datos del usuario")
+          return null
+        }
+
+        console.log("Step 2 SUCCESS: Firestore user saved.")
+
+        //  Aquí devolvemos al padre LO NECESARIO PARA STRIPE
+        return {
+          userId: userUid, // ⬅ UID de Firebase Auth
+          email: formData.email,
+          name: `${formData.firstName} ${formData.lastName}`,
         }
       } catch (error) {
         console.error("Unexpected registration error:", error)
         setSubmitError("Error inesperado. Por favor, inténtalo de nuevo.")
+        return null
       } finally {
         setIsSubmitting(false)
       }
@@ -177,8 +199,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
     setFormData(initialFormData)
     setErrors({})
     setIsSubmitting(false)
-    setRegistrationSuccess(false)
-    setUserEmail("")
     setSubmitError("")
     setHasSubmitted(false)
   }
@@ -187,8 +207,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
     formData,
     errors,
     isSubmitting,
-    registrationSuccess,
-    userEmail,
     submitError,
     updateFormData,
     handleFieldBlur,

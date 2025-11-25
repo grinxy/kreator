@@ -9,11 +9,9 @@ const db = getFirestore();
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-// Stripe
 const getStripe = (): Stripe => {
   const stripeSecret =
-    process.env.STRIPE_SECRET ||
-    process.env.STRIPE_SECRET_KEY;
+    process.env.STRIPE_SECRET;
 
   if (!stripeSecret) {
     throw new Error("Missing STRIPE_SECRET");
@@ -48,12 +46,15 @@ export const createSetupIntent = onCall(
         payment_method_types: ["card"],
       });
 
-      await db.collection("users").doc(userId).update({
-        stripeCustomerId: customer.id,
-        setupIntentId: setupIntent.id,
-        payment_status: "pending",
-        createdAt: FieldValue.serverTimestamp(),
-      });
+      await db.collection("users").doc(userId).set(
+        {
+          stripeCustomerId: customer.id,
+          setupIntentId: setupIntent.id,
+          payment_status: "pending",
+          createdAt: FieldValue.serverTimestamp(),
+        },
+        {merge: true}
+      );
 
       return {
         success: true,
@@ -68,32 +69,18 @@ export const createSetupIntent = onCall(
 );
 
 /**
- * 2. Approve registration + create subscription
+ * 2. Save payment method after confirming SetupIntent
  */
-export const approveAndSubscribe = onCall(
+export const savePaymentMethod = onCall(
   async (request) => {
-    const {userId, customerId, priceId} = request.data;
+    const {userId, paymentMethodId} = request.data;
 
     try {
-      const stripe = getStripe();
-
-      const subscription = await stripe.subscriptions.create({
-        customer: customerId,
-        items: [{price: priceId}],
-        expand: ["latest_invoice.payment_intent"],
-      });
-
       await db.collection("users").doc(userId).update({
-        subscriptionId: subscription.id,
-        subscriptionStatus: subscription.status,
-        approvedAt: FieldValue.serverTimestamp(),
+        paymentMethodId,
       });
 
-      return {
-        success: true,
-        subscriptionId: subscription.id,
-        status: subscription.status,
-      };
+      return {success: true};
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       throw new HttpsError("internal", message);
@@ -112,15 +99,19 @@ export const onUserStatusChange = onDocumentUpdated(
     const userId = event.params.userId;
 
     const statusChanged = beforeData?.status !== afterData?.status;
-    const isApproved = afterData?.status === "aprobado";
+    const isApproved = afterData?.status === "approved";
 
     if (!statusChanged || !isApproved) return;
 
     try {
       const stripe = getStripe();
       const stripeCustomerId = afterData?.stripeCustomerId;
-      const priceId =
-        afterData?.priceId || process.env.DEFAULT_PRICE_ID;
+      const paymentMethodId = afterData?.paymentMethodId;
+
+      // Cargar precios desde .env
+      const initialAmount =
+      Number(process.env.STRIPE_PRICE_FIRST_PAYMENT);
+      const subscriptionPrice = process.env.STRIPE_PRICE_SUBSCRIPTION;
 
       if (!stripeCustomerId) {
         throw new Error(
@@ -128,11 +119,32 @@ export const onUserStatusChange = onDocumentUpdated(
         );
       }
 
-      if (!priceId) throw new Error("Missing default price ID");
+      if (!initialAmount || !subscriptionPrice) {
+        throw new Error("Missing Price IDs or initial amount");
+      }
 
+      if (!paymentMethodId) {
+        throw new Error(`Missing payment method for ${userId}`);
+      }
+
+      // 1) Initial payment (first payment)
+      await stripe.paymentIntents.create({
+        amount: initialAmount, // de env (4000 = 40 €)
+        currency: "eur",
+        customer: stripeCustomerId,
+        payment_method: paymentMethodId,
+        confirm: true,
+        description: "Primer pago",
+        metadata: {
+          userId,
+          type: "initial_payment",
+        },
+      });
+
+      // 2) Create monthly subscription
       const subscription = await stripe.subscriptions.create({
         customer: stripeCustomerId,
-        items: [{price: priceId}],
+        items: [{price: subscriptionPrice}],
         expand: ["latest_invoice.payment_intent"],
       });
 
@@ -155,7 +167,70 @@ export const onUserStatusChange = onDocumentUpdated(
 );
 
 /**
- * 4. Webhook for handling Stripe events (v2)
+ * 4. Receive updates from Airtable
+* and update the 'status' field in Firestore
+ */
+export const airtableUpdateUser = onRequest(
+  {
+    region: "europe-west1",
+    cors: true,
+  },
+  async (...args) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [req, res] = args as unknown as [any, any];
+
+    try {
+      // 1. Basic validation
+      if (req.method !== "POST") {
+        return res.status(405).json({error: "Method not allowed"});
+      }
+
+      const {userId, status} = req.body;
+
+      if (!userId || !status) {
+        return res.status(400).json({error: "Missing userId or status"});
+      }
+
+      // 2. Normalise the status coming from Airtable
+      const normalizeStatus =
+      (value: string): "pending" | "approved" | "rejected" => {
+        const v = value.toLowerCase().trim();
+
+        if (v === "pendiente") return "pending";
+        if (v === "activa" || v === "activo") return "approved";
+        if (v === "rechazado" || v === "rechazada") return "rejected";
+
+        return "pending";
+      };
+
+      const normalized = normalizeStatus(status);
+
+      console.log(
+        `🔄 Actualizando Firestore desde Airtable →
+      userId: ${userId}, status: ${normalized}`
+      );
+
+      // 3. Update Firestore
+      await db.collection("users").doc(userId).update({
+        status: normalized,
+        updated_at: FieldValue.serverTimestamp(),
+        updatedFromAirtable: true,
+      });
+
+      return res.json({
+        success: true,
+        userId,
+        finalStatus: normalized,
+      });
+    } catch (err) {
+      console.error("❌ Error updating Firestore from Airtable:", err);
+      return res.status(500).json({error: "Internal server error"});
+    }
+  }
+);
+
+/**
+ * 5. Webhook for handling Stripe events (v2)
  */
 export const stripeWebhook = onRequest(
   {

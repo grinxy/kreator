@@ -1,4 +1,4 @@
-import { collection, addDoc, Timestamp } from "firebase/firestore"
+import { setDoc, doc, Timestamp } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import type { FormData, ZoneSelection } from "@/types/registration-form"
 import type { UserDocument, UserResponse, Zone } from "@/types/database"
@@ -41,7 +41,9 @@ export class UserService {
 
       console.log("User data to be saved:", userData)
 
-      const docRef = await addDoc(collection(db, this.COLLECTION_NAME), userData)
+      const docRef = doc(db, this.COLLECTION_NAME, authUid!)
+      await setDoc(docRef, userData)
+
 
       console.log("Firestore document created with ID:", docRef.id)
 

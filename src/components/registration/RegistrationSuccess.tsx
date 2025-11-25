@@ -9,7 +9,7 @@ interface RegistrationSuccessProps {
   onClose?: () => void
 }
 
-export function RegistrationSuccess({}: RegistrationSuccessProps) {
+export function RegistrationSuccess({ email }: RegistrationSuccessProps) {
   const [countdown, setCountdown] = useState(30)
   const router = useRouter()
 
@@ -45,11 +45,14 @@ export function RegistrationSuccess({}: RegistrationSuccessProps) {
           <h1 className="text-4xl font-bold text-primary">¡Registro Exitoso!</h1>
           <div className="space-y-3 max-w-lg mx-auto">
             <p className="text-gray-600 text-base leading-relaxed">
-              Gracias por tu registro! En cuanto validemos que tu zona y profesión están disponibles, se procesará
-              automáticamente el pago y tu plaza quedará reservada.
+              ¡Gracias por tu registro! En cuanto validemos que tu zona y profesión están disponibles,
+              se procesará automáticamente el pago y tu plaza quedará reservada.
             </p>
+
             <p className="text-gray-600 text-base leading-relaxed">
-              Recibirás un email o WhatsApp con la confirmación y los próximos pasos.
+              Te enviaremos un correo a{" "}
+              <span className="font-semibold text-primary">{email}</span>{" "}
+              con la confirmación y los próximos pasos.
             </p>
           </div>
         </div>
@@ -62,15 +65,16 @@ export function RegistrationSuccess({}: RegistrationSuccessProps) {
           <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
             <p className="text-sm text-blue-700">
               Serás redirigido automáticamente al inicio en{" "}
-              <span className="font-bold text-blue-800 text-lg">{countdown}</span> segundo{countdown !== 1 ? "s" : ""}
+              <span className="font-bold text-blue-800 text-lg">{countdown}</span>{" "}
+              segundo{countdown !== 1 ? "s" : ""}.
             </p>
           </div>
         </div>
 
         <div className="pt-6 border-t border-gray-200 max-w-lg mx-auto">
           <p className="text-xs text-gray-500 leading-relaxed">
-            Si tienes alguna pregunta sobre tu registro, no dudes en contactarnos. Estaremos encantados de ayudarte en
-            el proceso.
+            Si tienes alguna pregunta sobre tu registro, no dudes en contactarnos. 
+            Estaremos encantados de ayudarte en el proceso.
           </p>
         </div>
       </div>
