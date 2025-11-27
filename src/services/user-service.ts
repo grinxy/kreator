@@ -18,7 +18,6 @@ export class UserService {
       // Temporary safeguard in case older versions send "team-leader"
       const sanitizedRole = "professional"
 
-
       const userData: Omit<UserDocument, "id"> = {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
@@ -32,9 +31,18 @@ export class UserService {
         zone_assigned: false, // Not assigned yet
         interested_in_leadership: formData.interestedInLeadership,
         status: "pending", // pending all registrations
-        payment_status: "pending", // Will be updated when Stripe integration is added
+        payment_status: "pending",
         auth_uid: authUid,
-        registration_order: Date.now(), // Timestamp for ordering by registration time
+
+        // (Registration statuses)
+        registration_status: "personal_data_completed",
+        registration_step: 1,
+        registration_started_at: Timestamp.now(),
+        step_1_completed_at: Timestamp.now(),
+        last_activity_at: Timestamp.now(),
+        abandoned: false,
+
+        registration_order: Date.now(),
         created_at: Timestamp.now(),
         updated_at: Timestamp.now(),
       }
@@ -43,7 +51,6 @@ export class UserService {
 
       const docRef = doc(db, this.COLLECTION_NAME, authUid!)
       await setDoc(docRef, userData)
-
 
       console.log("Firestore document created with ID:", docRef.id)
 

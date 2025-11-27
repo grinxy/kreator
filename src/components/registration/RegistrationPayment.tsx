@@ -1,5 +1,4 @@
 "use client"
-
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 import { RegistrationPaymentForm } from "@/components/registration/RegistrationPaymentForm"
@@ -14,21 +13,30 @@ interface Props {
 }
 
 export function RegistrationPayment({ clientSecret, userId, name, onComplete }: Props) {
+  console.log("📌 RegistrationPayment MOUNTED")
+  console.log("🔵 clientSecret recibido:", clientSecret)
+  console.log("🟢 public key:", process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
+
+  if (!clientSecret) {
+    console.warn("⚠️ clientSecret aún no disponible")
+    return (
+      <div className="max-w-4xl mx-auto bg-white p-10 rounded-2xl text-center">
+        <p className="text-gray-600">Cargando método de pago...</p>
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-4xl mx-auto bg-white p-10 rounded-2xl shadow-xl border border-[var(--kreator-gray-light)]">
-      
-      {/* TITULO DEL PASO */}
       <div className="mb-8 text-center">
         <p className="text-sm uppercase tracking-wide text-[var(--kreator-blue)] font-semibold">
           Paso 2
         </p>
-
-        <h2 className="text-3xl font-bold text-[var(--kreator-blue)] mt-2">
+        <h2 className="text-2xl md:text-3xl font-bold text-[var(--kreator-blue)] mt-2">
           Validación de método de pago
         </h2>
-
         <p className="text-[var(--kreator-gray-dark)] max-w-xl mx-auto mt-3 text-base leading-relaxed">
-          Para completar tu registro, necesitamos <strong>validar tu tarjeta</strong>.  
+          Para completar tu registro, necesitamos <strong>validar tu tarjeta</strong>.
           <br />
           <span className="text-[var(--kreator-orange)] font-semibold">
             Este proceso no realiza ningún cargo en este momento.
@@ -38,15 +46,12 @@ export function RegistrationPayment({ clientSecret, userId, name, onComplete }: 
         </p>
       </div>
 
-      {/* CONTENEDOR EN DOS COLUMNAS */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-10">
-        
-        {/* COLUMNA IZQUIERDA (INFO) */}
+        {/* (INFO) */}
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-[var(--kreator-blue)]">
+          <h3 className="text-lg md:text-xl font-semibold text-[var(--kreator-blue)]">
             ¿Por qué pedimos tus datos de tarjeta?
           </h3>
-
           <ul className="space-y-3 text-[var(--kreator-gray-dark)]">
             <li className="flex gap-2">
               <span className="text-[var(--kreator-blue)] font-bold">•</span>
@@ -57,16 +62,36 @@ export function RegistrationPayment({ clientSecret, userId, name, onComplete }: 
               No se realizará ningún cobro durante el registro.
             </li>
           </ul>
-
         </div>
 
-        {/* COLUMNA DERECHA (FORMULARIO REAL) */}
+        {/* (FORM) */}
         <div>
           <Elements
             stripe={stripePromise}
             options={{
               clientSecret,
-              locale: "es",
+              appearance: {
+                theme: 'stripe',
+                variables: {
+                  colorPrimary: '#1e40af',
+                  colorBackground: '#ffffff',
+                  colorText: '#374151',
+                  colorDanger: '#ef4444',
+                  fontFamily: 'system-ui, sans-serif',
+                  spacingUnit: '4px',
+                  borderRadius: '8px',
+                },
+                rules: {
+                  '.Input': {
+                    border: '1px solid #d1d5db',
+                    boxShadow: 'none',
+                  },
+                  '.Input:focus': {
+                    border: '1px solid #1e40af',
+                    boxShadow: '0 0 0 3px rgba(30, 64, 175, 0.1)',
+                  },
+                },
+              },
             }}
           >
             <div className="bg-[var(--kreator-gray-light)]/40 p-6 rounded-xl shadow-sm border border-[var(--kreator-gray-light)]">
@@ -79,7 +104,6 @@ export function RegistrationPayment({ clientSecret, userId, name, onComplete }: 
             </div>
           </Elements>
         </div>
-
       </div>
     </div>
   )

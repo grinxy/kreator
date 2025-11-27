@@ -24,17 +24,20 @@ export function RegistrationSection() {
   const [userEmail, setUserEmail] = useState<string | null>(null)
   const [userName, setUserName] = useState<string | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const [customerId, setCustomerId] = useState<string | null>(null)
 
   const { showLoader, hideLoader } = useNavigationLoader()
 
   // 1) When the form is completed
   const handleFormFinished = async (data: { userId: string; email: string; name: string }) => {
-    showLoader() // ← ACTIVA tu loader global
+    showLoader()
 
     try {
       setUserId(data.userId)
       setUserEmail(data.email)
       setUserName(data.name)
+
+      console.log("📝 Creando SetupIntent para usuario:", data.userId)
 
       const createSI = httpsCallable<CreateSetupIntentRequest, CreateSetupIntentResponse>(
         functions,
@@ -47,25 +50,44 @@ export function RegistrationSection() {
         name: data.name,
       })
 
+      console.log("✅ SetupIntent creado:", {
+        clientSecret: result.data.clientSecret?.substring(0, 20) + "...",
+        customerId: result.data.customerId,
+      })
+
       setClientSecret(result.data.clientSecret)
-      setStep(2)
+      setCustomerId(result.data.customerId)
+
+      // Only proceed if we have clientSecret
+      if (result.data.clientSecret) {
+        setStep(2)
+      } else {
+        throw new Error("No se recibió clientSecret del servidor")
+      }
+    } catch (error) {
+      console.error("❌ Error creando SetupIntent:", error)
+      
+      // Display error to user
+      alert("Error al preparar el método de pago. Por favor, intenta de nuevo.")
+      
     } finally {
-      hideLoader() // ← DESACTIVA el loader aunque Stripe falle
+      hideLoader()
     }
   }
 
-  // 2) Stripe validó la tarjeta
+  // 2) Stripe validated the card
   const handlePaymentCompleted = () => {
+    console.log("✅ Pago completado, avanzando al paso 3")
     setStep(3)
   }
 
   return (
     <SectionWrapper id="registro" className="py-16 bg-[var(--kreator-gray-light)]/60">
       <div className="max-w-7xl mx-auto">
-        {/* PASO 1 → FORMULARIO */}
+        {/* STEP 1 → FORM */}
         {step === 1 && (
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-0">
-            {/* COLUMNA IZQUIERDA */}
+            {/* LEFT COLUMN */}
             <div className="space-y-6 text-center lg:text-left">
               <p className="text-sm uppercase tracking-wide text-[var(--kreator-blue)] font-semibold">
                 Paso 1 de 2
@@ -92,13 +114,14 @@ export function RegistrationSection() {
                     <span className="flex items-center justify-center w-6 h-6 rounded-md bg-[var(--kreator-blue)] text-white text-sm font-bold shrink-0 mt-1">
                       ✓
                     </span>
-                    <span className="text-[var(--kreator-gray-dark)] text-base leading-snug">{item}</span>
+                    <span className="text-[var(--kreator-gray-dark)] text-base leading-snug">
+                      {item}
+                    </span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* FORMULARIO */}
             <RegistrationForm
               initialInterestedInLeadership={initialInterestedInLeadership}
               onFinishedRegistrationForm={handleFormFinished}
@@ -106,18 +129,20 @@ export function RegistrationSection() {
           </div>
         )}
 
-        {/* PASO 2 → TARJETA */}
-        {step === 2 && clientSecret && userId && (
+        {/* STEP 2 → CARD */}
+        {step === 2 && clientSecret && userId && userName && (
           <RegistrationPayment
             clientSecret={clientSecret}
             userId={userId}
-            name={userName || ""}
+            name={userName}
             onComplete={handlePaymentCompleted}
           />
         )}
 
-        {/* CONFIRMACIÓN */}
-        {step === 3 && userEmail && <RegistrationSuccess email={userEmail} />}
+        {/* STEP 3 → CONFIRMATION */}
+        {step === 3 && userEmail && (
+          <RegistrationSuccess email={userEmail} />
+        )}
       </div>
     </SectionWrapper>
   )

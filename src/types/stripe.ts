@@ -1,11 +1,11 @@
 export interface CreateSetupIntentRequest {
-  userId: string;
-  email: string;
-  name: string;
+  userId: string
+  email: string
+  name: string
 }
 
 export interface CreateSetupIntentResponse {
-  success: boolean;
-  customerId: string;
-  clientSecret: string;
+  setupIntentId: string
+  clientSecret: string
+  customerId: string
 }

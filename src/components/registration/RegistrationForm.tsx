@@ -17,7 +17,6 @@ import { useSearchFilter } from "@/hooks/use-search"
 
 type Props = {
   initialInterestedInLeadership?: boolean
-  /** This function activates Step 2 (Stripe). */
   onFinishedRegistrationForm: (data: { userId: string; email: string; name: string }) => void
 }
 
@@ -70,7 +69,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
 
           if (!result) return
 
-          //  Aquí conectamos con RegistrationSection → activa Step 2 (Stripe)
+          //  Here we connect to RegistrationSection → active Step 2 (Stripe)
           onFinishedRegistrationForm(result)
         }}
         className="w-full max-w-3xl bg-white rounded-xl shadow-lg mx-auto p-4 sm:p-6 md:p-8 space-y-2"
@@ -116,7 +115,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
         </fieldset>
 
         {/* ======================
-            Información contacto
+            Contact information
         ======================= */}
         <fieldset>
           <legend className="sr-only">Información de contacto</legend>
@@ -169,7 +168,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
         </fieldset>
 
         {/* ======================
-            Profesión
+            Occupation
         ======================= */}
         <fieldset>
           <legend className="sr-only">Información profesional</legend>
@@ -334,7 +333,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
             </FieldWrapper>
 
             {/* ===================================================== */}
-            {/*                ZONA / REGIÓN                          */}
+            {/*                AREA / REGION                          */}
             {/* ===================================================== */}
             <FieldWrapper label="Zona/Región" required error={errors.zone}>
               <Popover
