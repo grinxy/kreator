@@ -22,21 +22,22 @@ interface RegistrationPaymentFormProps {
 const CARD_ELEMENT_OPTIONS = {
   style: {
     base: {
-      fontSize: '16px',
-      color: '#374151',
-      fontFamily: 'system-ui, sans-serif',
-      iconColor: '#9CA3AF',
-      '::placeholder': {
-        color: '#9CA3AF',
+      fontSize: "14px",
+      color: "#374151",
+      fontFamily: "system-ui, sans-serif",
+      iconColor: "#9CA3AF",
+      "::placeholder": {
+        color: "#9CA3AF",
       },
     },
     invalid: {
-      color: '#EF4444',
-      iconColor: '#EF4444',
+      color: "#EF4444",
+      iconColor: "#EF4444",
     },
   },
   showIcon: true,
 }
+
 
 export function RegistrationPaymentForm({
   clientSecret,
@@ -91,7 +92,6 @@ export function RegistrationPaymentForm({
         setIsLoading(false)
       }
     } catch (err) {
-      console.error("Error handling 3DS return:", err)
       setErrorMessage("Error al procesar la verificación")
       setIsLoading(false)
     }
@@ -107,7 +107,6 @@ export function RegistrationPaymentForm({
       })
       onComplete()
     } catch (saveError) {
-      console.error("Error guardando payment method:", saveError)
       setErrorMessage("Error al guardar tu método de pago")
       setIsLoading(false)
     }
@@ -154,7 +153,6 @@ export function RegistrationPaymentForm({
         await savePaymentMethodToFirebase(setupIntent.id)
       }
     } catch (err) {
-      console.error("Error en confirmCardSetup:", err)
       setErrorMessage("Error inesperado al procesar tu pago")
       setIsLoading(false)
     }
@@ -194,7 +192,7 @@ export function RegistrationPaymentForm({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Fecha de expiración
+            Caducidad
           </label>
           <CardExpiryElement
             options={CARD_ELEMENT_OPTIONS}

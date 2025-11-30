@@ -1,14 +1,9 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import type { FormData, FormErrors } from "@/types/registration-form"
-import {
-  validateForm,
-  validateField,
-  isFormValid,
-  sanitizeInput,
-  debounce,
-} from "@/lib/validation"
+import { validateForm, validateField, sanitizeInput, debounce } from "@/lib/validation"
 import { UserService } from "@/services/user-service"
 import { AuthService } from "@/services/auth"
+import { ReferralService } from "@/services/referral-service"
 
 const initialFormData: FormData = {
   firstName: "",
@@ -24,6 +19,7 @@ const initialFormData: FormData = {
   interestedInLeadership: false,
   nifCif: "",
   acceptTerms: false,
+  referralCode: "",
 }
 
 export function useRegistrationForm(initialInterestedInLeadership = false) {
@@ -36,9 +32,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string>("")
   const [hasSubmitted, setHasSubmitted] = useState(false)
-
-  // Eliminamos registrationSuccess y userEmail
-  // El éxito ahora lo controla RegistrationSection + Stripe Flow
 
   const debouncedValidateField = useCallback(
     debounce((field: keyof FormData, value: any) => {
@@ -54,13 +47,7 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
   const updateFormData = (field: keyof FormData, value: any) => {
     const sanitizedValue =
       typeof value === "string" &&
-      ![
-        "firstName",
-        "lastName",
-        "professionSearch",
-        "zoneSearch",
-        "customProfession",
-      ].includes(field)
+      !["firstName", "lastName", "professionSearch", "zoneSearch", "customProfession"].includes(field)
         ? sanitizeInput(value)
         : value
 
@@ -70,23 +57,21 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
       setErrors(prev => ({ ...prev, [field]: undefined }))
     }
 
-    if (
-      hasSubmitted &&
-      ["firstName", "lastName", "email", "phone", "nifCif"].includes(field)
-    ) {
+    if (hasSubmitted && ["firstName", "lastName", "email", "phone", "nifCif"].includes(field)) {
       debouncedValidateField(field, sanitizedValue)
     }
   }
+
+  useEffect(() => {
+    const ref = ReferralService.getReferralCodeFromUrl()
+    updateFormData("referralCode", ref ?? "")
+  }, [])
 
   const handleFieldBlur = (field: keyof FormData) => {
     if (!hasSubmitted) return
 
     const value = formData[field]
-    if (
-      ["firstName", "lastName", "email", "phone", "profession", "zone", "nifCif"].includes(
-        field
-      )
-    ) {
+    if (["firstName", "lastName", "email", "phone", "profession", "zone", "nifCif"].includes(field)) {
       if (!value || (typeof value === "string" && !value.trim())) {
         const fieldNames = {
           firstName: "El nombre",
@@ -119,8 +104,7 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
       if (formData.profession === "Otros" && !formData.customProfession?.trim()) {
         setErrors(prev => ({
           ...prev,
-          customProfession:
-            "Por favor especifica tu profesión si seleccionas 'Otros'.",
+          customProfession: "Por favor especifica tu profesión si seleccionas 'Otros'.",
         }))
         return null
       }
@@ -135,16 +119,9 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
       setSubmitError("")
 
       try {
-        console.log("Step 1: Creating Firebase Auth user...")
-        const authResult = await AuthService.createUser(
-          formData.email,
-          formData.firstName,
-          formData.lastName
-        )
+        const authResult = await AuthService.createUser(formData.email, formData.firstName, formData.lastName)
 
         if (!authResult.success || !authResult.data) {
-          console.error("Auth creation failed:", authResult.error)
-
           if (authResult.error?.code === "auth/email-already-in-use") {
             setErrors(prev => ({
               ...prev,
@@ -163,29 +140,22 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
         }
 
         const userUid = authResult.data.uid
-        console.log("Auth user created with UID:", userUid)
 
         await new Promise(resolve => setTimeout(resolve, 1000))
 
-        console.log("Step 2: Creating Firestore document with UID as ID...")
         const firestoreResult = await UserService.createUser(formData, userUid)
 
         if (!firestoreResult.success) {
-          console.error("Firestore creation failed:", firestoreResult.error)
           setSubmitError("Error al guardar los datos del usuario")
           return null
         }
 
-        console.log("Step 2 SUCCESS: Firestore user saved.")
-
-        //  Aquí devolvemos al padre LO NECESARIO PARA STRIPE
         return {
-          userId: userUid, // ⬅ UID de Firebase Auth
+          userId: userUid,
           email: formData.email,
           name: `${formData.firstName} ${formData.lastName}`,
         }
       } catch (error) {
-        console.error("Unexpected registration error:", error)
         setSubmitError("Error inesperado. Por favor, inténtalo de nuevo.")
         return null
       } finally {

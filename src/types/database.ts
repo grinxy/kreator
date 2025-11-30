@@ -20,16 +20,25 @@ export interface UserDocument {
   zone: Zone
   zone_assigned?: boolean
   zone_assignment_date?: Timestamp
-  referrer_id?: string
+  referred_by?: string | null   // Code KR-XXXX received at the URL
+
   contacts_estimate?: number
   interested_in_leadership: boolean
   status: 'pending' | 'approved' | 'rejected'
   payment_status?: 'pending' | 'completed' | 'failed' | 'error'
   payment_method_id?: string
   auth_uid?: string
-  
-  // (Registration statuses)
-  registration_status?: 'personal_data_completed' | 'payment_method_pending' | 'payment_method_completed' | 'pending_approval' | 'approved_payment_pending' | 'fully_completed' | 'abandoned' | 'error'
+
+  // === Registration statuses ===
+  registration_status?:
+    | 'personal_data_completed'
+    | 'payment_method_pending'
+    | 'payment_method_completed'
+    | 'pending_approval'
+    | 'approved_payment_pending'
+    | 'fully_completed'
+    | 'error'
+
   registration_step?: number
   registration_started_at?: Timestamp
   registration_completed_at?: Timestamp | null
@@ -38,10 +47,7 @@ export interface UserDocument {
   step_3_completed_at?: Timestamp | null
   step_4_completed_at?: Timestamp | null
   last_activity_at?: Timestamp
-  abandoned?: boolean
-  abandoned_at?: Timestamp | null
-  abandonment_reason?: string | null
-  
+
   registration_order?: number
   created_at: Timestamp
   updated_at: Timestamp

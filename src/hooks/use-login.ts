@@ -52,14 +52,12 @@ export function useLoginForm() {
     
     try {
       const user = await loginUser(formData.email, formData.password)
-      console.log('Login successful:', user)
       
       setLoginSuccess(true)
       setFormData(initialFormData)
       setErrors({})
       
     } catch (error: any) {
-      console.error('Login error:', error)
       setErrors({ general: error.message })
     } finally {
       setIsSubmitting(false)

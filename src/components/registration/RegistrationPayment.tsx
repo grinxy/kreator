@@ -13,12 +13,8 @@ interface Props {
 }
 
 export function RegistrationPayment({ clientSecret, userId, name, onComplete }: Props) {
-  console.log("📌 RegistrationPayment MOUNTED")
-  console.log("🔵 clientSecret recibido:", clientSecret)
-  console.log("🟢 public key:", process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
 
   if (!clientSecret) {
-    console.warn("⚠️ clientSecret aún no disponible")
     return (
       <div className="max-w-4xl mx-auto bg-white p-10 rounded-2xl text-center">
         <p className="text-gray-600">Cargando método de pago...</p>
@@ -29,26 +25,22 @@ export function RegistrationPayment({ clientSecret, userId, name, onComplete }: 
   return (
     <div className="max-w-4xl mx-auto bg-white p-10 rounded-2xl shadow-xl border border-[var(--kreator-gray-light)]">
       <div className="mb-8 text-center">
-        <p className="text-sm uppercase tracking-wide text-[var(--kreator-blue)] font-semibold">
-          Paso 2
-        </p>
-        <h2 className="text-2xl md:text-3xl font-bold text-[var(--kreator-blue)] mt-2">
-          Validación de método de pago
-        </h2>
-        <p className="text-[var(--kreator-gray-dark)] max-w-xl mx-auto mt-3 text-base leading-relaxed">
-          Para completar tu registro, necesitamos <strong>validar tu tarjeta</strong>.
-          <br />
-          <span className="text-[var(--kreator-orange)] font-semibold">
-            Este proceso no realiza ningún cargo en este momento.
-          </span>
-          <br />
-          El primer pago solo se realizará cuando tu perfil sea aprobado por nuestro equipo.
-        </p>
+        <p className="text-sm uppercase tracking-wide text-[var(--kreator-blue)] font-semibold">Paso 2</p>
+        <h2 className="text-2xl md:text-3xl font-bold text-[var(--kreator-blue)] mt-2">Validación de método de pago</h2>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-10">
         {/* (INFO) */}
         <div className="space-y-4">
+          <p className="text-[var(--kreator-gray-dark)] max-w-xl mx-auto mt-3 text-base leading-relaxed">
+            Para completar tu registro, necesitamos <strong>validar tu tarjeta</strong>.
+            <br />
+            <span className="text-[var(--kreator-orange)] font-semibold">
+              Este proceso no realiza ningún cargo en este momento.
+            </span>
+            <br />
+            El primer pago solo se realizará cuando tu perfil sea aprobado por nuestro equipo.
+          </p>
           <h3 className="text-lg md:text-xl font-semibold text-[var(--kreator-blue)]">
             ¿Por qué pedimos tus datos de tarjeta?
           </h3>
@@ -71,24 +63,24 @@ export function RegistrationPayment({ clientSecret, userId, name, onComplete }: 
             options={{
               clientSecret,
               appearance: {
-                theme: 'stripe',
+                theme: "stripe",
                 variables: {
-                  colorPrimary: '#1e40af',
-                  colorBackground: '#ffffff',
-                  colorText: '#374151',
-                  colorDanger: '#ef4444',
-                  fontFamily: 'system-ui, sans-serif',
-                  spacingUnit: '4px',
-                  borderRadius: '8px',
+                  colorPrimary: "#1e40af",
+                  colorBackground: "#ffffff",
+                  colorText: "#374151",
+                  colorDanger: "#ef4444",
+                  fontFamily: "system-ui, sans-serif",
+                  spacingUnit: "4px",
+                  borderRadius: "8px",
                 },
                 rules: {
-                  '.Input': {
-                    border: '1px solid #d1d5db',
-                    boxShadow: 'none',
+                  ".Input": {
+                    border: "1px solid #d1d5db",
+                    boxShadow: "none",
                   },
-                  '.Input:focus': {
-                    border: '1px solid #1e40af',
-                    boxShadow: '0 0 0 3px rgba(30, 64, 175, 0.1)',
+                  ".Input:focus": {
+                    border: "1px solid #1e40af",
+                    boxShadow: "0 0 0 3px rgba(30, 64, 175, 0.1)",
                   },
                 },
               },

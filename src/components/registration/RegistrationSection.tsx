@@ -65,7 +65,6 @@ export function RegistrationSection() {
         throw new Error("No se recibió clientSecret del servidor")
       }
     } catch (error) {
-      console.error("❌ Error creando SetupIntent:", error)
       
       // Display error to user
       alert("Error al preparar el método de pago. Por favor, intenta de nuevo.")
@@ -77,7 +76,6 @@ export function RegistrationSection() {
 
   // 2) Stripe validated the card
   const handlePaymentCompleted = () => {
-    console.log("✅ Pago completado, avanzando al paso 3")
     setStep(3)
   }
 

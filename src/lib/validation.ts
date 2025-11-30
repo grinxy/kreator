@@ -103,7 +103,7 @@ const validateNIE = (nie: string): string | undefined => {
   const numbers = nie.slice(1, 8)
   const letter = nie.slice(8, 9)
 
-  // Reemplazar letra inicial por número equivalente
+  // Replace initial letter with equivalent number
   const prefixNumber = prefix === "X" ? 0 : prefix === "Y" ? 1 : 2
   const fullNumber = parseInt(`${prefixNumber}${numbers}`, 10)
   const expectedLetter = letters[fullNumber % 23]
