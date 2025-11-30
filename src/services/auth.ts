@@ -37,7 +37,6 @@ export class AuthService {
         data: response,
       }
     } catch (error: any) {
-      console.error("Error creating auth user:", error)
 
       const errorCode = error.code || "AUTH_CREATION_FAILED"
       const friendlyMessage = this.getAuthErrorMessage(errorCode)
@@ -47,8 +46,6 @@ export class AuthService {
         message: friendlyMessage,
         details: { originalError: error.message },
       }
-
-      console.error("Auth creation failed:", apiError)
 
       return {
         success: false,

@@ -23,6 +23,7 @@ export interface FormData {
   id?: string
   nifCif?: string
   acceptTerms?: boolean
+  referralCode?: string
 }
 
 export interface FormErrors {
@@ -37,6 +38,7 @@ export interface FormErrors {
   role?: string
   acceptTerms?: string
   nifCif?: string
+  referralCode?: string
 }
 
 export interface RegistrationValidationError {

@@ -15,9 +15,11 @@ export interface UserDocument {
   profession: string
   role: 'professional' | 'team_leader' | 'admin'
   zone: Zone
-  referrer_id?: string   // Not implemented yet
+  referred_by?: string | null
+
   interested_in_leadership: boolean
   status: 'pending' | 'approved' | 'rejected'
+
   created_at: Timestamp
   updated_at: Timestamp
 }

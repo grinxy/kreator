@@ -21,14 +21,17 @@ export class RegistrationService {
 
         // Area and role
         zone: formData.zone,
-        zoneAssigned: false, // the area has been chosen but not yet validated
+        zoneAssigned: false,
         role: "professional",
         interested_in_leadership: formData.interestedInLeadership,
 
-        // Overall global validation status (payment, area, sector, role)
+        // === REFERRAL (Fase 1) ===
+        referred_by: formData.referralCode || null,
+
+        // Overall global validation status
         status: "pending" as const,
 
-        // Specific role validation status (currently only decided manually)
+        // Specific role validation status
         roleApproval: "pending" as const,
 
         acceptTerms: formData.acceptTerms,
