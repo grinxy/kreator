@@ -1,14 +1,10 @@
-/**
- * Filtro inteligente para estructuras anidadas tipo:
- * { grupo: [elementos] } → ejemplo: { "Valencia": ["Horta Nord", "Safor", ...] }
- */
 export function useSearchFilter() {
   function filterNestedData(
     data: Record<string, string[]>,
     search: string
   ): Record<string, string[]> {
     const term = search.toLowerCase().trim()
-    if (!term) return data // sin texto, devuelve todo
+    if (!term) return data
 
     const filtered: Record<string, string[]> = {}
 
@@ -18,13 +14,12 @@ export function useSearchFilter() {
         item.toLowerCase().includes(term)
       )
 
-      // si el grupo o alguno de sus elementos coincide, lo mantenemos
+      // if the group or any of its elements match, we keep it
       if (groupMatches || matchingItems.length > 0) {
         filtered[group] = groupMatches ? items : matchingItems
       }
     }
 
-    // Si no hubo coincidencias, devuelve vacío (no todo)
     return Object.keys(filtered).length > 0 ? filtered : {}
   }
 

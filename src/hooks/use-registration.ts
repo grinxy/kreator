@@ -1,8 +1,9 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import type { FormData, FormErrors } from "@/types/registration-form"
-import { validateForm, validateField, isFormValid, sanitizeInput, debounce } from "@/lib/validation"
+import { validateForm, validateField, sanitizeInput, debounce } from "@/lib/validation"
 import { UserService } from "@/services/user-service"
 import { AuthService } from "@/services/auth"
+import { ReferralService } from "@/services/referral-service"
 
 const initialFormData: FormData = {
   firstName: "",
@@ -18,6 +19,7 @@ const initialFormData: FormData = {
   interestedInLeadership: false,
   nifCif: "",
   acceptTerms: false,
+  referralCode: "",
 }
 
 export function useRegistrationForm(initialInterestedInLeadership = false) {
@@ -28,8 +30,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [registrationSuccess, setRegistrationSuccess] = useState(false)
-  const [userEmail, setUserEmail] = useState<string>("")
   const [submitError, setSubmitError] = useState<string>("")
   const [hasSubmitted, setHasSubmitted] = useState(false)
 
@@ -45,7 +45,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
   )
 
   const updateFormData = (field: keyof FormData, value: any) => {
-    // Allow spaces in "Others (customProfession)"
     const sanitizedValue =
       typeof value === "string" &&
       !["firstName", "lastName", "professionSearch", "zoneSearch", "customProfession"].includes(field)
@@ -54,18 +53,20 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
 
     setFormData(prev => ({ ...prev, [field]: sanitizedValue }))
 
-    // clean up errors if the user corrects something
     if (errors[field as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [field]: undefined }))
     }
 
-    // progressive validations if sending has already been attempted
     if (hasSubmitted && ["firstName", "lastName", "email", "phone", "nifCif"].includes(field)) {
       debouncedValidateField(field, sanitizedValue)
     }
   }
 
-  //  The blur only validates if the form has already been submitted.
+  useEffect(() => {
+    const ref = ReferralService.getReferralCodeFromUrl()
+    updateFormData("referralCode", ref ?? "")
+  }, [])
+
   const handleFieldBlur = (field: keyof FormData) => {
     if (!hasSubmitted) return
 
@@ -98,7 +99,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault()
-
       setHasSubmitted(true)
 
       if (formData.profession === "Otros" && !formData.customProfession?.trim()) {
@@ -106,26 +106,22 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
           ...prev,
           customProfession: "Por favor especifica tu profesión si seleccionas 'Otros'.",
         }))
-        return
+        return null
       }
 
       const formErrors = validateForm(formData)
       if (Object.keys(formErrors).length > 0) {
         setErrors(formErrors)
-        return
+        return null
       }
 
       setIsSubmitting(true)
       setSubmitError("")
 
       try {
-        console.log("Step 1: Creating Firebase Auth user...")
         const authResult = await AuthService.createUser(formData.email, formData.firstName, formData.lastName)
 
         if (!authResult.success || !authResult.data) {
-          console.error("Auth creation failed:", authResult.error)
-
-          // Special handling: email already registered (without disclosing the exact reason)
           if (authResult.error?.code === "auth/email-already-in-use") {
             setErrors(prev => ({
               ...prev,
@@ -133,7 +129,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
                 "No ha sido posible completar el registro con los datos introducidos. Si ya te habías registrado, revisa tus mensajes o espera nuestra confirmación.",
             }))
           } else {
-            // Other generic errors
             setSubmitError(
               authResult.error?.message ||
                 "Ha ocurrido un error inesperado al procesar el registro. Inténtalo de nuevo."
@@ -141,31 +136,28 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
           }
 
           setIsSubmitting(false)
-          return
+          return null
         }
 
-        console.log("Step 1 SUCCESS: Auth user created with UID:", authResult.data.uid)
+        const userUid = authResult.data.uid
 
         await new Promise(resolve => setTimeout(resolve, 1000))
 
-        console.log("Step 2: Creating Firestore user document...")
-        const firestoreResult = await UserService.createUser(formData, authResult.data.uid)
+        const firestoreResult = await UserService.createUser(formData, userUid)
 
-        if (firestoreResult.success && firestoreResult.data) {
-          console.log("Step 2 SUCCESS: Registration complete!", {
-            authUid: authResult.data.uid,
-            firestoreId: firestoreResult.data.id,
-          })
+        if (!firestoreResult.success) {
+          setSubmitError("Error al guardar los datos del usuario")
+          return null
+        }
 
-          setUserEmail(formData.email)
-          setRegistrationSuccess(true)
-        } else {
-          console.error("Firestore creation failed:", firestoreResult.error)
-          setSubmitError(firestoreResult.error?.message || "Error al guardar los datos del usuario")
+        return {
+          userId: userUid,
+          email: formData.email,
+          name: `${formData.firstName} ${formData.lastName}`,
         }
       } catch (error) {
-        console.error("Unexpected registration error:", error)
         setSubmitError("Error inesperado. Por favor, inténtalo de nuevo.")
+        return null
       } finally {
         setIsSubmitting(false)
       }
@@ -177,8 +169,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
     setFormData(initialFormData)
     setErrors({})
     setIsSubmitting(false)
-    setRegistrationSuccess(false)
-    setUserEmail("")
     setSubmitError("")
     setHasSubmitted(false)
   }
@@ -187,8 +177,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
     formData,
     errors,
     isSubmitting,
-    registrationSuccess,
-    userEmail,
     submitError,
     updateFormData,
     handleFieldBlur,

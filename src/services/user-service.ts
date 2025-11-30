@@ -1,4 +1,4 @@
-import { collection, addDoc, Timestamp } from "firebase/firestore"
+import { setDoc, doc, Timestamp } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import type { FormData, ZoneSelection } from "@/types/registration-form"
 import type { UserDocument, UserResponse, Zone } from "@/types/database"
@@ -11,13 +11,11 @@ export class UserService {
     try {
       console.log("Creating user document with authUid:", authUid)
       console.log("Form data zone:", formData.zone)
+      console.log("Referral code received:", formData.referralCode)
 
       const zone: Zone = this.parseZone(formData.zone)
-      console.log("Parsed zone:", zone)
 
-      // Temporary safeguard in case older versions send "team-leader"
       const sanitizedRole = "professional"
-
 
       const userData: Omit<UserDocument, "id"> = {
         name: `${formData.firstName} ${formData.lastName}`,
@@ -27,23 +25,30 @@ export class UserService {
         custom_profession:
           formData.profession === "Otros" && formData.customProfession ? formData.customProfession : null,
         nif_cif: formData.nifCif,
-        role: sanitizedRole, // professional
+        role: sanitizedRole,
         zone: zone,
-        zone_assigned: false, // Not assigned yet
+        zone_assigned: false,
         interested_in_leadership: formData.interestedInLeadership,
-        status: "pending", // pending all registrations
-        payment_status: "pending", // Will be updated when Stripe integration is added
+        status: "pending",
+        payment_status: "pending",
         auth_uid: authUid,
-        registration_order: Date.now(), // Timestamp for ordering by registration time
+
+        ...(formData.referralCode && { referred_by: formData.referralCode }),
+
+        // Registration statuses
+        registration_status: "personal_data_completed",
+        registration_step: 1,
+        registration_started_at: Timestamp.now(),
+        step_1_completed_at: Timestamp.now(),
+        last_activity_at: Timestamp.now(),
+
+        registration_order: Date.now(),
         created_at: Timestamp.now(),
         updated_at: Timestamp.now(),
       }
 
-      console.log("User data to be saved:", userData)
-
-      const docRef = await addDoc(collection(db, this.COLLECTION_NAME), userData)
-
-      console.log("Firestore document created with ID:", docRef.id)
+      const docRef = doc(db, this.COLLECTION_NAME, authUid!)
+      await setDoc(docRef, userData)
 
       const response: UserResponse = {
         id: docRef.id,
@@ -59,8 +64,6 @@ export class UserService {
       }
     } catch (error: any) {
       console.error("Error creating user document:", error)
-      console.error("Error code:", error.code)
-      console.error("Error message:", error.message)
 
       const apiError: ApiError = {
         code: error.code || "USER_CREATION_FAILED",
@@ -96,9 +99,9 @@ export class UserService {
 
   private static getErrorMessage(errorCode?: string): string {
     const errorMessages: Record<string, string> = {
-      "permission-denied": "No tienes permisos para realizar esta acción. Verifica las reglas de Firestore.",
+      "permission-denied": "No tienes permisos para realizar esta acción.",
       unavailable: "Servicio no disponible. Inténtalo más tarde",
-      "deadline-exceeded": "Tiempo de espera agotado. Inténtalo de nuevo",
+      "deadline-exceeded": "Tiempo de espera agotado",
       "already-exists": "Ya existe un usuario con estos datos",
       unauthenticated: "Usuario no autenticado",
     }
