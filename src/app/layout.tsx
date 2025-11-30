@@ -31,15 +31,13 @@ export const viewport: Viewport = {
   userScalable: true,
 }
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://kreator-omega.vercel.app")
+const baseUrl = "https://kreator.team"
 
 export const metadata: Metadata = {
   title: "Kreator - La 1ª Comunidad Empresarial Colaborativa por Equipos",
   description:
     "Kreator es la primera comunidad empresarial colaborativa por equipos, creada para autónomos y pymes que quieren vender más, generar contactos de calidad y crecer en red. En cada equipo solo puede haber un profesional por sector, pero en una misma zona pueden coexistir varios equipos según el volumen de negocio disponible.",
-  metadataBase: new URL(baseUrl),
+  metadataBase: new URL("https://kreator.team"),
   alternates: {
     canonical: "/",
   },
@@ -72,7 +70,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-verification-code",
+    google: "SWloLLI-FFtxd1VmA__jdLceusT8zI_XZ98cx5iWr9I"
   },
 }
 
