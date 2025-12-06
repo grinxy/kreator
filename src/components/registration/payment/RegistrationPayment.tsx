@@ -1,7 +1,7 @@
 "use client"
 import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
-import { RegistrationPaymentForm } from "@/components/registration/RegistrationPaymentForm"
+import { RegistrationPaymentForm } from "@/components/registration/payment/RegistrationPaymentForm"
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
 

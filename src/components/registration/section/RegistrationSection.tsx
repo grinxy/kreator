@@ -3,9 +3,9 @@
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
-import { RegistrationForm } from "@/components/registration/RegistrationForm"
-import { RegistrationPayment } from "@/components/registration/RegistrationPayment"
-import { RegistrationSuccess } from "@/components/registration/RegistrationSuccess"
+import { RegistrationForm } from "@/components/registration/form/RegistrationForm"
+import { RegistrationPayment } from "@/components/registration/payment/RegistrationPayment"
+import { RegistrationSuccess } from "@/components/registration/success/RegistrationSuccess"
 
 import { httpsCallable } from "firebase/functions"
 import { functions } from "@/lib/firebase"
