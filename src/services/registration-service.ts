@@ -13,6 +13,11 @@ export class RegistrationService {
         lastName: formData.lastName,
         email: formData.email,
         phone: formData.phone,
+        streetAddress: formData.streetAddress,
+        postalCode: formData.postalCode,
+        city: formData.city,
+        provinceAddress: formData.provinceAddress || "",
+        country: formData.country,
 
         // Occupation and customised variant ("Other")
         profession: formData.profession,

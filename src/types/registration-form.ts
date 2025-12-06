@@ -8,7 +8,12 @@ export interface FormData {
   firstName: string
   lastName: string
   email: string
-  phone: string           
+  phone: string
+  streetAddress: string
+  postalCode: string
+  city: string
+  provinceAddress?: string
+  country: string
   // password: string       // Commented for future use
   // confirmPassword: string // Commented for future use
   profession: string
@@ -29,8 +34,13 @@ export interface FormData {
 export interface FormErrors {
   firstName?: string
   lastName?: string
-  email?: string         
-  phone?: string           
+  email?: string
+  phone?: string
+  streetAddress?: string
+  postalCode?: string
+  city?: string
+  provinceAddress?: string
+  country?: string
   // password?: string     // Commented for future use
   // confirmPassword?: string // Commented for future use
   profession?: string

@@ -11,6 +11,7 @@ import { RegistrationProfession } from "@/components/registration/form/Registrat
 import { RegistrationZone } from "@/components/registration/form/RegistrationZone"
 import { RegistrationPreferences } from "@/components/registration/form/RegistrationPreferences"
 import { RegistrationSubmit } from "@/components/registration/form/RegistrationSubmit"
+import { RegistrationAddress } from "@/components/registration/form/RegistrationAddress"
 
 type Props = {
   initialInterestedInLeadership?: boolean
@@ -25,7 +26,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
     const [openProvinceKey, setOpenProvinceKey] = useState<string | null>(null)
     const [customProfessionError, setCustomProfessionError] = useState<string | null>(null)
 
-    const { formData, errors, isSubmitting, submitError, updateFormData, handleFieldBlur, handleSubmit } =
+    const { formData, errors, isSubmitting, submitError, updateFormData, handleFieldBlur, handleSubmit, hasSubmitted } =
       useRegistrationForm(initialInterestedInLeadership)
 
     const popoverZoneRef = useRef<HTMLDivElement>(null)
@@ -65,9 +66,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
         noValidate
         aria-label="Formulario de registro a la comunidad Kreator"
       >
-        {/* ======================
-            Personal information
-        ======================= */}
+
         <RegistrationPersonalInfo
           formData={formData}
           errors={errors}
@@ -75,9 +74,13 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
           handleFieldBlur={handleFieldBlur}
         />
 
-        {/* ======================
-            Occupation
-        ======================= */}
+        <RegistrationAddress
+          formData={formData}
+          errors={errors}
+          hasSubmitted={hasSubmitted}
+          updateFormData={updateFormData}
+          handleFieldBlur={handleFieldBlur}
+        />
 
         <fieldset>
           <legend className="sr-only">Información profesional</legend>
@@ -96,10 +99,6 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
               filteredProfessions={filteredProfessions}
             />
 
-            {/* ======================
-            Zone
-        ======================= */}
-
             <RegistrationZone
               formData={formData}
               errors={errors}
@@ -117,22 +116,9 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
           </div>
         </fieldset>
 
-        {/* ======================
-            Checkboxes
-        ======================= */}
-        <RegistrationPreferences 
-        formData={formData} 
-        errors={errors} 
-        updateFormData={updateFormData} 
-        />
+        <RegistrationPreferences formData={formData} errors={errors} updateFormData={updateFormData} />
 
-        {/* ======================
-            Submit
-        ======================= */}
-        <RegistrationSubmit 
-        isSubmitting={isSubmitting} 
-        submitError={submitError} 
-        />
+        <RegistrationSubmit isSubmitting={isSubmitting} submitError={submitError} />
       </form>
     )
   }

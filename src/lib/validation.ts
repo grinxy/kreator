@@ -169,7 +169,8 @@ export const validateForm = (formData: FormData): FormErrors => {
 
   validatableFields.forEach(field => {
     const validator = fieldValidators[field]
-    const error = validator(formData[field])
+    const fieldValue = (formData as any)[field]
+    const error = validator(fieldValue)
 
     if (error) {
       ;(errors as any)[field] = error
