@@ -21,6 +21,11 @@ export class UserService {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
         phone: formData.phone,
+        street_address: formData.streetAddress,
+        postal_code: formData.postalCode,
+        city: formData.city,
+        province_address: formData.provinceAddress || "",
+        country: formData.country,
         profession: formData.profession,
         custom_profession:
           formData.profession === "Otros" && formData.customProfession ? formData.customProfession : null,

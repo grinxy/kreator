@@ -35,7 +35,6 @@ const CARD_ELEMENT_OPTIONS = {
       iconColor: "#EF4444",
     },
   },
-  showIcon: true,
 }
 
 

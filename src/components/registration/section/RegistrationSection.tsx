@@ -3,9 +3,9 @@
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
-import { RegistrationForm } from "@/components/registration/RegistrationForm"
-import { RegistrationPayment } from "@/components/registration/RegistrationPayment"
-import { RegistrationSuccess } from "@/components/registration/RegistrationSuccess"
+import { RegistrationForm } from "@/components/registration/form/RegistrationForm"
+import { RegistrationPayment } from "@/components/registration/payment/RegistrationPayment"
+import { RegistrationSuccess } from "@/components/registration/success/RegistrationSuccess"
 
 import { httpsCallable } from "firebase/functions"
 import { functions } from "@/lib/firebase"
@@ -80,13 +80,13 @@ export function RegistrationSection() {
   }
 
   return (
-    <SectionWrapper id="registro" className="py-16 bg-[var(--kreator-gray-light)]/60">
+    <SectionWrapper id="registro" className="py-20 bg-[var(--kreator-gray-light)]/60">
       <div className="max-w-7xl mx-auto">
         {/* STEP 1 → FORM */}
         {step === 1 && (
           <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-0">
             {/* LEFT COLUMN */}
-            <div className="space-y-6 text-center lg:text-left">
+            <div className="space-y-8 text-center lg:text-left">
               <p className="text-sm uppercase tracking-wide text-[var(--kreator-blue)] font-semibold">
                 Paso 1 de 2
               </p>
@@ -100,6 +100,10 @@ export function RegistrationSection() {
               <p className="text-lg text-[var(--kreator-gray-dark)] font-[family-name:var(--font-opensans)] leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Forma parte de la primera <strong>comunidad empresarial por equipos</strong> donde cada
                 profesional aporta valor, comparte contactos y crece acompañado.
+              </p>
+
+              <p className="text-lg text-[var(--kreator-gray-dark)] font-[family-name:var(--font-opensans)] leading-relaxed max-w-lg mx-auto lg:mx-0">
+                Las plazas se asignan por orden de llegada. Si tu sector aún está libre, <strong>lo bloquearemos para ti</strong>.
               </p>
 
               <ul className="space-y-4 pt-4 max-w-lg mx-auto lg:mx-0">

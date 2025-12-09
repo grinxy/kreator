@@ -10,6 +10,11 @@ const initialFormData: FormData = {
   lastName: "",
   email: "",
   phone: "",
+  streetAddress: "",
+  postalCode: "",
+  city: "",
+  provinceAddress: "",
+  country: "España",
   profession: "",
   customProfession: "",
   professionSearch: "",
@@ -44,33 +49,70 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
     []
   )
 
-  const updateFormData = (field: keyof FormData, value: any) => {
+  useEffect(() => {
+    const ref = ReferralService.getReferralCodeFromUrl()
+    setFormData(prev => ({
+      ...prev,
+      referralCode: ref ?? ""
+    }))
+  }, [])
+
+  const updateFormData = useCallback((field: keyof FormData, value: any) => {
     const sanitizedValue =
       typeof value === "string" &&
       !["firstName", "lastName", "professionSearch", "zoneSearch", "customProfession"].includes(field)
         ? sanitizeInput(value)
         : value
 
-    setFormData(prev => ({ ...prev, [field]: sanitizedValue }))
+    setFormData(prevFormData => {
+      const newFormData = { ...prevFormData, [field]: sanitizedValue }
 
-    if (errors[field as keyof FormErrors]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }))
-    }
+      if (hasSubmitted) {
+        const addressFields = ['streetAddress', 'postalCode', 'city', 'provinceAddress', 'country']
+        
+        if (addressFields.includes(field)) {
+          setErrors(prevErrors => {
+            const newErrors = { ...prevErrors }
+
+            if (!newFormData.streetAddress.trim()) newErrors.streetAddress = "La dirección de facturación es obligatoria."
+            else delete newErrors.streetAddress
+
+            if (!newFormData.postalCode.trim()) newErrors.postalCode = "El código postal es obligatorio."
+            else delete newErrors.postalCode
+
+            if (!newFormData.city.trim()) newErrors.city = "La ciudad es obligatoria."
+            else delete newErrors.city
+
+            if (!newFormData.provinceAddress?.trim()) newErrors.provinceAddress = "La provincia es obligatoria."
+            else delete newErrors.provinceAddress
+
+            if (!newFormData.country.trim()) newErrors.country = "El país es obligatorio."
+            else delete newErrors.country
+
+            return newErrors
+          })
+        }
+      }
+
+      return newFormData
+    })
+
+    setErrors(prev => ({
+      ...prev,
+      [field]: undefined,
+    }))
 
     if (hasSubmitted && ["firstName", "lastName", "email", "phone", "nifCif"].includes(field)) {
       debouncedValidateField(field, sanitizedValue)
     }
-  }
 
-  useEffect(() => {
-    const ref = ReferralService.getReferralCodeFromUrl()
-    updateFormData("referralCode", ref ?? "")
-  }, [])
+  }, [hasSubmitted, debouncedValidateField])
 
-  const handleFieldBlur = (field: keyof FormData) => {
+  const handleFieldBlur = useCallback((field: keyof FormData) => {
     if (!hasSubmitted) return
 
     const value = formData[field]
+
     if (["firstName", "lastName", "email", "phone", "profession", "zone", "nifCif"].includes(field)) {
       if (!value || (typeof value === "string" && !value.trim())) {
         const fieldNames = {
@@ -82,19 +124,17 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
           zone: "La zona",
           nifCif: "El NIF/CIF/NIE",
         }
+
         setErrors(prev => ({
           ...prev,
           [field]: `${fieldNames[field as keyof typeof fieldNames]} es obligatorio.`,
         }))
       } else {
         const fieldError = validateField(field, value)
-        setErrors(prev => ({
-          ...prev,
-          [field]: fieldError,
-        }))
+        setErrors(prev => ({ ...prev, [field]: fieldError }))
       }
     }
-  }
+  }, [formData, hasSubmitted])
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -125,14 +165,10 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
           if (authResult.error?.code === "auth/email-already-in-use") {
             setErrors(prev => ({
               ...prev,
-              email:
-                "No ha sido posible completar el registro con los datos introducidos. Si ya te habías registrado, revisa tus mensajes o espera nuestra confirmación.",
+              email: "No ha sido posible completar el registro con los datos introducidos. Si ya te habías registrado, revisa tus mensajes o espera nuestra confirmación.",
             }))
           } else {
-            setSubmitError(
-              authResult.error?.message ||
-                "Ha ocurrido un error inesperado al procesar el registro. Inténtalo de nuevo."
-            )
+            setSubmitError(authResult.error?.message || "Ha ocurrido un error inesperado.")
           }
 
           setIsSubmitting(false)
@@ -140,7 +176,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
         }
 
         const userUid = authResult.data.uid
-
         await new Promise(resolve => setTimeout(resolve, 1000))
 
         const firestoreResult = await UserService.createUser(formData, userUid)
@@ -155,7 +190,7 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
           email: formData.email,
           name: `${formData.firstName} ${formData.lastName}`,
         }
-      } catch (error) {
+      } catch {
         setSubmitError("Error inesperado. Por favor, inténtalo de nuevo.")
         return null
       } finally {
@@ -165,13 +200,13 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
     [formData]
   )
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setFormData(initialFormData)
     setErrors({})
     setIsSubmitting(false)
     setSubmitError("")
     setHasSubmitted(false)
-  }
+  }, [])
 
   return {
     formData,
@@ -182,5 +217,6 @@ export function useRegistrationForm(initialInterestedInLeadership = false) {
     handleFieldBlur,
     handleSubmit,
     resetForm,
+    hasSubmitted,
   }
 }

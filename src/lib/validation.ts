@@ -169,7 +169,8 @@ export const validateForm = (formData: FormData): FormErrors => {
 
   validatableFields.forEach(field => {
     const validator = fieldValidators[field]
-    const error = validator(formData[field])
+    const fieldValue = (formData as any)[field]
+    const error = validator(fieldValue)
 
     if (error) {
       ;(errors as any)[field] = error
@@ -242,5 +243,8 @@ export const formatNifCif = (value: string): string => {
 }
 
 export const sanitizeInput = (input: string): string => {
-  return input.trim().replace(/\s+/g, " ")
+  return input
+    .replace(/[^\p{L}\p{N}\sÁÉÍÓÚÜÑáéíóúüñ.,-]/gu, "")
+    .replace(/\s{2,}/g, " ")
+    .trimStart()
 }

@@ -1,3 +1,17 @@
+/**
+ * ⚠️ GoogleMaps component (not currently used in production)
+ *
+ * This component was originally designed as an optional visual aid to display
+ * a geographic reference based on the user's postal code during registration.
+ *
+ * The feature was not included in the current registration flow, but the
+ * component is kept here as it may be useful for future versions or for a
+ * more advanced dashboard implementation.
+ *
+ * Keeping this file allows the team to revisit or expand this feature without
+ * rebuilding it from scratch.
+ */
+
 "use client"
 
 import { useState } from "react"

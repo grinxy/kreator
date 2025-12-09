@@ -175,6 +175,83 @@ export const savePaymentMethod = onCall(
     }
   }
 );
+/**
+ * TEMPORAL: Completar payment_method_id para usuarios con setup_intent
+ */
+export const fixMissingPaymentMethods = onCall(
+  {
+    cors: true,
+  },
+  async (request) => {
+    const {userId} = request.data;
+
+    if (!userId) {
+      throw new HttpsError("invalid-argument", "userId is required");
+    }
+
+    try {
+      const stripe = getStripe();
+
+      // Obtain user data
+      const userDoc = await db.collection("users").doc(userId).get();
+      const userData = userDoc.data();
+
+      if (!userData) {
+        throw new Error("User not found");
+      }
+
+      const setupIntentId = userData.setup_intent_id;
+
+      if (!setupIntentId) {
+        throw new Error("No setup_intent_id found for this user");
+      }
+
+      logger.info(`🔧 Fixing payment method for user ${userId} 
+        with setup_intent ${setupIntentId}`);
+
+      // Retrieve the SetupIntent
+      const setupIntent = await stripe.setupIntents.retrieve(setupIntentId);
+
+      if (setupIntent.status !== "succeeded") {
+        throw new Error(
+          `SetupIntent status is ${setupIntent.status}, expected succeeded`
+        );
+      }
+
+      const paymentMethodId = setupIntent.payment_method as string;
+      const customerId = setupIntent.customer as string;
+
+      if (!paymentMethodId) {
+        throw new Error("No payment method found in SetupIntent");
+      }
+
+      // Update Firestore
+      await db.collection("users").doc(userId).update({
+        payment_method_id: paymentMethodId,
+        stripe_customer_id: customerId,
+        payment_method_saved_at: FieldValue.serverTimestamp(),
+        registration_status: "payment_method_completed",
+        registration_step: 2,
+        step_2_completed_at: FieldValue.serverTimestamp(),
+        last_activity_at: FieldValue.serverTimestamp(),
+      });
+
+      logger.info(`✅ Payment method ${paymentMethodId} 
+        saved for user ${userId}`);
+
+      return {
+        success: true,
+        paymentMethodId,
+        customerId,
+        message: "Payment method fixed successfully",
+      };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      logger.error(`Error fixing payment method for ${userId}:`, message);
+      throw new HttpsError("internal", message);
+    }
+  }
+);
 
 /**
  * 3. Firestore trigger (on status change)
@@ -214,7 +291,7 @@ export const onUserStatusChange = onDocumentUpdated(
 
       // 1) Initial payment (first payment)
       await stripe.paymentIntents.create({
-        amount: 9680, // 96.80 EUR (80 + 21% IVA)
+        amount: 8000, // 80 + 21% IVA (IVA via Stirpe directo)
         currency: "eur",
         customer: stripeCustomerId,
         payment_method: paymentMethodId,
@@ -225,8 +302,6 @@ export const onUserStatusChange = onDocumentUpdated(
           userId,
           type: "initial_payment",
           base_amount: "8000", // 80 EUR
-          tax_amount: "1680", // 16.80 EUR IVA
-          tax_rate: "21",
         },
       });
 
@@ -372,5 +447,149 @@ export const stripeWebhook = onRequest(
     }
 
     return res.status(200).json({received: true});
+  }
+);
+/**
+ * 6. Sync customer data from Airtable to Stripe
+ */
+export const syncCustomerToStripe = onRequest(
+  {
+    region: "europe-west1",
+    cors: true,
+  },
+  async (...args) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [req, res] = args as unknown as [any, any];
+
+    try {
+      // 1. Basic validation
+      if (req.method !== "POST") {
+        return res.status(405).json({error: "Method not allowed"});
+      }
+
+      const {userId, name, taxId, address, city,
+        postalCode, province, country} = req.body;
+
+      if (!userId) {
+        return res.status(400).json({error: "Missing userId"});
+      }
+
+      logger.info(
+        `🔄 Syncing customer data to Stripe for user ${userId}`,
+        {name, taxId, address, city, postalCode, province, country}
+      );
+
+      // 2. Get user from Firestore
+      const userDoc = await db.collection("users").doc(userId).get();
+
+      if (!userDoc.exists) {
+        logger.error(`User ${userId} not found in Firestore`);
+        return res.status(404).json({error: "User not found"});
+      }
+
+      const userData = userDoc.data();
+      const stripeCustomerId = userData?.stripe_customer_id;
+
+      if (!stripeCustomerId) {
+        logger.error(`User ${userId} doesn't have stripe_customer_id`);
+        return res.status(400).json({
+          error: "User doesn't have a Stripe customer ID yet",
+        });
+      }
+
+      // 3. Prepare data for Stripe
+      const stripe = getStripe();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const updateData: any = {
+        metadata: {
+          firebaseUserId: userId,
+          syncedFromAirtable: new Date().toISOString(),
+        },
+      };
+
+      if (name) {
+        updateData.name = name;
+      }
+
+      // Full address
+      if (address || city || postalCode || province || country) {
+        updateData.address = {
+          line1: address || "",
+          city: city || "",
+          postal_code: postalCode || "",
+          state: province || "",
+          country: country || "ES",
+        };
+      }
+
+      // CIF/NIF
+      if (taxId) {
+        const cleanTaxId = taxId.toUpperCase().trim();
+        const isCIF = /^[ABCDEFGHJNPQRSUVW]/.test(cleanTaxId);
+
+        if (!updateData.metadata) {
+          updateData.metadata = {};
+        }
+
+        updateData.metadata.taxId = cleanTaxId;
+        updateData.metadata.taxIdType = isCIF ? "CIF" : "NIF";
+      }
+
+      logger.info(
+        `Updating Stripe customer ${stripeCustomerId} with data:`,
+        updateData
+      );
+
+      // 4. Update Stripe customer
+      await stripe.customers.update(stripeCustomerId, updateData);
+
+      logger.info(`✅ Stripe customer ${stripeCustomerId} updated successfully`);
+
+      // 4.1 Create Tax ID in Stripe (for invoices)
+      if (taxId) {
+        const cleanTaxId = taxId.toUpperCase().trim();
+
+        await stripe.customers.createTaxId(stripeCustomerId, {
+          type: "es_cif",
+          value: cleanTaxId,
+        });
+
+        logger.info(
+          `✅ Tax ID es_cif (${cleanTaxId}) 
+          añadido al customer ${stripeCustomerId}`
+        );
+      }
+
+
+      // 5. Update Firestore
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const firestoreUpdate: any = {
+        customer_synced_at: FieldValue.serverTimestamp(),
+      };
+
+      if (name) firestoreUpdate.name = name;
+      if (taxId) firestoreUpdate.taxId = taxId;
+      if (address) firestoreUpdate.address = address;
+      if (city) firestoreUpdate.city = city;
+      if (postalCode) firestoreUpdate.postalCode = postalCode;
+      if (province) firestoreUpdate.province = province;
+      if (country) firestoreUpdate.country = country;
+
+      await db.collection("users").doc(userId).update(firestoreUpdate);
+
+      return res.json({
+        success: true,
+        customerId: stripeCustomerId,
+        updatedFields: Object.keys(updateData),
+        message: "Customer data synced to Stripe successfully",
+      });
+    } catch (err) {
+      logger.error("❌ Error syncing customer to Stripe:", err);
+
+      return res.status(500).json({
+        error: "Internal server error",
+        message: err instanceof Error ? err.message : String(err),
+      });
+    }
   }
 );
