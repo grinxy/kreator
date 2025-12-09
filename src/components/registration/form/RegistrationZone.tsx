@@ -20,7 +20,7 @@ type Props = {
   regions: string[]
   regionsData: any
   filterNestedData: any
-  popoverZoneRef: RefObject<HTMLDivElement>
+  popoverZoneRef: RefObject<HTMLDivElement | null>
 }
 
 export function RegistrationZone({

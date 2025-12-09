@@ -16,7 +16,7 @@ export function RegistrationPersonalInfo({ formData, errors, updateFormData, han
   return (
     <fieldset>
       <legend className="sr-only">Información personal</legend>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         {/* Nombre */}
         <FieldWrapper label="Nombre" required error={errors.firstName}>
           <Input
@@ -50,7 +50,7 @@ export function RegistrationPersonalInfo({ formData, errors, updateFormData, han
         </FieldWrapper>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         {/* Email */}
         <FieldWrapper label="Email" required error={errors.email}>
           <Input

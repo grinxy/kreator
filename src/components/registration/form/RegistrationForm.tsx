@@ -62,7 +62,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
           //  Here we connect to RegistrationSection → active Step 2 (Stripe)
           onFinishedRegistrationForm(result)
         }}
-        className="w-full max-w-3xl bg-white rounded-xl shadow-lg mx-auto p-4 sm:p-6 md:p-8 space-y-2"
+        className="w-full max-w-3xl bg-white rounded-xl shadow-lg mx-auto p-4 sm:p-6 md:p-6"
         noValidate
         aria-label="Formulario de registro a la comunidad Kreator"
       >
@@ -84,7 +84,7 @@ export const RegistrationForm = forwardRef<HTMLFormElement, Props>(
 
         <fieldset>
           <legend className="sr-only">Información profesional</legend>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 mb-2">
             <RegistrationProfession
               formData={formData}
               errors={errors}

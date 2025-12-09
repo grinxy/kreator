@@ -30,7 +30,7 @@ export function RegistrationSubmit({ isSubmitting, submitError }: Props) {
         </Button>
       </div>
 
-      <p className="text-sm text-gray-500 text-center" aria-live="polite">
+      <p className="text-sm text-gray-500 text-center mt-2" aria-live="polite">
         Los campos marcados con * son obligatorios
       </p>
     </>

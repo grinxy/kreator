@@ -15,7 +15,7 @@ export function RegistrationAddress({ formData, errors, hasSubmitted, updateForm
   return (
     <fieldset>
       <legend className="sr-only">Dirección de facturación</legend>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1">
         <FieldWrapper label="Dirección de facturación" required error={hasSubmitted ? errors.streetAddress : undefined}>
           <Input
             id="streetAddress"
