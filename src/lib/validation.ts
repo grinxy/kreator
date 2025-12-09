@@ -244,7 +244,8 @@ export const formatNifCif = (value: string): string => {
 
 export const sanitizeInput = (input: string): string => {
   return input
-    .replace(/[^\p{L}\p{N}\sÁÉÍÓÚÜÑáéíóúüñ.,-]/gu, "")
+    .replace(/[^\p{L}\p{N}\sÁÉÍÓÚÜÑáéíóúüñ@._+-]/gu, "")
     .replace(/\s{2,}/g, " ")
     .trimStart()
 }
+
