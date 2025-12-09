@@ -1,304 +1,198 @@
 # Airtable Integration Guide
 
-## Overview
-This guide explains how to sync Firestore user registrations to Airtable for the Product Owner to manage zone assignments.
+This document explains how Kreator syncs Firestore user data to Airtable, including zone assignment, referrals, and basic billing information.
 
-## Database Structure
+---
 
-### Firestore Collection: `users`
-Each user document now includes:
-- `zone_assigned` (boolean): Whether zone has been assigned to this user
-- `zone_assignment_date` (timestamp): When assignment was made
-- `registration_order` (number): Timestamp for "first come, first served" ordering
-- `payment_status` (string): 'pending' | 'completed' | 'failed'
-- `payment_id` (string): Stripe payment ID (for future use)
-- `status` (string): Auto-set to 'approved'
+# 1. Firestore Data Model (Relevant Fields)
 
-### Example Firestore Document
+The Firestore collection used is:
+
+```
+users/{userId}
+```
+
+The user document contains the fields that Airtable consumes.  
+Below is an updated example including the new address fields and referral code:
+
 ```json
 {
   "name": "Juan García Martínez",
   "email": "juan.garcia@example.com",
   "phone": "+34 612 345 678",
+
+  "street_address": "Calle Mayor 123",
+  "postal_code": "04001",
+  "city": "Almería",
+  "province_address": "Almería",
+  "country": "España",
+
   "profession": "Arquitecto",
+  "custom_profession": null,
   "nif_cif": "12345678Z",
+
   "role": "professional",
+
   "zone": {
-    "city": "Almería",
-    "province": "Almería"
+    "region": "Andalucía",
+    "province": "Almería",
+    "comarca": "Valle del Almanzora"
   },
+
   "zone_assigned": false,
-  "registration_order": 1729900800123,
+  "registration_order": 1733401211123,
+
   "interested_in_leadership": false,
-  "status": "approved",
+
+  "status": "pending",
   "payment_status": "pending",
+
+  "referred_by": "KR-1234",
   "auth_uid": "firebase-auth-uid",
-  "created_at": "2024-10-25T10:00:00Z",
-  "updated_at": "2024-10-25T10:00:00Z"
+
+  "registration_status": "personal_data_completed",
+  "registration_step": 1,
+
+  "created_at": "2024-11-25T10:00:00.000Z",
+  "updated_at": "2024-11-25T10:00:00.000Z"
 }
 ```
 
-## Airtable Setup
+---
 
-### Base Structure
-Create an Airtable base with a table called "User Registrations"
+# 2. Airtable Setup
 
-### Table Schema
+Airtable contains a table named:
 
-| Field Name | Type | Description |
-|------------|------|-------------|
-| Firestore ID | Single line text | Document ID from Firestore |
-| Name | Single line text | User's full name |
-| Email | Email | User's email |
-| Phone | Phone | User's phone number |
-| Profession | Single select | User's profession |
-| NIF/CIF | Single line text | Spanish ID |
-| Role | Single select | professional / team_leader |
-| Zone - City | Single line text | Selected city/comarca |
-| Zone - Province | Single line text | Province |
-| Zone Assigned | Checkbox | Whether zone assigned |
-| Zone Assignment Date | Date | When assignment was made |
-| Registration Order | Number | Timestamp for ordering |
-| Registration Date | Date | When user registered |
-| Payment Status | Single select | pending / completed / failed |
-| Interested in Leadership | Checkbox | Leadership interest |
-| Status | Single select | approved / rejected |
-
-### Views to Create
-
-1. **Pending Zone Assignments**
-   - Filter: Zone Assigned = FALSE
-   - Sort: Registration Order (ascending)
-   - Groups: Zone - City
-
-2. **By Zone**
-   - Group by: Zone - City
-   - Sort: Registration Order (ascending)
-
-3. **Recently Registered**
-   - Sort: Registration Date (descending)
-
-## Integration Options
-
-### Option 1: Firebase Extension (Easiest)
-Use the official "Export Collections to Airtable" Firebase Extension:
-
-1. Install from Firebase Console
-2. Configure with Airtable API key
-3. Set collection path: `users`
-4. Map fields automatically
-
-**Pros:** No code needed, automatic sync
-**Cons:** Less customization
-
-### Option 2: Cloud Function (Recommended)
-
-Create a Cloud Function that triggers on user creation:
-
-```typescript
-// functions/src/index.ts
-import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
-import Airtable from 'airtable';
-
-admin.initializeApp();
-
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY })
-  .base(process.env.AIRTABLE_BASE_ID!);
-
-export const syncToAirtable = functions.firestore
-  .document('users/{userId}')
-  .onCreate(async (snap, context) => {
-    const data = snap.data();
-    const userId = context.params.userId;
-
-    try {
-      await base('User Registrations').create({
-        'Firestore ID': userId,
-        'Name': data.name,
-        'Email': data.email,
-        'Phone': data.phone,
-        'Profession': data.profession,
-        'NIF/CIF': data.nif_cif,
-        'Role': data.role,
-        'Zone - City': data.zone.city,
-        'Zone - Province': data.zone.province,
-        'Zone Assigned': data.zone_assigned || false,
-        'Registration Order': data.registration_order,
-        'Registration Date': data.created_at.toDate().toISOString(),
-        'Payment Status': data.payment_status || 'pending',
-        'Interested in Leadership': data.interested_in_leadership,
-        'Status': data.status
-      });
-
-      console.log(`User ${userId} synced to Airtable`);
-    } catch (error) {
-      console.error('Error syncing to Airtable:', error);
-    }
-  });
-
-// Also sync updates
-export const updateAirtable = functions.firestore
-  .document('users/{userId}')
-  .onUpdate(async (change, context) => {
-    const data = change.after.data();
-    const userId = context.params.userId;
-
-    try {
-      // Find the Airtable record
-      const records = await base('User Registrations')
-        .select({ filterByFormula: `{Firestore ID} = '${userId}'` })
-        .firstPage();
-
-      if (records.length > 0) {
-        await base('User Registrations').update(records[0].id, {
-          'Zone Assigned': data.zone_assigned || false,
-          'Zone Assignment Date': data.zone_assignment_date 
-            ? data.zone_assignment_date.toDate().toISOString() 
-            : undefined,
-          'Payment Status': data.payment_status || 'pending',
-          'Status': data.status
-        });
-      }
-
-      console.log(`User ${userId} updated in Airtable`);
-    } catch (error) {
-      console.error('Error updating Airtable:', error);
-    }
-  });
+```
+Datos facturación
 ```
 
-**Setup Steps:**
-```bash
-# 1. Install Firebase CLI
-npm install -g firebase-tools
+This table receives user data after the registration step has been completed.  
+Airtable is used by the Product Owner to review users, validate information, and manage zone assignments.
 
-# 2. Initialize Cloud Functions
-firebase init functions
+---
 
-# 3. Install dependencies
-cd functions
-npm install airtable firebase-admin firebase-functions
+# 3. Table Schema
 
-# 4. Set environment variables
-firebase functions:config:set \
-  airtable.api_key="YOUR_AIRTABLE_API_KEY" \
-  airtable.base_id="YOUR_AIRTABLE_BASE_ID"
+| Field Name                  | Type              | Description |
+|----------------------------|-------------------|-------------|
+| Firestore ID               | Single line text  | Document ID from Firestore |
+| Name                       | Single line text  | Full name |
+| Email                      | Email            | User email |
+| Phone                      | Phone            | User phone |
+| NIF/CIF                    | Single line text  | Spanish ID |
+| Profession                 | Single select     | User profession |
+| Custom Profession          | Single line text  | If profession = “Otros” |
+| Role                       | Single select     | professional / team_leader |
+| Street Address             | Single line text  | Billing street |
+| Postal Code                | Single line text  | Billing ZIP code |
+| City                       | Single line text  | Billing city |
+| Province (Billing)         | Single line text  | Billing province |
+| Country                    | Single line text  | Usually “España” |
+| Zone - Region              | Single line text  | Selected region |
+| Zone - Province            | Single line text  | Selected province |
+| Zone - Comarca             | Single line text  | Selected comarca |
+| Zone Assigned              | Checkbox          | Whether PO has assigned a zone |
+| Zone Assignment Date       | Date              | When assignment was made |
+| Referral Code Used         | Single line text  | Code‐based referrals (KR-XXXX) |
+| Registration Order         | Number            | Timestamp for ordering |
+| Registration Date          | Date              | When signup occurred |
+| Payment Status             | Single select     | pending / completed / failed |
+| Interested in Leadership   | Checkbox          | Leadership interest |
+| Status (User Status)       | Single select     | pending / approved / rejected |
+| Stripe Customer ID         | Single line text  | Synced from Stripe webhook |
+| First Payment Completed    | Checkbox          | Shown when Stripe payment succeeds |
+| Subscription Status        | Single select     | activa / cancelada / error |
 
-# 5. Deploy
-firebase deploy --only functions
+---
+
+# 4. Referrals in Airtable
+
+Airtable stores referrals under:
+
+```
+Referral Code Used → e.g., "KR-1234"
 ```
 
-**Pros:** Full control, bidirectional sync possible
-**Cons:** Requires coding, maintenance
+This code originates in Airtable (PO creates the referral codes), and users registering through a referral link automatically send the code to Firestore.  
+Later it appears in Airtable for reporting and filtering.
 
-### Option 3: Zapier/Make.com (No Code)
-Use Zapier or Make.com to connect Firestore to Airtable:
+---
 
-1. Trigger: Firestore "New Document"
-2. Action: Airtable "Create Record"
-3. Map fields
+# 5. Views to Create (Recommended)
 
-**Pros:** No coding, visual interface
-**Cons:** Monthly cost, rate limits
+### **1. Pending Zone Assignments**
+- Filter: `Zone Assigned = false`
+- Sort: `Registration Order (ascending)`
+- Groups: `Zone - Comarca`
 
-## Product Owner Workflow in Airtable
+### **2. Billing & Address Review**
+- Shows users with missing address info
+- Useful before invoicing
 
-### Daily Tasks:
+### **3. Recently Registered**
+- Sort by `Registration Date (descending)`
 
-1. **Open "Pending Zone Assignments" View**
-   - Grouped by Zone - City
-   - Shows who registered first for each zone
+### **4. Referral Tracking View**
+- Group by: `Referral Code Used`
+- Helps PO measure referral performance
 
-2. **Assign Zones:**
-   - Check the first person registered for each zone
-   - Verify payment status = "completed"
-   - Mark "Zone Assigned" checkbox
-   - Add "Zone Assignment Date"
+---
 
-3. **Handle Conflicts:**
-   - If multiple people want same zone, first in "Registration Order" wins
-   - Contact others to offer alternative zones
+# 6. Integration Flow
 
-### Airtable Automation (Optional):
-Create automation to send email when zone is assigned:
-- Trigger: When "Zone Assigned" = TRUE
-- Action: Send email to user's email address
+Airtable is *not* the source of truth.  
+Firestore is the canonical database.
 
-## Future: Stripe Integration
+The sync happens via **Cloud Functions**, which send and update data automatically between Firestore and Airtable.
 
-When adding Stripe payments:
+The core logic is:
 
-1. After successful payment, update Firestore:
-```typescript
-await updateDoc(doc(db, 'users', userId), {
-  payment_status: 'completed',
-  payment_id: stripePaymentIntent.id,
-  updated_at: Timestamp.now()
-});
-```
+1. **User completes registration → Firestore saves data.**
+2. **Cloud Function detects new user → pushes record to Airtable.**
+3. **PO manages zone assignment directly from Airtable.**
+4. **If Airtable changes user status, a webhook updates Firestore.**
+5. **Stripe events (already implemented) update payment status in Firestore, which Airtable then receives.**
 
-2. Cloud Function will automatically sync to Airtable
-3. Product Owner only assigns zones to users with `payment_status = 'completed'`
+This ensures both systems remain aligned.
 
-## Querying Firestore for Product Owner Dashboard (Future)
+---
 
-If you want to build a dashboard later:
+# 7. How Billing Appears in Airtable
 
-```typescript
-// Get all users by zone, ordered by registration
-const usersQuery = query(
-  collection(db, 'users'),
-  where('zone.city', '==', 'Almería'),
-  where('zone_assigned', '==', false),
-  where('payment_status', '==', 'completed'),
-  orderBy('registration_order', 'asc')
-);
+Kreator does not issue invoices directly from Airtable,  
+but Airtable stores the **billing address fields** so Product Owner can:
 
-const querySnapshot = await getDocs(usersQuery);
-```
+- Verify correct tax information  
+- Export billing data to other systems (e.g., Stripe Dashboard, accounting tools)
 
-## Backup & Export
+Fields stored:
 
-Always maintain Firestore as source of truth. Airtable is just a view for the Product Owner.
+- Street Address  
+- Postal Code  
+- City  
+- Province (Billing)  
+- Country  
 
-To export Firestore data for backup:
-```bash
-gcloud firestore export gs://[BUCKET_NAME]
-```
+Stripe handles the actual payment flow, but Airtable serves as a dashboard for the PO to verify billing completeness.
 
-## Security Rules
+---
 
-Update Firestore security rules to allow only admins to update zone assignments:
+# 8. Security Considerations
 
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /users/{userId} {
-      // Users can read their own data
-      allow read: if request.auth != null && request.auth.uid == resource.data.auth_uid;
-      
-      // Only admins can update zone assignments
-      allow update: if request.auth != null && 
-                       get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' &&
-                       request.resource.data.diff(resource.data).affectedKeys()
-                         .hasOnly(['zone_assigned', 'zone_assignment_date', 'updated_at']);
-      
-      // Creation handled by Cloud Function
-      allow create: if request.auth != null;
-    }
-  }
-}
-```
+Airtable is used only for internal Product Owner workflows. 
 
-## Summary
 
-**Current Flow:**
-1. ✅ User registers → Firestore (auto-approved)
-2. 🔄 Cloud Function → Syncs to Airtable
-3. 👤 Product Owner → Views in Airtable
-4. 👤 Product Owner → Assigns zones manually
-5. 🔄 Update syncs back to Firestore
+---
 
-**Recommendation:** Use **Option 2 (Cloud Function)** for full control and bidirectional sync.
+# 9. Summary
+
+- Firestore is the primary source of truth.  
+- Airtable is a controlled admin UI for Product Owners.
+- Address + billing fields are included in the sync.  
+- Referral codes are fully supported and tracked.
+- Zone assignment is manual in Airtable, then reflected back to Firestore.
+
+This README provides a full overview of how data flows between systems and how Product Owners use Airtable to manage registrations and assignments.
+

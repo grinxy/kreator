@@ -21,7 +21,7 @@ export const SectionWrapper = ({
     <section
       id={id}
       style={style}
-      className={cn("w-full py-10", className)}
+      className={cn("w-full flex-1", className)}
       {...props}
     >
       <div className={cn("max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", innerClassName)}>{children}</div>

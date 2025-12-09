@@ -52,7 +52,7 @@ export function RegistrationSuccess({ email }: RegistrationSuccessProps) {
             <p className="text-gray-600 text-base leading-relaxed">
               Te enviaremos un correo a{" "}
               <span className="font-semibold text-primary">{email}</span>{" "}
-              con la confirmación y los próximos pasos.
+              o un WhatsApp con la confirmación y los próximos pasos.
             </p>
           </div>
         </div>

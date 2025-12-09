@@ -70,7 +70,7 @@ export function FieldWrapper({ label, required, error, success, hint, children }
   const hintId = `${fieldId}-hint`
 
   return (
-    <div>
+    <div className="space-y-1">
       <label className="text-sm font-medium text-gray-700">
         {label}
         {required && (

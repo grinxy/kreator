@@ -143,7 +143,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="font-sans antialiased">
+      <body className="min-h-screen flex flex-col font-sans antialiased">
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
