@@ -1223,6 +1223,28 @@ export const onUserDataUpdated = onDocumentWritten(
     results.changes = changedFields;
     logger.info(`📊 Changed fields for ${userId}:`, changedFields);
 
+    // Debounce: group changes if they occur too frequently (2 seconds)
+    const globalAny = global as any;
+    if (!globalAny.syncTimestamps) {
+      globalAny.syncTimestamps = {};
+    }
+
+    const lastSyncKey = `last_sync_${userId}`;
+    const now = Date.now();
+    const lastSync = globalAny.syncTimestamps[lastSyncKey] ?? 0;
+    const timeSinceLastSync = now - lastSync;
+
+    if (timeSinceLastSync < 2000) {
+      logger.info(
+        `⏭️ Skipping sync for ${userId} - last sync was 
+        ${timeSinceLastSync}ms ago`
+      );
+      return;
+    }
+
+    globalAny.syncTimestamps[lastSyncKey] = now;
+
+    // --- Sync con Airtable ---
     try {
       await syncToAirtable(userId, afterData);
       results.airtable = true;
@@ -1233,6 +1255,7 @@ export const onUserDataUpdated = onDocumentWritten(
       results.errors.push(`Airtable: ${message}`);
     }
 
+    // --- Billing logic / Stripe ---
     const billingFields = [
       "name",
       "nombre",
@@ -1260,8 +1283,8 @@ export const onUserDataUpdated = onDocumentWritten(
       afterData.stripe_customer_id &&
       !beforeData.stripe_customer_id;
 
-    if ((billingChanged || stripeCustomerJustAdded) &&
-    afterData.stripe_customer_id) {
+    if ((billingChanged ||
+      stripeCustomerJustAdded) && afterData.stripe_customer_id) {
       try {
         await syncBillingToStripe(userId, afterData);
         results.stripe = true;
@@ -1272,6 +1295,7 @@ export const onUserDataUpdated = onDocumentWritten(
         results.errors.push(`Stripe: ${message}`);
       }
     }
+
     logger.info(`🏁 Update sync completed for ${userId}:`, results);
   }
 );
